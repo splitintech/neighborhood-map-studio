@@ -1,0 +1,862 @@
+diff --git a/blog-astro/src/scripts/neighborhood-category-map.ts b/blog-astro/src/scripts/neighborhood-category-map.ts
+index 9694955aa..81291e19d 100644
+--- a/blog-astro/src/scripts/neighborhood-category-map.ts
++++ b/blog-astro/src/scripts/neighborhood-category-map.ts
+@@ -5,6 +5,7 @@ import { createPublicMapConsent } from '../../../rental-vendors/lib/public-map-c
+ import { getDiscoveryNavigation } from '../../../packages/discovery-map/history';
+ import { createPlaceMapMarker, placeMarkerPresentation, type PlaceMarkerData } from './place-map-marker';
+ import { hasApproximateLocationPresentation } from '../lib/neighborhood-location-presentation.mjs';
++import { mapStudioFeatureEnabled, mapStudioPublicConfig, resolvePublicPilotMapKey } from '../../../rental-vendors/lib/studio-layers';
+
+ // Explicit city pages never request or infer location. The separate entry page
+ // reuses the app's existing consent bootstrap before choosing a city URL.
+@@ -107,6 +108,8 @@ if (root && !root.dataset.categoryEnhanced) {
+         locationStatus: approximate ? 'Approximate location' : place.locationStatus || 'Address only · location unverified' };
+     });
+     root.querySelector<HTMLElement>('[data-category-map-actions]')!.hidden = false;
++    const studioMapKey = resolvePublicPilotMapKey({ city: root.dataset.city, pathname: window.location.pathname, explicitMapKey: root.dataset.mapStudioKey });
++    const studioPublic = mapStudioPublicConfig(import.meta.env);
+     map = mountDiscoveryMap({ root, items, domain: 'places', defaultView: 'map', navigation,
+       title: root.querySelector('h1')?.textContent?.trim() || 'Neighborhood places', center: payload.center,
+       controls, triggerContainer: root.querySelector<HTMLElement>('[data-category-map-actions]')!,
+@@ -116,6 +119,7 @@ if (root && !root.dataset.categoryEnhanced) {
+         return hasApproximateLocationPresentation(place, root.dataset.city) ? { ...presentation, showTitle: true, className: [presentation?.className, 'discovery-pin--approximate-address'].filter(Boolean).join(' ') } : presentation;
+       },
+       renderers: { marker: item => createPlaceMapMarker(item.element.ownerDocument, places.get(item.id)) },
++      ...(studioMapKey ? { studio: { mapKey: studioMapKey, ...studioPublic, enabled: mapStudioFeatureEnabled(import.meta.env, studioMapKey) } } : {}),
+     });
+   }
+ }
+diff --git a/blog-astro/src/scripts/place-explorer.ts b/blog-astro/src/scripts/place-explorer.ts
+index 1ec280041..327b30bea 100644
+--- a/blog-astro/src/scripts/place-explorer.ts
++++ b/blog-astro/src/scripts/place-explorer.ts
+@@ -6,6 +6,7 @@ import { getDiscoveryNavigation } from '../../../packages/discovery-map/history'
+ import { verifiedPlaceLocation, placeLocationStatus } from '../lib/editorial-map-data.mjs';
+ import { readEditorialFilters, editorialFilterURL } from '../lib/editorial-filter-state.mjs';
+ import { createPlaceMapMarker, placeMarkerPresentation } from './place-map-marker';
++import { mapStudioFeatureEnabled, mapStudioPublicConfig, resolvePublicPilotMapKey } from '../../../rental-vendors/lib/studio-layers';
+
+ const root = document.querySelector<HTMLElement>('[data-place-explorer]');
+ if (root && !root.dataset.placeEnhanced) {
+@@ -192,6 +193,8 @@ if (root && !root.dataset.placeEnhanced) {
+           locationStatus: placeLocationStatus(element.dataset.relation, location),
+         };
+       });
++      const studioMapKey = resolvePublicPilotMapKey({ city: root.dataset.city, pathname: window.location.pathname, explicitMapKey: root.dataset.mapStudioKey });
++      const studioPublic = mapStudioPublicConfig(import.meta.env);
+       discoveryMap = mountDiscoveryMap({ defaultView:'map', domain: 'places', navigation, consent: createPublicMapConsent(window),
+         root,
+         title: root.querySelector('h1')?.textContent?.replace(/Local places\./, '').trim() || 'Local places',
+@@ -201,6 +204,7 @@ if (root && !root.dataset.placeEnhanced) {
+         triggerContainer: $<HTMLElement>('[data-map-actions]'),
+         markerPresentation: item => placeMarkerPresentation(placesById.get(item.id)),
+         renderers: { marker: item => createPlaceMapMarker(item.element.ownerDocument, placesById.get(item.id)) },
++        ...(studioMapKey ? { studio: { mapKey: studioMapKey, ...studioPublic, enabled: mapStudioFeatureEnabled(import.meta.env, studioMapKey) } } : {}),
+       });
+       loadButton.hidden=true;
+       notice.textContent='Open map view for source-backed places. City references remain available in the list and do not change this neighborhood map. Street data needs your permission in map view.';
+@@ -218,4 +222,3 @@ if (root && !root.dataset.placeEnhanced) {
+     }else void openStreetMap();
+   }else if(!discoveryMap)notice.textContent='Data saving is on. Load the street map when you need it; the place cards and overview are ready.';
+ }
+-
+diff --git a/packages/discovery-map/index.ts b/packages/discovery-map/index.ts
+index d287d7cf5..53325ab69 100644
+--- a/packages/discovery-map/index.ts
++++ b/packages/discovery-map/index.ts
+@@ -5,3 +5,6 @@ export * from './gestures';
+ export * from './camera';
+ export * from './provider';
+ export * from './public-business-marker';
++export * from './studio/contracts';
++export * from './studio/leaflet';
++export * from './public-layers';
+diff --git a/packages/discovery-map/public-layers.ts b/packages/discovery-map/public-layers.ts
+new file mode 100644
+index 000000000..a6e4597e9
+--- /dev/null
++++ b/packages/discovery-map/public-layers.ts
+@@ -0,0 +1,113 @@
++/** Attach after the existing public map's consent gate. No Daytona dependency. */
++import { mountStudioLayers, type StudioLayerMount } from './studio/leaflet';
++import { validateLayerDocument, validateStudioAsset, type CanonicalBusiness, type StudioAsset } from './studio/contracts';
++
++export interface PublishedLayerMount extends StudioLayerMount {
++  /** Keep the published overlay in step with the host map's current filter. */
++  updateBusinesses(businesses: readonly CanonicalBusiness[]): void;
++}
++
++export interface PublicLayerFetcher {
++  (input: RequestInfo | URL, init?: RequestInit): Promise<Response>;
++}
++
++/** Pilot projections are tied to exact editorial guide identities. A city
++ * alone is insufficient because category directories aggregate many guides. */
++export function resolvePublicPilotMapKey(options: { city?: string; pathname?: string; explicitMapKey?: string }): string | undefined {
++  const city = options.city === 'sanFrancisco' ? 'san-francisco' : options.city;
++  const allowed: Record<string, string> = { 'san-francisco-mission': 'san-francisco', 'boston-back-bay': 'boston' };
++  const explicit = options.explicitMapKey?.trim();
++  if (explicit && allowed[explicit] === city) return explicit;
++  const path = (options.pathname || '').replace(/\/+$/, '');
++  const match = path.match(/^\/blog\/guides\/([^/]+)\/places$/);
++  const routeKey = match?.[1];
++  return routeKey && allowed[routeKey] === city ? routeKey : undefined;
++}
++
++const publicOrigin = (value: string): URL => {
++  const origin = new URL(value);
++  // The public projection is intentionally limited to Supabase's HTTPS origin.
++  // In particular, this prevents a map page from turning its anon key into a
++  // browser request proxy for Daytona or an arbitrary host.
++  if (origin.protocol !== 'https:' || !/^[a-z0-9-]+\.supabase\.co$/i.test(origin.hostname)
++    || origin.username || origin.password || origin.pathname !== '/' || origin.search || origin.hash) throw new Error('Invalid public Map Studio origin');
++  return origin;
++};
++
++const requestSignal = (): AbortSignal | undefined => typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function' ? AbortSignal.timeout(5000) : undefined;
++
++export async function attachPublishedLayers(options: {
++  mapKey: string; enabled: boolean; supabaseOrigin: string; publicAnonKey: string;
++  L: any; map: any; businesses: readonly CanonicalBusiness[];
++  setBusinessSuppressed: (businessId: string, suppressed: boolean) => void;
++  selectBusiness: (businessId: string) => void;
++  fetcher?: PublicLayerFetcher;
++}): Promise<PublishedLayerMount | undefined> {
++  if (!options.enabled) return;
++  try {
++    const origin = publicOrigin(options.supabaseOrigin);
++    const anonKey = options.publicAnonKey.trim();
++    if (!anonKey) return;
++    const response = await (options.fetcher || fetch)(new URL('/rest/v1/rpc/map_studio_delivery_manifest', origin), {
++      method: 'POST', credentials: 'omit', signal: requestSignal(),
++      headers: { 'Content-Type': 'application/json', apikey: anonKey,
++        Authorization: `Bearer ${anonKey}` },
++      body: JSON.stringify({ p_map_key: options.mapKey }),
++    });
++    if (!response.ok) return;
++    const manifest = await response.json();
++    if (!manifest || typeof manifest.versionId !== 'string' || !Array.isArray(manifest.assets)) return;
++    const document = validateLayerDocument(manifest.document);
++    if (document.mapKey !== options.mapKey) return;
++    const assets: StudioAsset[] = manifest.assets.map((asset: Record<string, unknown>) => {
++      if (typeof asset.publicPath !== 'string' || !/^[a-f0-9]{64}\.webp$/.test(asset.publicPath)) throw new Error('Invalid asset');
++      if (typeof asset.id !== 'string' || typeof asset.name !== 'string' || typeof asset.altText !== 'string' ||
++          typeof asset.rights !== 'string' || typeof asset.width !== 'number' || typeof asset.height !== 'number' || asset.state !== 'ready') throw new Error('Invalid asset');
++      return validateStudioAsset({ id: asset.id, name: asset.name, altText: asset.altText, rights: asset.rights,
++        width: asset.width, height: asset.height, state: 'ready',
++        url: new URL(`/storage/v1/object/public/map-studio-published/${asset.publicPath}`, origin).href });
++    });
++    let currentDocument = document;
++    let currentAssets = [...assets];
++    let businesses = [...options.businesses];
++    const mount = mountStudioLayers({ L: options.L, map: options.map, document: currentDocument, assets: currentAssets,
++      businesses, onSelect: (layer) => {
++        if (layer.kind === 'business') options.selectBusiness(layer.businessId);
++      } });
++    const suppressed = new Set<string>();
++    const applySuppression = () => {
++      const canonical = new Set(businesses.filter(b => b.location).map(b => b.id));
++      // A published business layer owns the canonical marker's visibility. A
++      // hidden or out-of-zoom overlay must therefore keep the base marker
++      // suppressed instead of revealing a duplicate beneath it.
++      const next = new Set(currentDocument.layers.flatMap(layer =>
++        layer.kind === 'business' && canonical.has(layer.businessId) ? [layer.businessId] : []));
++      const previous = new Set(suppressed);
++      suppressed.clear(); next.forEach(id => suppressed.add(id));
++      for (const id of previous) if (!next.has(id)) options.setBusinessSuppressed(id, false);
++      for (const id of next) if (!previous.has(id)) options.setBusinessSuppressed(id, true);
++    };
++    applySuppression();
++    return {
++      update: (input) => {
++        currentDocument = validateLayerDocument(input.document);
++        currentAssets = [...input.assets];
++        businesses = [...input.businesses];
++        mount.update({ ...input, document: currentDocument, assets: currentAssets, businesses });
++        applySuppression();
++      },
++      updateBusinesses: (next) => {
++        businesses = [...next];
++        mount.update({ document: currentDocument, businesses, assets: currentAssets });
++        applySuppression();
++      },
++      dispose: () => {
++        mount.dispose();
++        for (const id of suppressed) options.setBusinessSuppressed(id, false);
++      },
++    };
++  } catch {
++    // Keep existing cards, markers, search, attribution and map/list selection.
++    return undefined;
++  }
++}
+diff --git a/packages/discovery-map/studio/contracts.ts b/packages/discovery-map/studio/contracts.ts
+new file mode 100644
+index 000000000..70a39d5e2
+--- /dev/null
++++ b/packages/discovery-map/studio/contracts.ts
+@@ -0,0 +1,187 @@
++/** Shared, host-neutral Map Studio document and public view contracts. */
++
++export type StudioTheme = 'original' | 'paper' | 'sage';
++export type Coordinate = readonly [number, number];
++
++export interface StudioCommonLayer {
++  id: string;
++  kind: StudioLayerKind;
++  name: string;
++  visible: boolean;
++  opacity: number;
++  minZoom: number;
++  maxZoom: number;
++  category?: string;
++}
++export type StudioLayerKind = 'artwork' | 'annotation' | 'geometry' | 'business';
++export interface StudioArtworkLayer extends StudioCommonLayer {
++  kind: 'artwork'; assetId: string; position: Coordinate; width: number; height: number; rotation: number;
++}
++export interface StudioAnnotationLayer extends StudioCommonLayer {
++  kind: 'annotation'; text: string; position: Coordinate;
++}
++export type StudioGeometry =
++  | { type: 'Point'; coordinates: Coordinate }
++  | { type: 'LineString'; coordinates: readonly Coordinate[] }
++  | { type: 'Polygon'; coordinates: readonly (readonly Coordinate[])[] };
++export interface StudioGeometryLayer extends StudioCommonLayer {
++  kind: 'geometry'; geometry: StudioGeometry;
++}
++export interface StudioBusinessLayer extends StudioCommonLayer {
++  kind: 'business'; businessId: string; assetId?: string; highlight: 'none' | 'accent' | 'ring';
++}
++export type StudioLayer = StudioArtworkLayer | StudioAnnotationLayer | StudioGeometryLayer | StudioBusinessLayer;
++export interface LayerDocument { schemaVersion: 1; mapKey: string; theme: StudioTheme; layers: readonly StudioLayer[]; }
++
++export interface CanonicalBusiness {
++  id: string; name: string; category?: string;
++  location?: { lat: number; lng: number; precisionNote?: string };
++  logoUrl?: string;
++}
++export interface StudioAsset {
++  id: string; name: string; altText: string; rights: string; url: string;
++  width: number; height: number; state: 'ready';
++}
++export interface StudioProject {
++  mapKey: string; title: string; city: string; publicPath: string;
++  center: Coordinate; sourceRevision: string;
++}
++
++// Limits keep technically valid but intentionally expensive documents from
++// consuming unbounded browser memory or Canvas/Leaflet paint time.
++export const STUDIO_LIMITS = Object.freeze({
++  mapKey: 100,
++  identifier: 128,
++  label: 200,
++  category: 100,
++  annotation: 2000,
++  artworkDimension: 4096,
++  geometryCoordinates: 5000,
++  polygonRings: 64,
++  polygonRingCoordinates: 2000,
++});
++
++const fail = (path: string, message: string): never => { throw new Error(`Invalid Map Studio document at ${path}: ${message}`); };
++const object = (value: unknown, path: string): Record<string, unknown> => {
++  if (!value || typeof value !== 'object' || Array.isArray(value)) return fail(path, 'expected an object');
++  return value as Record<string, unknown>;
++};
++const exact = (value: Record<string, unknown>, allowed: readonly string[], path: string) => {
++  const allowedSet = new Set(allowed);
++  for (const key of Object.keys(value)) if (!allowedSet.has(key)) fail(`${path}.${key}`, 'unsupported property');
++};
++const stringValue = (value: unknown, path: string, maxLength: number = STUDIO_LIMITS.label): string => {
++  if (typeof value !== 'string' || !value.trim()) return fail(path, 'expected a non-empty string');
++  if (value !== value.trim()) return fail(path, 'must not have leading or trailing whitespace');
++  if (value.length > maxLength) return fail(path, `must be at most ${maxLength} characters`);
++  if ([...value].some((character) => character === '\u0000' || (character < ' ' && character !== '\n' && character !== '\t'))) return fail(path, 'contains a control character');
++  return value;
++};
++const identifier = (value: unknown, path: string, maxLength = STUDIO_LIMITS.identifier): string => {
++  const result = stringValue(value, path, maxLength);
++  if (!/^[A-Za-z0-9][A-Za-z0-9._:-]*$/.test(result)) return fail(path, 'contains unsupported identifier characters');
++  return result;
++};
++const mapKey = (value: unknown, path: string): string => {
++  const result = stringValue(value, path, STUDIO_LIMITS.mapKey);
++  if (!/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(result)) return fail(path, 'must be a lowercase map key');
++  return result;
++};
++const finite = (value: unknown, path: string) => { if (typeof value !== 'number' || !Number.isFinite(value)) return fail(path, 'expected a finite number'); return value; };
++const bool = (value: unknown, path: string) => { if (typeof value !== 'boolean') return fail(path, 'expected a boolean'); return value; };
++const coordinate = (value: unknown, path: string): Coordinate => {
++  if (!Array.isArray(value) || value.length !== 2) return fail(path, 'expected [longitude, latitude]');
++  const lng = finite(value[0], `${path}[0]`), lat = finite(value[1], `${path}[1]`);
++  if (lng < -180 || lng > 180 || lat < -90 || lat > 90) return fail(path, 'coordinate is out of range');
++  return [lng, lat];
++};
++const geometry = (value: unknown, path: string): StudioGeometry => {
++  const item = object(value, path); exact(item, ['type', 'coordinates'], path);
++  if (item.type === 'Point') return { type: 'Point', coordinates: coordinate(item.coordinates, `${path}.coordinates`) };
++  if (item.type === 'LineString') {
++    if (!Array.isArray(item.coordinates) || item.coordinates.length < 2) return fail(`${path}.coordinates`, 'LineString needs two coordinates');
++    if (item.coordinates.length > STUDIO_LIMITS.geometryCoordinates) return fail(`${path}.coordinates`, 'LineString is too complex');
++    return { type: 'LineString', coordinates: item.coordinates.map((v, i) => coordinate(v, `${path}.coordinates[${i}]`)) };
++  }
++  if (item.type === 'Polygon') {
++    if (!Array.isArray(item.coordinates) || item.coordinates.length < 1) return fail(`${path}.coordinates`, 'Polygon needs rings');
++    if (item.coordinates.length > STUDIO_LIMITS.polygonRings) return fail(`${path}.coordinates`, 'Polygon has too many rings');
++    const total = item.coordinates.reduce((sum, ring) => sum + (Array.isArray(ring) ? ring.length : 0), 0);
++    if (total > STUDIO_LIMITS.geometryCoordinates) return fail(`${path}.coordinates`, 'Polygon is too complex');
++    return { type: 'Polygon', coordinates: item.coordinates.map((ring, i) => {
++      if (!Array.isArray(ring) || ring.length < 4) return fail(`${path}.coordinates[${i}]`, 'ring needs four coordinates');
++      if (ring.length > STUDIO_LIMITS.polygonRingCoordinates) return fail(`${path}.coordinates[${i}]`, 'ring is too complex');
++      const result = ring.map((v, j) => coordinate(v, `${path}.coordinates[${i}][${j}]`));
++      if (result[0][0] !== result[result.length - 1][0] || result[0][1] !== result[result.length - 1][1]) return fail(`${path}.coordinates[${i}]`, 'ring must be closed');
++      return result;
++    }) };
++  }
++  return fail(`${path}.type`, 'unsupported geometry type');
++};
++
++export function validateLayerDocument(input: unknown): LayerDocument {
++  const value = object(input, 'document'); exact(value, ['schemaVersion', 'mapKey', 'theme', 'layers'], 'document');
++  if (value.schemaVersion !== 1) fail('document.schemaVersion', 'must be 1');
++  const documentMapKey = mapKey(value.mapKey, 'document.mapKey');
++  if (value.theme !== 'original' && value.theme !== 'paper' && value.theme !== 'sage') fail('document.theme', 'unsupported theme');
++  if (!Array.isArray(value.layers)) fail('document.layers', 'expected an array');
++  const layerValues = value.layers as unknown[];
++  const layerIds = new Set<string>();
++  const layers = layerValues.map((raw: unknown, index: number) => {
++    const path = `document.layers[${index}]`, item = object(raw, path);
++    const kind = item.kind;
++    const common = ['id', 'kind', 'name', 'visible', 'opacity', 'minZoom', 'maxZoom', 'category'];
++    if (kind === 'artwork') exact(item, [...common, 'assetId', 'position', 'width', 'height', 'rotation'], path);
++    else if (kind === 'annotation') exact(item, [...common, 'text', 'position'], path);
++    else if (kind === 'geometry') exact(item, [...common, 'geometry'], path);
++    else if (kind === 'business') exact(item, [...common, 'businessId', 'assetId', 'highlight'], path);
++    else fail(`${path}.kind`, 'unsupported layer kind');
++    const id = identifier(item.id, `${path}.id`); if (layerIds.has(id)) fail(`${path}.id`, 'duplicate layer id'); layerIds.add(id);
++    const base = { id, kind: kind as StudioLayerKind, name: stringValue(item.name, `${path}.name`), visible: bool(item.visible, `${path}.visible`), opacity: finite(item.opacity, `${path}.opacity`), minZoom: finite(item.minZoom, `${path}.minZoom`), maxZoom: finite(item.maxZoom, `${path}.maxZoom`), ...(item.category === undefined ? {} : { category: stringValue(item.category, `${path}.category`, STUDIO_LIMITS.category) }) };
++    if (base.opacity < 0 || base.opacity > 1) fail(`${path}.opacity`, 'must be between 0 and 1');
++    if (base.minZoom < 0 || base.maxZoom > 24 || base.minZoom > base.maxZoom) fail(path, 'invalid zoom range');
++    if (kind === 'artwork') {
++      const width = finite(item.width, `${path}.width`), height = finite(item.height, `${path}.height`), rotation = finite(item.rotation, `${path}.rotation`);
++      if (width <= 0 || height <= 0 || width > STUDIO_LIMITS.artworkDimension || height > STUDIO_LIMITS.artworkDimension) fail(path, 'artwork dimensions are outside bounds');
++      if (rotation < -3600 || rotation > 3600) fail(`${path}.rotation`, 'rotation is outside bounds');
++      return { ...base, kind: 'artwork', assetId: identifier(item.assetId, `${path}.assetId`), position: coordinate(item.position, `${path}.position`), width, height, rotation } as StudioArtworkLayer;
++    }
++    if (kind === 'annotation') return { ...base, kind: 'annotation', text: stringValue(item.text, `${path}.text`, STUDIO_LIMITS.annotation), position: coordinate(item.position, `${path}.position`) } as StudioAnnotationLayer;
++    if (kind === 'geometry') return { ...base, kind: 'geometry', geometry: geometry(item.geometry, `${path}.geometry`) } as StudioGeometryLayer;
++    const businessId = identifier(item.businessId, `${path}.businessId`);
++    const assetId = item.assetId === undefined ? undefined : identifier(item.assetId, `${path}.assetId`);
++    if (item.highlight !== 'none' && item.highlight !== 'accent' && item.highlight !== 'ring') fail(`${path}.highlight`, 'unsupported highlight');
++    return { ...base, kind: 'business', businessId, ...(assetId === undefined ? {} : { assetId }), highlight: item.highlight } as StudioBusinessLayer;
++  });
++  return { schemaVersion: 1, mapKey: documentMapKey, theme: value.theme as StudioTheme, layers };
++}
++
++/** Validate canonical source data before it can be used as a business marker. */
++export function validateCanonicalBusiness(input: unknown, path = 'business'): CanonicalBusiness {
++  const value = object(input, path); exact(value, ['id', 'name', 'category', 'location', 'logoUrl'], path);
++  const location = value.location === undefined ? undefined : (() => {
++    const point = object(value.location, `${path}.location`); exact(point, ['lat', 'lng', 'precisionNote'], `${path}.location`);
++    const lat = finite(point.lat, `${path}.location.lat`), lng = finite(point.lng, `${path}.location.lng`);
++    if (lat < -90 || lat > 90 || lng < -180 || lng > 180) return fail(`${path}.location`, 'coordinate is out of range');
++    return { lat, lng, ...(point.precisionNote === undefined ? {} : { precisionNote: stringValue(point.precisionNote, `${path}.location.precisionNote`, STUDIO_LIMITS.label) }) };
++  })();
++  return {
++    id: identifier(value.id, `${path}.id`), name: stringValue(value.name, `${path}.name`),
++    ...(value.category === undefined ? {} : { category: stringValue(value.category, `${path}.category`, STUDIO_LIMITS.category) }),
++    ...(location === undefined ? {} : { location }),
++    ...(value.logoUrl === undefined ? {} : { logoUrl: stringValue(value.logoUrl, `${path}.logoUrl`, 2048) }),
++  };
++}
++
++/** Validate the renderer-facing asset metadata; URL policy is applied at use time. */
++export function validateStudioAsset(input: unknown, path = 'asset'): StudioAsset {
++  const value = object(input, path); exact(value, ['id', 'name', 'altText', 'rights', 'url', 'width', 'height', 'state'], path);
++  const width = finite(value.width, `${path}.width`), height = finite(value.height, `${path}.height`);
++  if (width <= 0 || height <= 0 || width > STUDIO_LIMITS.artworkDimension || height > STUDIO_LIMITS.artworkDimension) fail(path, 'asset dimensions are outside bounds');
++  if (value.state !== 'ready') fail(`${path}.state`, 'asset is not ready');
++  return { id: identifier(value.id, `${path}.id`), name: stringValue(value.name, `${path}.name`), altText: stringValue(value.altText, `${path}.altText`, STUDIO_LIMITS.annotation), rights: stringValue(value.rights, `${path}.rights`, STUDIO_LIMITS.annotation), url: stringValue(value.url, `${path}.url`, 4096), width, height, state: 'ready' };
++}
++
++export function emptyLayerDocument(mapKeyValue: string): LayerDocument {
++  return { schemaVersion: 1, mapKey: mapKey(mapKeyValue, 'mapKey'), theme: 'original', layers: [] };
++}
+diff --git a/packages/discovery-map/studio/index.ts b/packages/discovery-map/studio/index.ts
+new file mode 100644
+index 000000000..979b32b27
+--- /dev/null
++++ b/packages/discovery-map/studio/index.ts
+@@ -0,0 +1,2 @@
++export * from './contracts';
++export * from './leaflet';
+diff --git a/packages/discovery-map/studio/leaflet.ts b/packages/discovery-map/studio/leaflet.ts
+new file mode 100644
+index 000000000..65078a17c
+--- /dev/null
++++ b/packages/discovery-map/studio/leaflet.ts
+@@ -0,0 +1,180 @@
++import { validateCanonicalBusiness, validateLayerDocument, validateStudioAsset, type CanonicalBusiness, type LayerDocument, type StudioAsset, type StudioLayer, type Coordinate, type StudioTheme } from './contracts';
++
++export interface StudioLayerMount {
++  update(input: { document: LayerDocument; businesses: readonly CanonicalBusiness[]; assets: readonly StudioAsset[]; editable?: boolean }): void;
++  dispose(): void;
++}
++export interface StudioMountOptions {
++  L: any; map: any; document: LayerDocument; businesses: readonly CanonicalBusiness[]; assets: readonly StudioAsset[];
++  onSelect?: (layer: StudioLayer, business?: CanonicalBusiness) => void;
++  onMove?: (layer: StudioLayer, position: Coordinate) => void;
++  editable?: boolean;
++}
++
++/** The only asset origins accepted by Studio artwork and business logos. */
++export function safeStudioAssetUrl(value: string, origin = typeof window === 'undefined' ? 'http://localhost' : window.location.origin): string {
++  const base = new URL(origin);
++  const url = new URL(value, base);
++  const decodedPath = (() => { try { return decodeURIComponent(url.pathname); } catch { return ''; } })();
++  if (!decodedPath || decodedPath.split('/').some((part) => part === '..' || part === '.')) throw new Error('Unapproved Map Studio asset URL');
++  const sameOrigin = url.origin === base.origin && (url.pathname.startsWith('/api/bff/map-studio/') || url.pathname.startsWith('/publicassets/'));
++  const supabasePublic = url.protocol === 'https:' && /^[a-z0-9-]+\.supabase\.co$/i.test(url.hostname) && /^\/storage\/v1\/(object|render)\/public\//.test(url.pathname);
++  if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password || url.hash || (!sameOrigin && !supabasePublic)) throw new Error('Unapproved Map Studio asset URL');
++  return url.href;
++}
++
++export const STUDIO_THEME_STYLES: Record<StudioTheme, Readonly<Record<string, string>>> = Object.freeze({
++  original: Object.freeze({ '--studio-map-canvas': '#f8f4f0', '--studio-map-ink': '#292b27', '--studio-map-accent': '#94370d' }),
++  paper: Object.freeze({ '--studio-map-canvas': '#f1eadf', '--studio-map-ink': '#453a30', '--studio-map-accent': '#8d5d36' }),
++  sage: Object.freeze({ '--studio-map-canvas': '#edf1e6', '--studio-map-ink': '#294e39', '--studio-map-accent': '#527345' }),
++});
++
++/** Approved display palettes preserve the basemap's own style and labels. */
++export function applyStudioTheme(map: any, theme: StudioTheme): void {
++  const container = map?.getContainer?.();
++  if (container) {
++    container.dataset.studioTheme = theme;
++    for (const [key, value] of Object.entries(STUDIO_THEME_STYLES[theme])) container.style.setProperty(key, value);
++  }
++  const pane = map?.getPane?.('tilePane');
++  if (pane) pane.style.filter = theme === 'paper' ? 'sepia(.25) saturate(.8)' : theme === 'sage' ? 'sepia(.12) hue-rotate(20deg) saturate(.75)' : '';
++}
++
++const latLng = (position: Coordinate): [number, number] => [position[1], position[0]];
++const isInZoom = (layer: StudioLayer, zoom: number): boolean => layer.visible && zoom >= layer.minZoom && zoom <= layer.maxZoom;
++const textElement = (doc: Document, text: string, className: string): HTMLElement => {
++  const element = doc.createElement('span'); element.className = className; element.textContent = text; return element;
++};
++
++export function mountStudioLayers(options: StudioMountOptions): StudioLayerMount {
++  const L = options.L, map = options.map;
++  let current = validateLayerDocument(options.document);
++  let businesses = [...options.businesses];
++  let assets = [...options.assets];
++  let editable = options.editable === true;
++  let disposed = false;
++  const records = new Map<string, any>();
++  const businessById = new Map<string, CanonicalBusiness>();
++  const assetById = new Map<string, StudioAsset>();
++  const paneNames = new Set<string>();
++  const doc: Document | undefined = map?.getContainer?.()?.ownerDocument || (typeof document !== 'undefined' ? document : undefined);
++
++  const paneFor = (layer: StudioLayer): string => `studioLayerPane-${Math.max(0, current.layers.findIndex(item => item.id === layer.id))}`;
++  const ensurePanes = () => {
++    if (!map?.createPane) return;
++    for (const [index] of current.layers.entries()) {
++      const name = `studioLayerPane-${index}`;
++      const pane = map.getPane?.(name) || map.createPane(name);
++      // Equal integer z-indices paint in DOM order. Index-named panes are
++      // created in document order, below Leaflet tooltips/popups/controls.
++      // Fractional z-indices are invalid CSS and would drop panes behind tiles.
++      if (pane) pane.style.zIndex = '610';
++      paneNames.add(name);
++    }
++  };
++  const removePane = (name: string) => {
++    if (map.removePane) map.removePane(name);
++    else { map.getPane?.(name)?.remove?.(); const panes = map.getPanes?.(); if (panes) delete panes[name]; }
++  };
++  const removeUnusedPanes = () => {
++    const active = new Set(current.layers.map((_, index) => `studioLayerPane-${index}`));
++    for (const name of [...paneNames]) {
++      if (active.has(name)) continue;
++      removePane(name);
++      paneNames.delete(name);
++    }
++  };
++  const remove = (item: any) => { if (!item) return; item.off?.(); item.remove?.(); map.removeLayer?.(item); };
++  const updateVisibility = () => {
++    const zoom = Number(map.getZoom?.() ?? 0);
++    current.layers.forEach(layer => {
++      const item = records.get(layer.id); if (!item) return;
++      const visible = isInZoom(layer, zoom);
++      if (visible) { if (item._studioOnMap !== true) { item.addTo?.(map); item._studioOnMap = true; } }
++      else if (item._studioOnMap !== false) { item.remove?.(); item._studioOnMap = false; }
++      const element = item.getElement?.(); if (element) element.style.opacity = String(layer.opacity);
++      item.setStyle?.({ opacity: visible ? layer.opacity : 0, fillOpacity: visible ? layer.opacity * .22 : 0 });
++    });
++  };
++  const installDrag = (item: any, layer: StudioLayer, locked: boolean) => {
++    if (!editable || locked || !item?.on) return;
++    item.options = { ...(item.options || {}), draggable: true };
++    item.on('dragend', () => {
++      const point = item.getLatLng?.(); if (!point) return;
++      options.onMove?.(layer, [point.lng, point.lat]);
++    });
++  };
++  const markerIcon = (layer: StudioLayer, asset?: StudioAsset, business?: CanonicalBusiness) => {
++    if (!L?.divIcon) return undefined;
++    const icon = L.divIcon({ className: `studio-marker studio-marker--${layer.kind}`, html: '', iconSize: layer.kind === 'artwork' ? [layer.width, layer.height] : [44, 44], iconAnchor: layer.kind === 'artwork' ? [layer.width / 2, layer.height / 2] : [22, 22] });
++    // Leaflet's icon API receives an empty HTML string. Text and images are appended
++    // through DOM APIs after add, preventing document labels from becoming markup.
++    (icon as any).__studioMount = (element: HTMLElement) => {
++      element.replaceChildren();
++      if (asset && layer.kind === 'artwork') {
++        const image = element.ownerDocument.createElement('img'); image.alt = asset.altText; image.width = layer.width; image.height = layer.height; image.style.width = "100%"; image.style.height = "100%"; image.style.objectFit = "contain"; image.style.transform = `rotate(${layer.rotation}deg)`;
++        try { image.src = safeStudioAssetUrl(asset.url, element.ownerDocument.defaultView?.location.origin); } catch { image.remove(); }
++        element.append(image);
++      } else if (layer.kind === 'annotation') element.append(textElement(element.ownerDocument, layer.text, 'studio-annotation-label'));
++      else if (business) {
++        element.setAttribute('aria-label', business.name); element.setAttribute('role', 'button');
++        if (asset) { try { const image = element.ownerDocument.createElement('img'); image.alt = ''; image.src = safeStudioAssetUrl(asset.url, element.ownerDocument.defaultView?.location.origin); element.append(image); } catch { /* safe fallback is text only */ } }
++        if (!element.querySelector('img')) element.append(textElement(element.ownerDocument, business.name.slice(0, 2).toUpperCase(), 'studio-business-fallback'));
++      }
++      element.style.opacity = String(layer.opacity);
++      element.style.pointerEvents = editable || layer.kind === 'business' ? 'auto' : 'none';
++      if (layer.kind === 'business') {
++        element.dataset.highlight = layer.highlight;
++        element.title = `${business!.name}${business!.location?.precisionNote ? ` — ${business!.location.precisionNote}` : ''}`;
++        if (layer.highlight !== 'none') element.style.outline = layer.highlight === 'ring' ? '3px solid #94370d' : '3px solid #527345';
++      }
++    };
++    return icon;
++  };
++  const make = (layer: StudioLayer): any => {
++    const business = layer.kind === 'business' ? businessById.get(layer.businessId) : undefined;
++    if (layer.kind === 'business' && (!business?.location || !Number.isFinite(business.location.lat) || !Number.isFinite(business.location.lng) || business.location.lat < -90 || business.location.lat > 90 || business.location.lng < -180 || business.location.lng > 180)) return undefined;
++    const asset = 'assetId' in layer && layer.assetId ? assetById.get(layer.assetId) : undefined;
++    if ('assetId' in layer && layer.assetId && (!asset || asset.state !== 'ready')) return undefined;
++    const position: Coordinate = layer.kind === 'geometry' ? ([0, 0] as Coordinate) : layer.kind === 'business' ? [business!.location!.lng, business!.location!.lat] : layer.position;
++    const pane = paneFor(layer);
++    let item: any;
++    if (layer.kind === 'geometry') {
++      const geometry = layer.geometry;
++      if (geometry.type === 'Point') item = L.circleMarker?.(latLng(geometry.coordinates), { pane, interactive: editable, opacity: layer.opacity, fillOpacity: layer.opacity * .22 }) || L.marker(latLng(geometry.coordinates), { pane });
++      else if (geometry.type === 'LineString') item = L.polyline?.(geometry.coordinates.map(latLng), { pane, interactive: editable, opacity: layer.opacity }) || L.layerGroup();
++      else item = L.polygon?.(geometry.coordinates.map(ring => ring.map(latLng)), { pane, interactive: editable, opacity: layer.opacity, fillOpacity: layer.opacity * .22 }) || L.layerGroup();
++    } else {
++      item = L.marker(latLng(position), { pane, interactive: editable || layer.kind === 'business', keyboard: editable || layer.kind === 'business', draggable: editable && layer.kind !== 'business', icon: markerIcon(layer, asset, business), title: '' });
++      item.on?.('add', () => { const element = item.getElement?.(); const icon = item.getIcon?.(); if (element && icon?.__studioMount) icon.__studioMount(element); });
++      item.on?.('click', () => options.onSelect?.(layer, business));
++      installDrag(item, layer, layer.kind === 'business');
++    }
++    if (layer.kind === 'geometry') item.on?.('click', () => options.onSelect?.(layer));
++    item.options = { ...(item.options || {}), pane, studioLayerId: layer.id };
++    item.addTo?.(map); item._studioOnMap = true;
++    return item;
++  };
++  const rebuild = () => {
++    records.forEach(remove); records.clear(); removeUnusedPanes(); ensurePanes(); applyStudioTheme(map, current.theme);
++    current.layers.forEach(layer => { const item = make(layer); if (item) records.set(layer.id, item); });
++    updateVisibility();
++  };
++  const zoomHandler = () => updateVisibility();
++  map?.on?.('zoomend', zoomHandler);
++  businesses.forEach(item => {
++    try { const business = validateCanonicalBusiness(item); if (!businessById.has(business.id)) businessById.set(business.id, business); } catch { /* malformed source rows cannot become markers */ }
++  });
++  assets.forEach(item => {
++    try { const asset = validateStudioAsset(item); if (!assetById.has(asset.id)) assetById.set(asset.id, asset); } catch { /* malformed assets are not renderable */ }
++  });
++  rebuild();
++  return {
++    update(input) {
++      if (disposed) return;
++      current = validateLayerDocument(input.document); businesses = [...input.businesses]; assets = [...input.assets]; editable = input.editable === true;
++      businessById.clear(); businesses.forEach(item => { try { const business = validateCanonicalBusiness(item); if (!businessById.has(business.id)) businessById.set(business.id, business); } catch { /* malformed source rows cannot become markers */ } }); assetById.clear(); assets.forEach(item => { try { const asset = validateStudioAsset(item); if (!assetById.has(asset.id)) assetById.set(asset.id, asset); } catch { /* malformed assets are not renderable */ } }); rebuild();
++    },
++    dispose() { if (disposed) return; disposed = true; map?.off?.('zoomend', zoomHandler); records.forEach(remove); records.clear(); for (const name of paneNames) removePane(name); applyStudioTheme(map, 'original'); paneNames.clear(); },
++  };
++}
+diff --git a/packages/discovery-map/tests/public-layers.test.mjs b/packages/discovery-map/tests/public-layers.test.mjs
+new file mode 100644
+index 000000000..f117bc873
+--- /dev/null
++++ b/packages/discovery-map/tests/public-layers.test.mjs
+@@ -0,0 +1,53 @@
++import assert from 'node:assert/strict';
++import test from 'node:test';
++import { build } from 'esbuild';
++import { createRequire } from 'node:module';
++
++const require = createRequire(import.meta.url);
++const compiled = await build({ entryPoints: ['public-layers.ts'], bundle: true, write: false, format: 'cjs', platform: 'node' });
++const module = { exports: {} };
++new Function('require', 'module', 'exports', compiled.outputFiles[0].text)(require, module, module.exports);
++const { attachPublishedLayers, resolvePublicPilotMapKey } = module.exports;
++
++const fakeMap = () => ({
++  on() {}, off() {}, getZoom: () => 12, getContainer: () => ({ dataset: {}, style: { setProperty() {} } }),
++  getPane: () => undefined, createPane: () => ({ style: { zIndex: '' } }), removeLayer() {},
++});
++
++test('public integration reads the immutable Supabase projection with anon credentials', async () => {
++  const requests = [];
++  const mount = await attachPublishedLayers({
++    mapKey: 'san-francisco-mission', enabled: true,
++    supabaseOrigin: 'https://project.supabase.co', publicAnonKey: 'anon-key',
++    L: {}, map: fakeMap(), businesses: [{ id: 'source-1', name: 'Source place', location: { lat: 37.7, lng: -122.4 } }],
++    setBusinessSuppressed() {}, selectBusiness() {},
++    fetcher: async (input, init) => {
++      requests.push({ url: String(input), init });
++      return new Response(JSON.stringify({ versionId: 'version-1', document: { schemaVersion: 1, mapKey: 'san-francisco-mission', theme: 'original', layers: [] }, assets: [] }), { status: 200, headers: { 'Content-Type': 'application/json' } });
++    },
++  });
++  assert.ok(mount);
++  assert.equal(requests.length, 1);
++  assert.equal(requests[0].url, 'https://project.supabase.co/rest/v1/rpc/map_studio_delivery_manifest');
++  assert.equal(requests[0].init.credentials, 'omit');
++  assert.equal(requests[0].init.headers.apikey, 'anon-key');
++  assert.equal(JSON.parse(requests[0].init.body).p_map_key, 'san-francisco-mission');
++  mount.dispose();
++});
++
++test('public integration stays disabled without an explicit map flag or safe origin', async () => {
++  let calls = 0;
++  const fetcher = async () => { calls += 1; throw new Error('must not fetch'); };
++  assert.equal(await attachPublishedLayers({ mapKey: 'san-francisco-mission', enabled: false, supabaseOrigin: 'https://project.supabase.co', publicAnonKey: 'anon', L: {}, map: fakeMap(), businesses: [], setBusinessSuppressed() {}, selectBusiness() {}, fetcher }), undefined);
++  assert.equal(await attachPublishedLayers({ mapKey: 'san-francisco-mission', enabled: true, supabaseOrigin: 'https://daytona.example.test', publicAnonKey: 'anon', L: {}, map: fakeMap(), businesses: [], setBusinessSuppressed() {}, selectBusiness() {}, fetcher }), undefined);
++  assert.equal(calls, 0);
++});
++
++test('pilot overlays require an exact guide route or explicit matching map key', () => {
++  assert.equal(resolvePublicPilotMapKey({ city: 'san-francisco', pathname: '/blog/guides/san-francisco-mission/places/' }), 'san-francisco-mission');
++  assert.equal(resolvePublicPilotMapKey({ city: 'boston', pathname: '/blog/guides/boston-back-bay/places/' }), 'boston-back-bay');
++  assert.equal(resolvePublicPilotMapKey({ city: 'san-francisco', pathname: '/blog/neighborhood/cafes/san-francisco/' }), undefined);
++  assert.equal(resolvePublicPilotMapKey({ city: 'san-francisco', pathname: '/blog/neighborhood/cafes/san-francisco/', explicitMapKey: 'san-francisco-mission' }), 'san-francisco-mission');
++  assert.equal(resolvePublicPilotMapKey({ city: 'boston', pathname: '/blog/guides/san-francisco-mission/places/' }), undefined);
++  assert.equal(resolvePublicPilotMapKey({ city: 'sanFrancisco', pathname: '/blog/guides/san-francisco-mission/places/' }), 'san-francisco-mission');
++});
+diff --git a/packages/discovery-map/tests/studio-contracts.test.mjs b/packages/discovery-map/tests/studio-contracts.test.mjs
+new file mode 100644
+index 000000000..e7681dc08
+--- /dev/null
++++ b/packages/discovery-map/tests/studio-contracts.test.mjs
+@@ -0,0 +1,44 @@
++import assert from 'node:assert/strict';
++import test from 'node:test';
++import { build } from 'esbuild';
++import { createRequire } from 'node:module';
++const require = createRequire(import.meta.url);
++
++const compiled = await build({ entryPoints: ['studio/index.ts'], bundle: true, write: false, format: 'cjs', platform: 'node' });
++const module = { exports: {} };
++new Function('require', 'module', 'exports', compiled.outputFiles[0].text)(require, module, module.exports);
++const { validateLayerDocument, emptyLayerDocument, mountStudioLayers, safeStudioAssetUrl } = module.exports;
++
++const documentFixture = (layers = []) => ({ schemaVersion: 1, mapKey: 'san-francisco-mission', theme: 'sage', layers });
++const businessLayer = (id = 'business') => ({ id, kind: 'business', name: 'Canonical business', visible: true, opacity: 0.8, minZoom: 0, maxZoom: 24, businessId: 'source-1', highlight: 'ring' });
++
++test('Map Studio documents are strict and preserve empty pilot documents', () => {
++  assert.deepEqual(emptyLayerDocument('boston-back-bay'), { schemaVersion: 1, mapKey: 'boston-back-bay', theme: 'original', layers: [] });
++  assert.equal(validateLayerDocument(documentFixture([businessLayer()])).layers[0].id, 'business');
++  assert.throws(() => validateLayerDocument(documentFixture([{ ...businessLayer(), unsafe: true }])), /unsupported property/);
++  assert.throws(() => validateLayerDocument(documentFixture([{ ...businessLayer(), opacity: 2 }])), /opacity/);
++  assert.throws(() => validateLayerDocument(documentFixture([businessLayer(), businessLayer()])), /duplicate layer id/);
++});
++
++test('asset policy rejects executable and untrusted URLs', () => {
++  assert.equal(safeStudioAssetUrl('/publicassets/maps/asset.webp', 'https://public.example.test'), 'https://public.example.test/publicassets/maps/asset.webp');
++  assert.equal(safeStudioAssetUrl('https://project.supabase.co/storage/v1/object/public/map-studio-published/a.webp', 'https://public.example.test'), 'https://project.supabase.co/storage/v1/object/public/map-studio-published/a.webp');
++  for (const url of ['javascript:alert(1)', 'data:image/png;base64,AAAA', 'https://evil.example/logo.webp', '/other/logo.webp']) assert.throws(() => safeStudioAssetUrl(url, 'https://public.example.test'), /Unapproved/);
++});
++
++test('renderer mounts, keeps business locations locked, updates and disposes', () => {
++  const added = [], removed = [], panes = new Map(), map = {
++    getZoom: () => 12, on() {}, off() {}, eachLayer() {}, getPane: name => panes.get(name),
++    createPane: name => { const pane = { style: { setProperty() {} } }; panes.set(name, pane); return pane; },
++    getContainer: () => ({ style: { setProperty() {} }, dataset: {} }), removeLayer() {},
++  };
++  const L = {
++    divIcon: options => options,
++    marker: (position, options) => { const events = new Map(); const marker = { position, options, on(name, fn) { events.set(name, fn); return marker; }, addTo() { added.push(marker); events.get('add')?.(); return marker; }, remove() { removed.push(marker); }, off() {}, getElement() { return undefined; }, getIcon() { return options.icon; }, getLatLng() { return { lat: position[0], lng: position[1] }; } }; return marker; },
++  };
++  const mount = mountStudioLayers({ L, map, document: documentFixture([businessLayer()]), businesses: [{ id: 'source-1', name: 'Canonical business', location: { lat: 42.35, lng: -71.05 } }], assets: [], editable: true });
++  assert.equal(added.length, 1); assert.equal(added[0].options.draggable, false);
++  mount.update({ document: documentFixture([]), businesses: [], assets: [], editable: true });
++  assert.equal(removed.length, 1);
++  mount.dispose(); mount.dispose(); assert.equal(removed.length, 1);
++});
+diff --git a/rental-vendors/lib/discovery-map.ts b/rental-vendors/lib/discovery-map.ts
+index 7e6c3c055..1b589cf3a 100644
+--- a/rental-vendors/lib/discovery-map.ts
++++ b/rental-vendors/lib/discovery-map.ts
+@@ -5,6 +5,7 @@ import { enhanceVendorLogos } from './vendor-logo';
+ import { createPublicMapConsent } from './public-map-consent';
+ import { getDiscoveryNavigation,type DiscoveryNavigation } from '../../packages/discovery-map/history';
+ import { createLeafletMapAdapter } from './leaflet-map-adapter';
++import { canonicalBusinessesFromItems, loadPublicStudioLayers } from './studio-layers';
+ import type { MapProviderAdapter, MapViewport, ResultSnapshot, DiscoveryDomain, LocationKind,MapConsentAdapter,MapRenderers } from '../../packages/discovery-map/contracts';
+ export interface DiscoveryMapItem {
+   id: string; title: string; element: HTMLElement; domain?:DiscoveryDomain;locationKind?:LocationKind;
+@@ -21,6 +22,8 @@ interface Options {
+   listOnlyResources?: {count:number;label?:string};
+   renderItem?: (item:DiscoveryMapItem,expanded:boolean)=>HTMLElement;
+   markerPresentation?: MarkerPresentation | ((item: DiscoveryMapItem) => MarkerPresentation | undefined);
++  /** Public Studio is opt-in per pilot map and never changes legacy fallback behavior. */
++  studio?: { mapKey: string; enabled?: boolean; supabaseOrigin?: string; publicAnonKey?: string };
+ }
+ const assetLoads = new Map<string, Promise<void>>();
+ function loadAsset(url: string, style = false): Promise<void> {
+@@ -85,6 +88,7 @@ export function mountDiscoveryMap(options: Options) {
+   rail.append(status,listOnly, reel, navigation); dialog.append(canvas, toolbar, searchChrome, mapControls, notice, rail, detail); document.body.append(dialog);
+   const controlsHome = document.createComment('discovery controls');
+   let map: any, leaflet: any, layer: any, runtimeLayer: any;
++  let studioLayer: Awaited<ReturnType<typeof loadPublicStudioLayers>>;
+   let streetErrorCleanup: (() => void) | undefined;
+   let provider:MapProviderAdapter|undefined, camera:MapViewport|undefined, suspended=false,explicitLoad=false,printing=false;
+   let detailRenderedId='', renderRevision=0;let snapshot:ResultSnapshot<DiscoveryMapItem>={queryKey:'',revision:'0',items:[],total:0,completeness:'complete',cursor:null}; const cardCache=new Map<string,HTMLElement>();
+@@ -94,7 +98,7 @@ export function mountDiscoveryMap(options: Options) {
+   let oldOverflow = '', opener: HTMLElement | null = null, refreshing = false;
+   const mapCleanups: Array<() => void> = [];
+   const preparedMarkerElements = new WeakSet<HTMLElement>();
+-  const markers = new Map<string, any>(); const cleanups: Array<() => void> = [];
++  const markers = new Map<string, any>(); const suppressedStudioBusinesses = new Set<string>(); const cleanups: Array<() => void> = [];
+   const listen = (el: EventTarget, event: string, handler: EventListener) => { el.addEventListener(event, handler); cleanups.push(() => el.removeEventListener(event, handler)); };
+   function writeURL(replace = false, layerName?:string) {
+     if(printing)return;
+@@ -155,8 +159,9 @@ export function mountDiscoveryMap(options: Options) {
+       if(card!==nextNode)reel.insertBefore(card,nextNode);nextNode=card.nextElementSibling;
+     }
+     if(focusedBeforeOrder&&document.activeElement!==focusedBeforeOrder&&reel.contains(focusedBeforeOrder)&&!focusedBeforeOrder.closest('[hidden]'))focusedBeforeOrder.focus({preventScroll:true});
++    studioLayer?.updateBusinesses?.(canonicalBusinessesFromItems(visible));
+     for (const [id, marker] of markers) {
+-      if (visibleSet.has(id)) { if (!layer.hasLayer(marker)) layer.addLayer(marker); } else layer.removeLayer(marker);
++      if (visibleSet.has(id) && !suppressedStudioBusinesses.has(id)) { if (!layer.hasLayer(marker)) layer.addLayer(marker); } else layer.removeLayer(marker);
+       prepareMarkerElement(marker,byId.get(id)!.title);
+       updateMarkerSelection(marker, id === selected);
+     }
+@@ -297,6 +302,25 @@ export function mountDiscoveryMap(options: Options) {
+           notice.textContent = 'Some street details could not load. Results and source links remain available.';
+         };
+         streets.on('roadserror', onStreetError); streetErrorCleanup = () => streets.off('roadserror', onStreetError); streets.addTo(map);
++        if (options.studio?.enabled && options.studio.mapKey) {
++          // This request is intentionally downstream of map open and consent.
++          const loadedStudioLayer = await loadPublicStudioLayers({
++            mapKey: options.studio.mapKey, enabled: options.studio.enabled,
++            supabaseOrigin: options.studio.supabaseOrigin, publicAnonKey: options.studio.publicAnonKey,
++            map, L: leaflet, items,
++            selectBusiness: businessId => selectItem(businessId, true),
++            setBusinessSuppressed: (businessId, suppressed) => {
++              if (suppressed) suppressedStudioBusinesses.add(businessId); else suppressedStudioBusinesses.delete(businessId);
++              if (active && !refreshing) render();
++            },
++          });
++          if (!isCurrent()) { loadedStudioLayer?.dispose(); return; }
++          studioLayer = loadedStudioLayer;
++          // The first fetch starts with canonical source rows; immediately
++          // apply the current filter/area snapshot before any overlay marker
++          // can appear outside the public result set.
++          studioLayer?.updateBusinesses?.(canonicalBusinessesFromItems(visible));
++        }
+         await streets.whenReady();
+       }
+       catch {
+@@ -314,7 +338,7 @@ export function mountDiscoveryMap(options: Options) {
+   }
+   function commitArea() { if (!pendingBounds) return; bounds = pendingBounds; pendingBounds = null; clearArea.hidden = false; areaButton.hidden = true;writeURL(false); render(); }
+   function disposeStreetLayer() { const streets=runtimeLayer;runtimeLayer=undefined;streetErrorCleanup?.();streetErrorCleanup=undefined;streets?.remove();canvas.removeAttribute('data-street-ready'); }
+-  function disposeMap() { mapCleanups.splice(0).forEach(cleanup => cleanup()); disposeStreetLayer(); if(provider){provider.dispose();provider=undefined;map=undefined;}else if(map){map.remove();map=undefined;} layer=undefined;markers.clear();retry.hidden=true;delete canvas.dataset.streetStatus;delete canvas.dataset.streetErrorPhase;canvas.replaceChildren(); }
++  function disposeMap() { mapCleanups.splice(0).forEach(cleanup => cleanup()); const publicLayer=studioLayer; studioLayer=undefined; publicLayer?.dispose(); disposeStreetLayer(); if(provider){provider.dispose();provider=undefined;map=undefined;}else if(map){map.remove();map=undefined;} layer=undefined;markers.clear();retry.hidden=true;delete canvas.dataset.streetStatus;delete canvas.dataset.streetErrorPhase;canvas.replaceChildren(); }
+   function retryMap() {
+     if (destroyed || !active || loading || suspended || !canUseMap(consent)) return;
+     camera=provider?.getViewport()||camera;generation++;disposeMap();void loadMap();
+diff --git a/rental-vendors/lib/studio-layers.ts b/rental-vendors/lib/studio-layers.ts
+new file mode 100644
+index 000000000..4af3668b2
+--- /dev/null
++++ b/rental-vendors/lib/studio-layers.ts
+@@ -0,0 +1,65 @@
++import { attachPublishedLayers, type PublishedLayerMount, type PublicLayerFetcher } from '../../packages/discovery-map/public-layers';
++import type { CanonicalBusiness } from '../../packages/discovery-map/studio/contracts';
++import type { DiscoveryMapItem } from './discovery-map';
++
++export interface PublicStudioOptions {
++  mapKey: string; enabled?: boolean; supabaseOrigin?: string; publicAnonKey?: string;
++  map: any; L: any; items: readonly DiscoveryMapItem[];
++  onSelect?: (layer: any, business?: CanonicalBusiness) => void;
++  selectBusiness?: (businessId: string) => void;
++  onMove?: (layer: any, position: readonly [number, number]) => void;
++  editable?: boolean; fetcher?: PublicLayerFetcher;
++  setBusinessSuppressed?: (businessId: string, suppressed: boolean) => void;
++}
++
++/** Public pages pass only canonical source cards into the renderer. */
++export function canonicalBusinessesFromItems(items: readonly DiscoveryMapItem[]): CanonicalBusiness[] {
++  return items.map(item => ({
++    id: item.id,
++    name: item.title,
++    ...(item.domain ? { category: item.domain } : {}),
++    ...(item.location ? { location: { lat: item.location.lat, lng: item.location.lng, ...(item.location.precisionNote ? { precisionNote: item.location.precisionNote } : {}) } } : {}),
++  }));
++}
++
++/** Every map is off by default; the env flag is an explicit per-map opt-in. */
++export function mapStudioFeatureEnabled(env: Record<string, unknown> | undefined, mapKey: string): boolean {
++  if (!env) return false;
++  const suffix = mapKey.replace(/[^a-z0-9]+/gi, '_').toUpperCase();
++  const value = env[`PUBLIC_MAP_STUDIO_${suffix}`];
++  return value === true || value === 'true';
++}
++
++/** Browser-safe external projection configuration. Never read the service key here. */
++export function mapStudioPublicConfig(env: Record<string, unknown> | undefined): { supabaseOrigin: string; publicAnonKey: string } {
++  if (!env) return { supabaseOrigin: '', publicAnonKey: '' };
++  const origin = env.PUBLIC_MAP_STUDIO_SUPABASE_URL ?? env.PUBLIC_SUPABASE_URL ?? '';
++  const key = env.PUBLIC_MAP_STUDIO_SUPABASE_ANON_KEY ?? env.PUBLIC_SUPABASE_ANON_KEY ?? '';
++  return { supabaseOrigin: typeof origin === 'string' ? origin : '', publicAnonKey: typeof key === 'string' ? key : '' };
++}
++
++export type PublicStudioLayerMount = PublishedLayerMount & { updateBusinesses?(businesses: readonly CanonicalBusiness[]): void };
++export { resolvePublicPilotMapKey } from '../../packages/discovery-map/public-layers';
++
++/** Fetches only the immutable Supabase projection after map consent is open. */
++export async function loadPublicStudioLayers(options: PublicStudioOptions): Promise<PublicStudioLayerMount | undefined> {
++  if (!options.enabled || !options.supabaseOrigin || !options.publicAnonKey) return;
++  const businesses = canonicalBusinessesFromItems(options.items);
++  return attachPublishedLayers({
++    mapKey: options.mapKey,
++    enabled: options.enabled === true,
++    supabaseOrigin: options.supabaseOrigin,
++    publicAnonKey: options.publicAnonKey,
++    L: options.L,
++    map: options.map,
++    businesses,
++    fetcher: options.fetcher,
++    setBusinessSuppressed: options.setBusinessSuppressed || (() => undefined),
++    selectBusiness: businessId => {
++      if (options.selectBusiness) options.selectBusiness(businessId);
++      else options.onSelect?.({ kind: 'business', businessId });
++    },
++  });
++}
++
++export { attachPublishedLayers } from '../../packages/discovery-map/public-layers';
+diff --git a/rental-vendors/styles/discovery-map.css b/rental-vendors/styles/discovery-map.css
+index da99e3321..7c8cef18f 100644
+--- a/rental-vendors/styles/discovery-map.css
++++ b/rental-vendors/styles/discovery-map.css
+@@ -243,3 +243,13 @@
+ @media (prefers-reduced-motion: reduce) { .discovery-map * { scroll-behavior: auto !important; transition: none !important; } }
+ @media (forced-colors: active) { .discovery-map-rail { border-color: CanvasText; box-shadow: none; } }
+ @media print { .discovery-map, [data-discovery-open] { display: none !important; } }
++
++/* Map Studio public overlay markers. Shared with the standalone renderer. */
++.studio-marker { background: transparent; border: 0; display: grid; place-items: center; color: #fffdfa; }
++.studio-marker--business { border-radius: 50%; background: var(--studio-map-accent, #94370d); box-shadow: 0 2px 7px #292b2740; border: 2px solid #fffdfa; }
++.studio-marker--business img { width: 30px; height: 30px; object-fit: contain; border-radius: 50%; }
++.studio-marker--business span { font: 700 12px/1 system-ui, sans-serif; }
++.studio-marker--artwork img { display: block; width: 100%; height: 100%; object-fit: contain; transform-origin: center; }
++.studio-marker--annotation { width: max-content !important; height: auto !important; max-width: 240px; padding: 8px 11px; color: var(--studio-map-ink, #292b27); background: #fffdfaeb; border: 1px solid #e6dfd8; border-radius: 10px; box-shadow: 0 2px 7px #292b2720; white-space: pre-wrap; font: 600 12px/1.4 system-ui, sans-serif; }
++.studio-marker:focus-visible { outline: 3px solid #152b44; outline-offset: 4px; }
++@media (prefers-reduced-motion: reduce) { .studio-marker { transition: none !important; animation: none !important; } }
