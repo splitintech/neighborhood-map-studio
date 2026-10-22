@@ -1,0 +1,1341 @@
+{
+  "sourceRepository": "splitintech/splitin",
+  "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+  "sourceCounts": {
+    "researchRecords": 1693,
+    "researchPublishedPlaces": 1442,
+    "editorialProfiles": 57,
+    "editorialListedMemberships": 364,
+    "editorialUniqueBusinesses": 338
+  },
+  "projects": [
+    {
+      "mapKey": "san-francisco-mission",
+      "title": "Mission District and Mission Dolores",
+      "city": "San Francisco",
+      "publicPath": "/blog/guides/san-francisco-mission/places/",
+      "center": [
+        -122.4211699820265,
+        37.7648865642885
+      ],
+      "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+      "businesses": [
+        {
+          "id": "sanFrancisco:ritual-coffee-mission",
+          "name": "Ritual Coffee Mission",
+          "category": "cafes",
+          "location": {
+            "lat": 37.756469085688,
+            "lng": -122.421149027021,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=1026+Valencia+Street&city=San+Francisco&state=CA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://ritualcoffee.com/location/mission/",
+              "title": "Ritual Coffee Mission — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "in-area",
+          "address": "1026 Valencia Street"
+        },
+        {
+          "id": "sanFrancisco:bi-rite-market-18th-street",
+          "name": "Bi-Rite Market 18th Street",
+          "category": "stores",
+          "location": {
+            "lat": 37.761451445082,
+            "lng": -122.424731806071,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=3639+18th+Street&city=San+Francisco&state=CA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://biritemarket.com/locations/",
+              "title": "Bi-Rite Market 18th Street — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "in-area",
+          "address": "3639 18th Street"
+        },
+        {
+          "id": "sanFrancisco:mission-dolores-park",
+          "name": "Mission Dolores Park",
+          "category": "parks",
+          "location": null,
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.sfrecpark.org/Facilities/Facility/Details/Mission-Dolores-Park-188",
+              "title": "Mission Dolores Park — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "in-area",
+          "address": "19th Street and Dolores Street"
+        },
+        {
+          "id": "sanFrancisco:16th-street-mission-bart-station",
+          "name": "16th Street Mission BART Station",
+          "category": "transit",
+          "location": {
+            "lat": 37.764989522776,
+            "lng": -122.419735781482,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=2000+Mission+Street&city=San+Francisco&state=CA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.bart.gov/stations/16th",
+              "title": "16th Street Mission BART Station — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "in-area",
+          "address": "2000 Mission Street"
+        },
+        {
+          "id": "sanFrancisco:24th-street-mission-bart-station",
+          "name": "24th Street Mission BART Station",
+          "category": "transit",
+          "location": {
+            "lat": 37.752177449255,
+            "lng": -122.418511638304,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=2800+Mission+Street&city=San+Francisco&state=CA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.bart.gov/stations/24th",
+              "title": "24th Street Mission BART Station — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "in-area",
+          "address": "2800 Mission Street"
+        },
+        {
+          "id": "sanFrancisco:city-college-mission-center",
+          "name": "City College Mission Center",
+          "category": "universities",
+          "location": {
+            "lat": 37.754880290427,
+            "lng": -122.420851729145,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=1125+Valencia+Street&city=San+Francisco&state=CA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.ccsf.edu/about/our-locations",
+              "title": "City College Mission Center — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "in-area",
+          "address": "1125 Valencia Street"
+        },
+        {
+          "id": "sanFrancisco:kqed-headquarters",
+          "name": "KQED — public-media headquarters",
+          "category": "offices",
+          "location": {
+            "lat": 37.763024575631,
+            "lng": -122.409346843247,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=2601+Mariposa+Street&city=San+Francisco&state=CA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.kqed.org/about/visit/",
+              "title": "KQED — official headquarters address and visiting information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "in-area",
+          "address": "2601 Mariposa Street"
+        },
+        {
+          "id": "sanFrancisco:sightglass-20th-street",
+          "name": "Sightglass Coffee — 20th Street",
+          "category": "cafes",
+          "location": {
+            "lat": 37.759180842592,
+            "lng": -122.410933427195,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/locations/address?street=3014+20th+Street&city=San+Francisco&state=CA&benchmark=Public_AR_Current&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://sightglasscoffee.com/pages/sightglass-san-francisco-mission-district",
+              "title": "Sightglass Coffee — 20th Street — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-13",
+          "relation": "in-area",
+          "address": "3014 20th Street"
+        },
+        {
+          "id": "sanFrancisco:dandelion-16th-street-factory",
+          "name": "Dandelion Chocolate — 16th Street Factory Café",
+          "category": "cafes",
+          "location": {
+            "lat": 37.765542720376,
+            "lng": -122.412493814348,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/locations/address?street=2600+16th+Street&city=San+Francisco&state=CA&benchmark=Public_AR_Current&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.dandelionchocolate.com/pages/visit-us",
+              "title": "Dandelion Chocolate — 16th Street Factory Café — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-13",
+          "relation": "in-area",
+          "address": "2600 16th Street"
+        },
+        {
+          "id": "sanFrancisco:whole-foods-market-potrero-hill",
+          "name": "Whole Foods Market Potrero Hill",
+          "category": "stores",
+          "location": {
+            "lat": 37.764125885094,
+            "lng": -122.40257416163,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=450+Rhode+Island+Street&city=San+Francisco&state=CA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.wholefoodsmarket.com/stores/potrerohill",
+              "title": "Whole Foods Market Potrero Hill — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "450 Rhode Island Street"
+        },
+        {
+          "id": "sanFrancisco:philz-coffee-potrero",
+          "name": "Philz Coffee Potrero",
+          "category": "cafes",
+          "location": {
+            "lat": 37.764798583273,
+            "lng": -122.401319964053,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=1775+17th+Street&city=San+Francisco&state=CA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://philzcoffee.com/locations",
+              "title": "Philz Coffee Potrero — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "1775 17th Street"
+        },
+        {
+          "id": "sanFrancisco:noe-valley-town-square",
+          "name": "Noe Valley Town Square",
+          "category": "parks",
+          "location": {
+            "lat": 37.751564360841,
+            "lng": -122.428816125684,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=3861+24th+Street&city=San+Francisco&state=CA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://sfrecpark.org/1684/Noe-Valley-Town-Square-Restroom-Project",
+              "title": "Noe Valley Town Square — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "3861 24th Street"
+        },
+        {
+          "id": "sanFrancisco:philz-coffee-castro",
+          "name": "Philz Coffee Castro",
+          "category": "cafes",
+          "location": {
+            "lat": 37.760108307325,
+            "lng": -122.4348566152,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=549+Castro+Street&city=San+Francisco&state=CA&zip=94114&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://philzcoffee.com/locations",
+              "title": "Philz Coffee Castro — official location information"
+            },
+            {
+              "url": "https://philzcoffee.com/locations/castro",
+              "title": "Philz Castro: official address and postal code"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "549 Castro Street"
+        },
+        {
+          "id": "sanFrancisco:vanguard-properties-castro-office",
+          "name": "Vanguard Properties — Castro real-estate office",
+          "category": "offices",
+          "location": {
+            "lat": 37.760017344194,
+            "lng": -122.43484825703,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=555+Castro+Street&city=San+Francisco&state=CA&zip=94114&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://vanguardproperties.com/castro-office",
+              "title": "Vanguard Properties — official Castro office"
+            },
+            {
+              "url": "https://vanguardproperties.com/about",
+              "title": "Vanguard Properties — official office address with ZIP"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "555 Castro Street"
+        },
+        {
+          "id": "sanFrancisco:castro-coffee",
+          "name": "Castro Coffee Company",
+          "category": "cafes",
+          "location": {
+            "lat": 37.762177013444,
+            "lng": -122.435046572925,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=427+Castro+Street&city=San+Francisco&state=CA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.castro-coffee.com/",
+              "title": "Castro Coffee Company — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "427 Castro Street"
+        },
+        {
+          "id": "sanFrancisco:castro-muni-metro-station",
+          "name": "Castro Muni Metro Station",
+          "category": "transit",
+          "location": {
+            "lat": 37.76262,
+            "lng": -122.435231,
+            "sourceUrl": "https://www.sfmta.com/stops/castro-station-15728",
+            "method": "official-transit-station",
+            "precisionNote": "Agency stop reference point, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.sfmta.com/stops/castro-station-15728",
+              "title": "Castro Muni Metro Station — official location information"
+            },
+            {
+              "url": "https://www.sfmta.com/travel-updates/muni-metro-elevator-status",
+              "title": "SFMTA — station entrance and elevator locations"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "Market Street and Castro Street"
+        },
+        {
+          "id": "sanFrancisco:whole-foods-market-noe-valley",
+          "name": "Whole Foods Market Noe Valley",
+          "category": "stores",
+          "location": {
+            "lat": 37.751559849918,
+            "lng": -122.430794667661,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=3950+24th+Street&city=San+Francisco&state=CA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.wholefoodsmarket.com/stores/noevalley",
+              "title": "Whole Foods Market Noe Valley — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "3950 24th Street"
+        },
+        {
+          "id": "sanFrancisco:samsara-san-francisco-office",
+          "name": "Samsara San Francisco office",
+          "category": "offices",
+          "location": {
+            "lat": 37.769832085806,
+            "lng": -122.401995340699,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=1+De+Haro+Street&city=San+Francisco&state=CA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.samsara.com/company/contact",
+              "title": "Samsara San Francisco office — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "1 De Haro Street"
+        },
+        {
+          "id": "sanFrancisco:mollie-stone-s-castro-market",
+          "name": "Mollie Stone’s Castro Market",
+          "category": "stores",
+          "location": {
+            "lat": 37.760762452309,
+            "lng": -122.436180618963,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=4201+18th+Street&city=San+Francisco&state=CA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://molliestones.com/markets/",
+              "title": "Mollie Stone’s Castro Market — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "4201 18th Street"
+        },
+        {
+          "id": "sanFrancisco:the-buoy-franklin",
+          "name": "The Buoy — Franklin Street",
+          "category": "cafes",
+          "location": {
+            "lat": 37.774486071849,
+            "lng": -122.420727290609,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/locations/address?street=22+Franklin+Street&city=San+Francisco&state=CA&benchmark=Public_AR_Current&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.thebuoysf.com/Contact",
+              "title": "The Buoy — Franklin Street — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-13",
+          "relation": "nearby",
+          "address": "22 Franklin Street"
+        },
+        {
+          "id": "sanFrancisco:van-ness-muni-metro-station",
+          "name": "Van Ness Muni Metro Station",
+          "category": "transit",
+          "location": {
+            "lat": 37.775069,
+            "lng": -122.419193,
+            "sourceUrl": "https://www.sfmta.com/stops/van-ness-station-15419",
+            "method": "official-transit-station",
+            "precisionNote": "Agency stop reference point, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.sfmta.com/stops/van-ness-station-15419",
+              "title": "Van Ness Muni Metro Station — official location information"
+            },
+            {
+              "url": "https://www.sfmta.com/vi/media/13035/download?inline=",
+              "title": "SFMTA — Van Ness Station entrance map"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "Market Street and Van Ness Avenue"
+        },
+        {
+          "id": "sanFrancisco:san-francisco-conservatory-of-music-ann-getty-center",
+          "name": "San Francisco Conservatory of Music Ann Getty Center",
+          "category": "universities",
+          "location": {
+            "lat": 37.775357491895,
+            "lng": -122.420385386062,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=50+Oak+Street&city=San+Francisco&state=CA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://sfcm.edu/study/apply/connect-with-us",
+              "title": "San Francisco Conservatory of Music Ann Getty Center — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "50 Oak Street"
+        },
+        {
+          "id": "sanFrancisco:adobe-townsend",
+          "name": "Adobe — San Francisco Townsend Office",
+          "category": "offices",
+          "location": {
+            "lat": 37.771735965248,
+            "lng": -122.401657016974,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=601+Townsend+Street&city=San+Francisco&state=CA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.adobe.com/about-adobe/contact/offices.html",
+              "title": "Adobe — San Francisco Townsend Office — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "601 Townsend Street"
+        },
+        {
+          "id": "sanFrancisco:cafe-reveille-lower-haight",
+          "name": "Café Réveille — Lower Haight",
+          "category": "cafes",
+          "location": {
+            "lat": 37.7710569,
+            "lng": -122.432071,
+            "sourceUrl": "https://www.openstreetmap.org/node/647656706",
+            "method": "osm-named-point",
+            "precisionNote": "Named OpenStreetMap place point; entrance and positional accuracy are not verified. © OpenStreetMap contributors (ODbL)."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.cafereveille.com/lowerhaight",
+              "title": "Café Réveille — Lower Haight — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-13",
+          "relation": "nearby",
+          "address": "201 Steiner Street"
+        },
+        {
+          "id": "sanFrancisco:sightglass-soma",
+          "name": "Sightglass Coffee — SoMa",
+          "category": "cafes",
+          "location": {
+            "lat": 37.777074798147,
+            "lng": -122.408356755173,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=270+7th+Street&city=San+Francisco&state=CA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://sightglasscoffee.com/blogs/shops/",
+              "title": "Sightglass Coffee — SoMa — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "270 7th Street"
+        },
+        {
+          "id": "sanFrancisco:ritual-coffee-hayes-valley",
+          "name": "Ritual Coffee Hayes Valley",
+          "category": "cafes",
+          "location": {
+            "lat": 37.776387440208,
+            "lng": -122.424492029725,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/locations/address?street=432B+Octavia+Street&city=San+Francisco&state=CA&benchmark=Public_AR_Current&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://ritualcoffee.com/locations/",
+              "title": "Ritual Coffee Hayes Valley — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "432B Octavia Street"
+        },
+        {
+          "id": "sanFrancisco:the-commons-coworking",
+          "name": "The Commons — coworking and community workspace",
+          "category": "offices",
+          "location": {
+            "lat": 37.776114791229,
+            "lng": -122.426117758191,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=540+Laguna+Street&city=San+Francisco&state=CA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.thesfcommons.com/",
+              "title": "The Commons — official coworking and location"
+            },
+            {
+              "url": "https://luma.com/18okja8u",
+              "title": "The SF Commons — hosted public-hours address"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "540 Laguna Street"
+        },
+        {
+          "id": "sanFrancisco:la-boulangerie-hayes-valley",
+          "name": "La Boulangerie — Hayes Valley",
+          "category": "cafes",
+          "location": {
+            "lat": 37.776721409068,
+            "lng": -122.424706109602,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/locations/address?street=500+Hayes+Street&city=San+Francisco&state=CA&benchmark=Public_AR_Current&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.laboulangeriesf.com/locations-hours",
+              "title": "La Boulangerie — Hayes Valley — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-13",
+          "relation": "nearby",
+          "address": "500 Hayes Street"
+        },
+        {
+          "id": "sanFrancisco:san-francisco-conservatory-of-music-bowes-center",
+          "name": "San Francisco Conservatory of Music Bowes Center",
+          "category": "universities",
+          "location": {
+            "lat": 37.777375765533,
+            "lng": -122.419557168282,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=200+Van+Ness+Avenue&city=San+Francisco&state=CA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://sfcm.edu/study/apply/connect-with-us",
+              "title": "San Francisco Conservatory of Music Bowes Center — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "200 Van Ness Avenue"
+        },
+        {
+          "id": "sanFrancisco:noe-co-work",
+          "name": "Noe Co + Work — private offices",
+          "category": "offices",
+          "location": {
+            "lat": 37.752758500793,
+            "lng": -122.437427242012,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=4248+23rd+Street&city=San+Francisco&state=CA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.noecowork.com/",
+              "title": "Noe Co + Work — official offices and address"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "4248 23rd Street"
+        },
+        {
+          "id": "sanFrancisco:roosevelt-museum",
+          "name": "Roosevelt Way & Museum Way — Muni stop",
+          "category": "transit",
+          "location": {
+            "lat": 37.76536,
+            "lng": -122.44102,
+            "sourceUrl": "https://www.sfmta.com/stops/roosevelt-way-museum-way-16240",
+            "method": "official-transit-station",
+            "precisionNote": "Agency stop reference point, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.sfmta.com/stops/roosevelt-way-museum-way-16240",
+              "title": "Roosevelt Way & Museum Way — Muni stop — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "Roosevelt Way & Museum Way"
+        },
+        {
+          "id": "sanFrancisco:trader-joe-s-hayes-valley",
+          "name": "Trader Joe’s Hayes Valley",
+          "category": "stores",
+          "location": {
+            "lat": 37.778213278659,
+            "lng": -122.426544569364,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=788+Laguna+Street&city=San+Francisco&state=CA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://locations.traderjoes.com/ca/san-francisco/226/",
+              "title": "Trader Joe’s Hayes Valley — official location information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "788 Laguna Street"
+        }
+      ],
+      "inventory": {
+        "mapped": 31,
+        "listed": 32,
+        "addressOnly": 1,
+        "cityReferences": 0
+      }
+    },
+    {
+      "mapKey": "boston-back-bay",
+      "title": "Back Bay",
+      "city": "Boston",
+      "publicPath": "/blog/guides/boston-back-bay/places/",
+      "center": [
+        -71.079754563043,
+        42.3488076730045
+      ],
+      "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+      "businesses": [
+        {
+          "id": "boston:pavement-coffeehouse-newbury-street",
+          "name": "Pavement Coffeehouse — Newbury Street",
+          "category": "cafes",
+          "location": {
+            "lat": 42.349083478665,
+            "lng": -71.084265716321,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=286+Newbury+Street&city=Boston&state=MA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://pavementcoffeehouse.com/pages/locations",
+              "title": "Pavement Coffeehouse — Newbury Street — location and visitor information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "in-area",
+          "address": "286 Newbury Street"
+        },
+        {
+          "id": "boston:trident-booksellers-caf",
+          "name": "Trident Booksellers & Café",
+          "category": "stores",
+          "location": {
+            "lat": 42.348560574723,
+            "lng": -71.08624315001,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=338+Newbury+Street&city=Boston&state=MA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://tridentbookscafe.com/contact-us",
+              "title": "Trident Booksellers & Café — location and visitor information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "in-area",
+          "address": "338 Newbury Street"
+        },
+        {
+          "id": "boston:wayfair-copley-place-headquarters",
+          "name": "Wayfair — Copley Place Headquarters",
+          "category": "offices",
+          "location": null,
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.wayfair.com/sca/professional/ideas-and-advice/office/a-look-inside-wayfairs-copley-place-headquarters-T4937",
+              "title": "Wayfair — Copley Place Headquarters — location and visitor information"
+            },
+            {
+              "url": "https://www.wayfair.com/careers/privacy/",
+              "title": "Wayfair corporate address"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "in-area",
+          "address": "4 Copley Place"
+        },
+        {
+          "id": "boston:berklee-college-of-music-uchida-building",
+          "name": "Berklee College of Music — Uchida Building",
+          "category": "universities",
+          "location": {
+            "lat": 42.34825911972,
+            "lng": -71.084426169867,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=921+Boylston+Street&city=Boston&state=MA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.berklee.edu/contact",
+              "title": "Berklee College of Music — Uchida Building — location and visitor information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "in-area",
+          "address": "921 Boylston Street"
+        },
+        {
+          "id": "boston:copley-square-park",
+          "name": "Copley Square Park",
+          "category": "parks",
+          "location": {
+            "lat": 42.350493559823,
+            "lng": -71.075661356083,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=560+Boylston+Street&city=Boston&state=MA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.boston.gov/departments/parks-and-recreation/playgrounds-and-parks-boston",
+              "title": "Copley Square Park — location and visitor information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "in-area",
+          "address": "560 Boylston Street"
+        },
+        {
+          "id": "boston:copley-station",
+          "name": "Copley Station",
+          "category": "transit",
+          "location": {
+            "lat": 42.349974,
+            "lng": -71.077447,
+            "sourceUrl": "https://api-v3.mbta.com/stops/place-coecl",
+            "method": "official-transit-station",
+            "precisionNote": "Agency station reference point, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.mbta.com/stops/place-coecl",
+              "title": "Copley Station — location and visitor information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "in-area",
+          "address": "Boylston Street at Dartmouth Street"
+        },
+        {
+          "id": "boston:back-bay-station",
+          "name": "Back Bay station",
+          "category": "transit",
+          "location": {
+            "lat": 42.34735,
+            "lng": -71.075727,
+            "sourceUrl": "https://api-v3.mbta.com/stops/place-bbsta",
+            "method": "official-transit-station",
+            "precisionNote": "Agency station reference point, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://api-v3.mbta.com/stops/place-bbsta",
+              "title": "MBTA official stop data"
+            },
+            {
+              "url": "https://www.mbta.com/stops/place-bbsta",
+              "title": "Back Bay — MBTA"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "145 Dartmouth St Boston, MA 02116"
+        },
+        {
+          "id": "boston:kenmore-station",
+          "name": "Kenmore station",
+          "category": "transit",
+          "location": {
+            "lat": 42.348949,
+            "lng": -71.095169,
+            "sourceUrl": "https://api-v3.mbta.com/stops/place-kencl",
+            "method": "official-transit-station",
+            "precisionNote": "Agency station reference point, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://api-v3.mbta.com/stops/place-kencl",
+              "title": "MBTA official stop data"
+            },
+            {
+              "url": "https://www.mbta.com/stops/place-kencl",
+              "title": "Kenmore — MBTA"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "Commonwealth Ave and Kenmore St, Boston, MA 02215"
+        },
+        {
+          "id": "boston:elliot-norton-park",
+          "name": "Elliot Norton Park",
+          "category": "parks",
+          "location": {
+            "lat": 42.348865979456,
+            "lng": -71.065580913627,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=295+Tremont+Street&city=Boston&state=MA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.boston.gov/departments/parks-and-recreation/playgrounds-and-parks-boston",
+              "title": "Elliot Norton Park — location and visitor information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "295 Tremont Street"
+        },
+        {
+          "id": "boston:a-sanctuary-cafe",
+          "name": "A Sanctuary Cafe",
+          "category": "cafes",
+          "location": {
+            "lat": 42.358142577434,
+            "lng": -71.070576198738,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=80+Charles+Street&city=Boston&state=MA&zip=02114&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.asanctuarycafe.com/about",
+              "title": "A Sanctuary Cafe — official location"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "80 Charles Street, Boston, MA 02114"
+        },
+        {
+          "id": "boston:boylston-station",
+          "name": "Boylston Station",
+          "category": "transit",
+          "location": {
+            "lat": 42.35302,
+            "lng": -71.06459,
+            "sourceUrl": "https://api-v3.mbta.com/stops/place-boyls",
+            "method": "official-transit-station",
+            "precisionNote": "Agency station reference point, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.mbta.com/stops/place-boyls",
+              "title": "Boylston Station — location and visitor information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "Boylston Street at Tremont Street"
+        },
+        {
+          "id": "boston:beacon-hill-books-cafe",
+          "name": "Beacon Hill Books & Cafe",
+          "category": "stores",
+          "location": {
+            "lat": 42.358151100622,
+            "lng": -71.070412639026,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=71+Charles+Street&city=Boston&state=MA&zip=02114&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.bhbooks.com/pages/info",
+              "title": "Beacon Hill Books & Cafe — official location"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "71 Charles Street, Boston, MA 02114"
+        },
+        {
+          "id": "boston:peters-park",
+          "name": "Peters Park",
+          "category": "parks",
+          "location": {
+            "lat": 42.34369723755,
+            "lng": -71.067817788857,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=230+Shawmut+Avenue&city=Boston&state=MA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.boston.gov/departments/parks-and-recreation/playgrounds-and-parks-boston",
+              "title": "Boston Parks directory"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "230 Shawmut Avenue, Boston, MA"
+        },
+        {
+          "id": "boston:formaggio-kitchen-south-end",
+          "name": "Formaggio Kitchen South End",
+          "category": "stores",
+          "location": {
+            "lat": 42.343152203084,
+            "lng": -71.068746789148,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=268+Shawmut+Avenue&city=Boston&state=MA&zip=02118&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.formaggiokitchen.com/boston/",
+              "title": "Formaggio Kitchen South End — official location"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "268 Shawmut Avenue, Boston, MA 02118"
+        },
+        {
+          "id": "boston:jia-ho-supermarket",
+          "name": "Jia Ho Supermarket",
+          "category": "stores",
+          "location": {
+            "lat": 42.351175173733,
+            "lng": -71.062786068203,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=692+Washington+Street&city=Boston&state=MA&zip=02111&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.changshingtofu.com/find-us/",
+              "title": "Chang Shing Tofu: retail store locator"
+            },
+            {
+              "url": "https://www.bumc.bu.edu/gms/students/student-life/local-grocery-stores/",
+              "title": "Boston University: local grocery stores"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "692 Washington Street"
+        },
+        {
+          "id": "boston:chinatown-station",
+          "name": "Chinatown Station",
+          "category": "transit",
+          "location": {
+            "lat": 42.352547,
+            "lng": -71.062752,
+            "sourceUrl": "https://api-v3.mbta.com/stops/place-chncl",
+            "method": "official-transit-station",
+            "precisionNote": "Agency station reference point, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.mbta.com/stops/place-chncl",
+              "title": "Chinatown Station — location and visitor information"
+            },
+            {
+              "url": "https://www.cambridgema.gov/-/media/Files/CDD/FactsandMaps/transdata/mbta_bluebook_2010.pdf",
+              "title": "MBTA station street locations"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "Washington Street at Essex Street"
+        },
+        {
+          "id": "boston:tufts-university-school-of-medicine",
+          "name": "Tufts University School of Medicine",
+          "category": "universities",
+          "location": {
+            "lat": 42.350092416368,
+            "lng": -71.061816841228,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=145+Harrison+Avenue&city=Boston&state=MA&zip=02111&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://medicine.tufts.edu/directions",
+              "title": "Tufts University School of Medicine — official location"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "145 Harrison Avenue, Boston, MA 02111"
+        },
+        {
+          "id": "boston:tufts-university-boston-health-sciences-campus",
+          "name": "Tufts University — Boston Health Sciences Campus",
+          "category": "universities",
+          "location": {
+            "lat": 42.3499495791,
+            "lng": -71.06171171013,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=136+Harrison+Avenue&city=Boston&state=MA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://medicine.tufts.edu/admissions-financial-aid/admission-program/view-our-virtual-campus",
+              "title": "Tufts University — Boston Health Sciences Campus — location and visitor information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "136 Harrison Avenue"
+        },
+        {
+          "id": "boston:target-boston-fenway",
+          "name": "Target Boston Fenway",
+          "category": "stores",
+          "location": {
+            "lat": 42.344225169139,
+            "lng": -71.099284126086,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=1341+Boylston+Street&city=Boston&state=MA&zip=02215&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.target.com/sl/boston-fenway-store/2822",
+              "title": "Target Boston Fenway — official location"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "1341 Boylston Street, Boston, MA 02215"
+        },
+        {
+          "id": "boston:blackstone-square",
+          "name": "Blackstone Square",
+          "category": "parks",
+          "location": {
+            "lat": 42.339923159425,
+            "lng": -71.072147590068,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=1535+Washington+Street&city=Boston&state=MA&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.boston.gov/departments/parks-and-recreation/playgrounds-and-parks-boston",
+              "title": "Boston Parks directory"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "1535 Washington Street, Boston, MA"
+        },
+        {
+          "id": "boston:charles-mgh-station",
+          "name": "Charles/MGH station",
+          "category": "transit",
+          "location": {
+            "lat": 42.361166,
+            "lng": -71.070628,
+            "sourceUrl": "https://api-v3.mbta.com/stops/place-chmnl",
+            "method": "official-transit-station",
+            "precisionNote": "Agency station reference point, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://api-v3.mbta.com/stops/place-chmnl",
+              "title": "MBTA official stop data"
+            },
+            {
+              "url": "https://www.mbta.com/stops/place-chmnl",
+              "title": "Charles/MGH — MBTA"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "Cambridge St and Charles St, Boston, MA"
+        },
+        {
+          "id": "boston:flour-bakery-cafe-south-end",
+          "name": "Flour Bakery + Cafe South End",
+          "category": "cafes",
+          "location": {
+            "lat": 42.338341290715,
+            "lng": -71.074516369412,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=1595+Washington+Street&city=Boston&state=MA&zip=02118&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.toasttab.com/local/order/floursouthend/item-whole-lime-cream-pie_f292f7ac-f653-49ce-96c8-fc45b62ebb59",
+              "title": "Flour Bakery South End — business ordering page"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "1595 Washington Street, Boston, MA 02118"
+        },
+        {
+          "id": "boston:downtown-crossing-station",
+          "name": "Downtown Crossing Station",
+          "category": "transit",
+          "location": {
+            "lat": 42.355518,
+            "lng": -71.060225,
+            "sourceUrl": "https://api-v3.mbta.com/stops/place-dwnxg",
+            "method": "official-transit-station",
+            "precisionNote": "Agency station reference point, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.mbta.com/stops/place-dwnxg",
+              "title": "Downtown Crossing Station — location and visitor information"
+            },
+            {
+              "url": "https://bostonlines.com/station/downtown-crossing/",
+              "title": "Downtown Crossing station street location"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "Washington Street at Summer Street"
+        },
+        {
+          "id": "boston:suffolk-university-rosalie-k-stahl-center",
+          "name": "Suffolk University — Rosalie K. Stahl Center",
+          "category": "universities",
+          "location": {
+            "lat": 42.357613372003,
+            "lng": -71.060921557593,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=73+Tremont+Street&city=Boston&state=MA&zip=02108&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://events.suffolk.edu/rosalie_k_stahl_center73_tremont_street",
+              "title": "Suffolk University — Rosalie K. Stahl Center — location and visitor information"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "73 Tremont Street"
+        },
+        {
+          "id": "boston:boston-university-medical-campus",
+          "name": "Boston University Medical Campus",
+          "category": "universities",
+          "location": {
+            "lat": 42.336449346009,
+            "lng": -71.073107493456,
+            "sourceUrl": "https://geocoding.geo.census.gov/geocoder/geographies/address?street=72+East+Concord+Street&city=Boston&state=MA&zip=02118&benchmark=Public_AR_Current&vintage=Current_Current&layers=Incorporated+Places&format=json",
+            "method": "census-address-range",
+            "precisionNote": "Interpolated street-address location, not a verified entrance."
+          },
+          "sourceRevision": "925d14c4831554a406dff6f26814177d1c0fa487",
+          "sources": [
+            {
+              "url": "https://www.bumc.bu.edu/gms/about/location/",
+              "title": "Boston University Medical Campus — official location"
+            }
+          ],
+          "checkedAt": "2026-10-05",
+          "relation": "nearby",
+          "address": "72 East Concord Street, Boston, MA 02118"
+        }
+      ],
+      "inventory": {
+        "mapped": 24,
+        "listed": 25,
+        "addressOnly": 1,
+        "cityReferences": 0
+      }
+    }
+  ]
+}

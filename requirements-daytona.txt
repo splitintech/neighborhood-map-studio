@@ -1,0 +1,4 @@
+# Daytona control-plane tooling is intentionally isolated from the BFF runtime.
+# daytona 0.225 requires the newer httpx/anyio stack; do not install this in
+# the existing FastAPI application's environment.
+daytona==0.225.0

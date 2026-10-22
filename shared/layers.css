@@ -1,0 +1,8 @@
+.studio-marker { background:transparent; border:0; display:grid; place-items:center; color:#fffdfa; }
+.studio-marker--business { border-radius:50%; background:var(--studio-map-accent,#94370d); box-shadow:0 2px 7px #292b2740; border:2px solid #fffdfa; }
+.studio-marker--business img { width:30px; height:30px; object-fit:contain; border-radius:50%; }
+.studio-marker--business span { font:700 12px/1 system-ui,sans-serif; }
+.studio-marker--artwork img { display:block; width:100%; height:100%; object-fit:contain; transform-origin:center; }
+.studio-marker--annotation { width:max-content!important; height:auto!important; max-width:240px; padding:8px 11px; color:var(--studio-map-ink,#292b27); background:#fffdfaeb; border:1px solid #e6dfd8; border-radius:10px; box-shadow:0 2px 7px #292b2720; white-space:pre-wrap; font:600 12px/1.4 system-ui,sans-serif; }
+.studio-marker:focus-visible { outline:3px solid #152b44; outline-offset:4px; }
+@media (prefers-reduced-motion: reduce) { .studio-marker { transition:none!important; animation:none!important; } }
