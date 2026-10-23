@@ -59,10 +59,23 @@ async def healthz():
     return {"ok": True, "service": "neighborhood-map-studio"}
 
 
+def locally_ready() -> bool:
+    # A local deployment readiness check, NOT proof that remote credentials,
+    # database migrations, buckets or OAuth callbacks have been exercised.
+    return not settings.missing() and (DIST / "index.html").is_file()
+
+
+@app.get("/readyz", include_in_schema=False)
+async def readyz():
+    ready = locally_ready()
+    return JSONResponse({"ready": ready, "service": "neighborhood-map-studio"},
+                        status_code=200 if ready else 503)
+
+
 @app.get("/api/runtime-info", include_in_schema=False)
 async def runtime_info(request: Request):
     await auth.actor(request)
-    return {"ready": not settings.missing()}
+    return {"ready": locally_ready()}
 
 
 @app.get("/", include_in_schema=False)
