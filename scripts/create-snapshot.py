@@ -14,6 +14,7 @@ import os
 import re
 import sys
 from typing import Any
+from urllib.parse import urlsplit
 
 
 class SnapshotError(RuntimeError):
@@ -21,6 +22,7 @@ class SnapshotError(RuntimeError):
 
 
 SNAPSHOT_NAME = re.compile(r"^[a-z0-9](?:[a-z0-9-]{0,62}[a-z0-9])?$")
+DEFAULT_SNAPSHOT_TIMEOUT = 600
 SNAPSHOT_ENTRYPOINT = "/opt/map-studio/start.sh"
 
 
@@ -50,7 +52,30 @@ def _entrypoint(value: str) -> str:
     return value
 
 
-def _apply(name: str, image: str, entrypoint: list[str]) -> dict[str, Any]:
+def _api_url() -> str | None:
+    value = os.getenv("DAYTONA_API_URL")
+    if value is None:
+        return None
+    try:
+        url = urlsplit(value)
+        valid = (
+            url.scheme == "https" and bool(url.hostname)
+            and url.username is None and url.password is None
+            and "?" not in value and "#" not in value
+            and not any(character.isspace() or ord(character) < 32 for character in value)
+            and "\\" not in value
+        )
+        # Accessing .port also rejects malformed or out-of-range port numbers.
+        valid = valid and (url.port is None or url.port > 0)
+    except ValueError:
+        valid = False
+    if not valid:
+        raise SnapshotError("DAYTONA_API_URL must be a credential-free HTTPS URL without query or fragment")
+    return value
+
+
+def _apply(name: str, image: str, entrypoint: list[str], timeout: int = DEFAULT_SNAPSHOT_TIMEOUT) -> dict[str, Any]:
+    api_url = _api_url()
     try:
         from daytona import CreateSnapshotParams, Daytona, DaytonaConfig, Resources
     except ImportError as exc:  # pragma: no cover
@@ -58,7 +83,6 @@ def _apply(name: str, image: str, entrypoint: list[str]) -> dict[str, Any]:
     api_key = os.getenv("DAYTONA_API_KEY")
     if not api_key:
         raise SnapshotError("DAYTONA_API_KEY is required with --apply")
-    api_url = os.getenv("DAYTONA_API_URL")
     config = DaytonaConfig(api_key=api_key, api_url=api_url) if api_url else DaytonaConfig(api_key=api_key)
     client = Daytona(config)
     snapshot = client.snapshot.create(CreateSnapshotParams(
@@ -66,7 +90,7 @@ def _apply(name: str, image: str, entrypoint: list[str]) -> dict[str, Any]:
         image=image,
         entrypoint=entrypoint,
         resources=Resources(cpu=1, memory=1),
-    ))
+    ), timeout=timeout)
     snapshot_id = getattr(snapshot, "id", None) or getattr(snapshot, "name", None) or name
     return {"operation": "created", "snapshot": str(snapshot_id), "image": image}
 
@@ -77,15 +101,19 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--name", default=os.getenv("DAYTONA_MAP_STUDIO_SNAPSHOT", ""))
     parser.add_argument("--image", default=os.getenv("DAYTONA_MAP_STUDIO_IMAGE", ""))
     parser.add_argument("--entrypoint", default="/opt/map-studio/start.sh")
+    parser.add_argument("--timeout", type=int, default=DEFAULT_SNAPSHOT_TIMEOUT, help="snapshot creation timeout in seconds")
     args = parser.parse_args(argv)
     try:
+        _api_url()
+        if args.timeout <= 0:
+            raise SnapshotError("--timeout must be greater than zero")
         if not args.name:
             raise SnapshotError("--name or DAYTONA_MAP_STUDIO_SNAPSHOT is required")
         name = _name(args.name)
         image = _image(args.image)
         entrypoint = _entrypoint(args.entrypoint)
-        result = _apply(name, image, [entrypoint]) if args.apply else {
-            "operation": "dry-run", "snapshot": name, "image": image, "entrypoint": [entrypoint], "resources": {"cpu": 1, "memoryGiB": 1}
+        result = _apply(name, image, [entrypoint], args.timeout) if args.apply else {
+            "operation": "dry-run", "timeoutSeconds": args.timeout, "snapshot": name, "image": image, "entrypoint": [entrypoint], "resources": {"cpu": 1, "memoryGiB": 1}
         }
     except SnapshotError as exc:
         print(json.dumps({"error": str(exc)}), file=sys.stderr)

@@ -1,5 +1,5 @@
 diff --git a/blog-astro/src/scripts/neighborhood-category-map.ts b/blog-astro/src/scripts/neighborhood-category-map.ts
-index 9694955aa..81291e19d 100644
+index c33ea4a601b263ed508cca7072fb3c08554ad9d9..e79182d165df4fcf241ac7a339fde2574e971f1c 100644
 --- a/blog-astro/src/scripts/neighborhood-category-map.ts
 +++ b/blog-astro/src/scripts/neighborhood-category-map.ts
 @@ -5,6 +5,7 @@ import { createPublicMapConsent } from '../../../rental-vendors/lib/public-map-c
@@ -16,10 +16,10 @@ index 9694955aa..81291e19d 100644
      root.querySelector<HTMLElement>('[data-category-map-actions]')!.hidden = false;
 +    const studioMapKey = resolvePublicPilotMapKey({ city: root.dataset.city, pathname: window.location.pathname, explicitMapKey: root.dataset.mapStudioKey });
 +    const studioPublic = mapStudioPublicConfig(import.meta.env);
-     map = mountDiscoveryMap({ root, items, domain: 'places', defaultView: 'map', navigation,
+     map = mountDiscoveryMap({ root, items, domain: 'places', defaultView: 'map', navigation, presentation: 'neighborhood',
+       categoryNavigation: root.querySelector<HTMLElement>('.category-type-nav') || undefined,
        title: root.querySelector('h1')?.textContent?.trim() || 'Neighborhood places', center: payload.center,
-       controls, triggerContainer: root.querySelector<HTMLElement>('[data-category-map-actions]')!,
-@@ -116,6 +119,7 @@ if (root && !root.dataset.categoryEnhanced) {
+@@ -117,6 +120,7 @@ if (root && !root.dataset.categoryEnhanced) {
          return hasApproximateLocationPresentation(place, root.dataset.city) ? { ...presentation, showTitle: true, className: [presentation?.className, 'discovery-pin--approximate-address'].filter(Boolean).join(' ') } : presentation;
        },
        renderers: { marker: item => createPlaceMapMarker(item.element.ownerDocument, places.get(item.id)) },
@@ -28,7 +28,7 @@ index 9694955aa..81291e19d 100644
    }
  }
 diff --git a/blog-astro/src/scripts/place-explorer.ts b/blog-astro/src/scripts/place-explorer.ts
-index 1ec280041..327b30bea 100644
+index 1ec2800411fbc7b2059d02209c181c39710d9fb2..9f30950c8cfde4a4e9596e84964fc3f3f2214af8 100644
 --- a/blog-astro/src/scripts/place-explorer.ts
 +++ b/blog-astro/src/scripts/place-explorer.ts
 @@ -6,6 +6,7 @@ import { getDiscoveryNavigation } from '../../../packages/discovery-map/history'
@@ -56,13 +56,8 @@ index 1ec280041..327b30bea 100644
        });
        loadButton.hidden=true;
        notice.textContent='Open map view for source-backed places. City references remain available in the list and do not change this neighborhood map. Street data needs your permission in map view.';
-@@ -218,4 +222,3 @@ if (root && !root.dataset.placeEnhanced) {
-     }else void openStreetMap();
-   }else if(!discoveryMap)notice.textContent='Data saving is on. Load the street map when you need it; the place cards and overview are ready.';
- }
--
 diff --git a/packages/discovery-map/index.ts b/packages/discovery-map/index.ts
-index d287d7cf5..53325ab69 100644
+index d287d7cf537da2a99ecd5ffff263315953158b46..53325ab69a2dce4ff58ea0360e692726a0293098 100644
 --- a/packages/discovery-map/index.ts
 +++ b/packages/discovery-map/index.ts
 @@ -5,3 +5,6 @@ export * from './gestures';
@@ -74,16 +69,15 @@ index d287d7cf5..53325ab69 100644
 +export * from './public-layers';
 diff --git a/packages/discovery-map/public-layers.ts b/packages/discovery-map/public-layers.ts
 new file mode 100644
-index 000000000..a6e4597e9
+index 0000000000000000000000000000000000000000..1501715579c22bdc6793d6de9e82fccc622c5013
 --- /dev/null
 +++ b/packages/discovery-map/public-layers.ts
-@@ -0,0 +1,113 @@
+@@ -0,0 +1,112 @@
 +/** Attach after the existing public map's consent gate. No Daytona dependency. */
 +import { mountStudioLayers, type StudioLayerMount } from './studio/leaflet';
 +import { validateLayerDocument, validateStudioAsset, type CanonicalBusiness, type StudioAsset } from './studio/contracts';
 +
 +export interface PublishedLayerMount extends StudioLayerMount {
-+  /** Keep the published overlay in step with the host map's current filter. */
 +  updateBusinesses(businesses: readonly CanonicalBusiness[]): void;
 +}
 +
@@ -91,8 +85,7 @@ index 000000000..a6e4597e9
 +  (input: RequestInfo | URL, init?: RequestInit): Promise<Response>;
 +}
 +
-+/** Pilot projections are tied to exact editorial guide identities. A city
-+ * alone is insufficient because category directories aggregate many guides. */
++/** Pilot projections are tied to exact editorial guide identities. */
 +export function resolvePublicPilotMapKey(options: { city?: string; pathname?: string; explicitMapKey?: string }): string | undefined {
 +  const city = options.city === 'sanFrancisco' ? 'san-francisco' : options.city;
 +  const allowed: Record<string, string> = { 'san-francisco-mission': 'san-francisco', 'boston-back-bay': 'boston' };
@@ -106,9 +99,6 @@ index 000000000..a6e4597e9
 +
 +const publicOrigin = (value: string): URL => {
 +  const origin = new URL(value);
-+  // The public projection is intentionally limited to Supabase's HTTPS origin.
-+  // In particular, this prevents a map page from turning its anon key into a
-+  // browser request proxy for Daytona or an arbitrary host.
 +  if (origin.protocol !== 'https:' || !/^[a-z0-9-]+\.supabase\.co$/i.test(origin.hostname)
 +    || origin.username || origin.password || origin.pathname !== '/' || origin.search || origin.hash) throw new Error('Invalid public Map Studio origin');
 +  return origin;
@@ -122,8 +112,11 @@ index 000000000..a6e4597e9
 +  setBusinessSuppressed: (businessId: string, suppressed: boolean) => void;
 +  selectBusiness: (businessId: string) => void;
 +  fetcher?: PublicLayerFetcher;
++  /** Host lifecycle guard, checked again after the asynchronous projection read. */
++  isCurrent?: () => boolean;
++  getBusinesses?: () => readonly CanonicalBusiness[];
 +}): Promise<PublishedLayerMount | undefined> {
-+  if (!options.enabled) return;
++  if (!options.enabled || options.isCurrent?.() === false) return;
 +  try {
 +    const origin = publicOrigin(options.supabaseOrigin);
 +    const anonKey = options.publicAnonKey.trim();
@@ -147,9 +140,10 @@ index 000000000..a6e4597e9
 +        width: asset.width, height: asset.height, state: 'ready',
 +        url: new URL(`/storage/v1/object/public/map-studio-published/${asset.publicPath}`, origin).href });
 +    });
++    if (options.isCurrent?.() === false) return;
 +    let currentDocument = document;
 +    let currentAssets = [...assets];
-+    let businesses = [...options.businesses];
++    let businesses = [...(options.getBusinesses?.() || options.businesses)];
 +    const mount = mountStudioLayers({ L: options.L, map: options.map, document: currentDocument, assets: currentAssets,
 +      businesses, onSelect: (layer) => {
 +        if (layer.kind === 'business') options.selectBusiness(layer.businessId);
@@ -193,7 +187,7 @@ index 000000000..a6e4597e9
 +}
 diff --git a/packages/discovery-map/studio/contracts.ts b/packages/discovery-map/studio/contracts.ts
 new file mode 100644
-index 000000000..70a39d5e2
+index 0000000000000000000000000000000000000000..70a39d5e289369c5b8cc116badfb0057ba2d4a6e
 --- /dev/null
 +++ b/packages/discovery-map/studio/contracts.ts
 @@ -0,0 +1,187 @@
@@ -386,7 +380,7 @@ index 000000000..70a39d5e2
 +}
 diff --git a/packages/discovery-map/studio/index.ts b/packages/discovery-map/studio/index.ts
 new file mode 100644
-index 000000000..979b32b27
+index 0000000000000000000000000000000000000000..979b32b2733c6b4973131527ae7b9b9294a5e3f7
 --- /dev/null
 +++ b/packages/discovery-map/studio/index.ts
 @@ -0,0 +1,2 @@
@@ -394,7 +388,7 @@ index 000000000..979b32b27
 +export * from './leaflet';
 diff --git a/packages/discovery-map/studio/leaflet.ts b/packages/discovery-map/studio/leaflet.ts
 new file mode 100644
-index 000000000..65078a17c
+index 0000000000000000000000000000000000000000..65078a17c5af9db84bb11e6ab89398701d310639
 --- /dev/null
 +++ b/packages/discovery-map/studio/leaflet.ts
 @@ -0,0 +1,180 @@
@@ -580,66 +574,173 @@ index 000000000..65078a17c
 +}
 diff --git a/packages/discovery-map/tests/public-layers.test.mjs b/packages/discovery-map/tests/public-layers.test.mjs
 new file mode 100644
-index 000000000..f117bc873
+index 0000000000000000000000000000000000000000..2cf21cbc358c5965b5f1c754123a3004b8804f69
 --- /dev/null
 +++ b/packages/discovery-map/tests/public-layers.test.mjs
-@@ -0,0 +1,53 @@
-+import assert from 'node:assert/strict';
-+import test from 'node:test';
-+import { build } from 'esbuild';
-+import { createRequire } from 'node:module';
+@@ -0,0 +1,160 @@
++import assert from "node:assert/strict";
++import test from "node:test";
++import { build } from "esbuild";
++import { mkdtemp, rm } from "node:fs/promises";
++import { tmpdir } from "node:os";
++import { join } from "node:path";
 +
-+const require = createRequire(import.meta.url);
-+const compiled = await build({ entryPoints: ['public-layers.ts'], bundle: true, write: false, format: 'cjs', platform: 'node' });
-+const module = { exports: {} };
-+new Function('require', 'module', 'exports', compiled.outputFiles[0].text)(require, module, module.exports);
-+const { attachPublishedLayers, resolvePublicPilotMapKey } = module.exports;
++const directory = await mkdtemp(join(tmpdir(), "map-studio-public-tests-"));
++const output = join(directory, "public-layers.mjs");
++await build({ entryPoints: ["public-layers.ts"], bundle: true, platform: "node", format: "esm", outfile: output });
++const adapter = await import(`file://${output}`);
 +
 +const fakeMap = () => ({
-+  on() {}, off() {}, getZoom: () => 12, getContainer: () => ({ dataset: {}, style: { setProperty() {} } }),
-+  getPane: () => undefined, createPane: () => ({ style: { zIndex: '' } }), removeLayer() {},
++  on() {}, off() {}, getZoom: () => 12,
++  getContainer: () => ({ dataset: {}, style: { setProperty() {} } }),
++  getPane: () => undefined, createPane: () => ({ style: { zIndex: "" } }), removeLayer() {},
 +});
 +
-+test('public integration reads the immutable Supabase projection with anon credentials', async () => {
++const fakeLeaflet = {
++  marker() {
++    const handlers = new Map();
++    return {
++      on(name, handler) { handlers.set(name, handler); return this; },
++      off() {}, remove() {}, addTo() { return this; },
++      getElement() { return undefined; },
++      getIcon() { return undefined; },
++      options: {},
++    };
++  },
++};
++
++const business = { id: "place-1", name: "Place One", location: { lat: 42.35, lng: -71.08 } };
++const documentWithBusiness = (visible) => ({ schemaVersion: 1, mapKey: "san-francisco-mission", theme: "original", layers: [{
++  id: "place-layer", kind: "business", name: "Place One", visible, opacity: 1, minZoom: 0, maxZoom: 24,
++  businessId: "place-1", highlight: "none",
++}] });
++const manifest = (document) => ({ versionId: "version-1", document, assets: [] });
++
++test("pilot route mapping rejects city-wide and category inheritance", () => {
++  assert.equal(adapter.resolvePublicPilotMapKey({ city: "san-francisco", pathname: "/blog/guides/san-francisco-mission/places/" }), "san-francisco-mission");
++  assert.equal(adapter.resolvePublicPilotMapKey({ city: "boston", pathname: "/blog/guides/boston-back-bay/places/" }), "boston-back-bay");
++  assert.equal(adapter.resolvePublicPilotMapKey({ city: "san-francisco", pathname: "/blog/neighborhood/cafes/san-francisco/" }), undefined);
++  assert.equal(adapter.resolvePublicPilotMapKey({ city: "boston", pathname: "/blog/guides/san-francisco-mission/places/" }), undefined);
++});
++
++test("adapter requests only the published Supabase projection", async () => {
 +  const requests = [];
-+  const mount = await attachPublishedLayers({
-+    mapKey: 'san-francisco-mission', enabled: true,
-+    supabaseOrigin: 'https://project.supabase.co', publicAnonKey: 'anon-key',
-+    L: {}, map: fakeMap(), businesses: [{ id: 'source-1', name: 'Source place', location: { lat: 37.7, lng: -122.4 } }],
-+    setBusinessSuppressed() {}, selectBusiness() {},
++  const mount = await adapter.attachPublishedLayers({
++    mapKey: "san-francisco-mission", enabled: true,
++    supabaseOrigin: "https://project.supabase.co", publicAnonKey: "anon-key",
++    L: {}, map: fakeMap(), businesses: [], setBusinessSuppressed() {}, selectBusiness() {},
 +    fetcher: async (input, init) => {
 +      requests.push({ url: String(input), init });
-+      return new Response(JSON.stringify({ versionId: 'version-1', document: { schemaVersion: 1, mapKey: 'san-francisco-mission', theme: 'original', layers: [] }, assets: [] }), { status: 200, headers: { 'Content-Type': 'application/json' } });
++      return new Response(JSON.stringify({ versionId: "version-1", document: { schemaVersion: 1, mapKey: "san-francisco-mission", theme: "original", layers: [] }, assets: [] }), { status: 200 });
 +    },
 +  });
 +  assert.ok(mount);
-+  assert.equal(requests.length, 1);
-+  assert.equal(requests[0].url, 'https://project.supabase.co/rest/v1/rpc/map_studio_delivery_manifest');
-+  assert.equal(requests[0].init.credentials, 'omit');
-+  assert.equal(requests[0].init.headers.apikey, 'anon-key');
-+  assert.equal(JSON.parse(requests[0].init.body).p_map_key, 'san-francisco-mission');
++  assert.equal(requests[0].url, "https://project.supabase.co/rest/v1/rpc/map_studio_delivery_manifest");
++  assert.equal(requests[0].init.headers.apikey, "anon-key");
++  assert.equal(requests[0].init.credentials, "omit");
 +  mount.dispose();
 +});
 +
-+test('public integration stays disabled without an explicit map flag or safe origin', async () => {
-+  let calls = 0;
-+  const fetcher = async () => { calls += 1; throw new Error('must not fetch'); };
-+  assert.equal(await attachPublishedLayers({ mapKey: 'san-francisco-mission', enabled: false, supabaseOrigin: 'https://project.supabase.co', publicAnonKey: 'anon', L: {}, map: fakeMap(), businesses: [], setBusinessSuppressed() {}, selectBusiness() {}, fetcher }), undefined);
-+  assert.equal(await attachPublishedLayers({ mapKey: 'san-francisco-mission', enabled: true, supabaseOrigin: 'https://daytona.example.test', publicAnonKey: 'anon', L: {}, map: fakeMap(), businesses: [], setBusinessSuppressed() {}, selectBusiness() {}, fetcher }), undefined);
-+  assert.equal(calls, 0);
++test("business suppression follows published references through hidden, filtered, and document updates", async () => {
++  const changes = [];
++  const mount = await adapter.attachPublishedLayers({
++    mapKey: "san-francisco-mission", enabled: true,
++    supabaseOrigin: "https://project.supabase.co", publicAnonKey: "anon-key",
++    L: fakeLeaflet, map: fakeMap(), businesses: [business],
++    setBusinessSuppressed: (id, suppressed) => changes.push(`${id}:${suppressed}`), selectBusiness() {},
++    fetcher: async () => new Response(JSON.stringify(manifest(documentWithBusiness(true))), { status: 200 }),
++  });
++  assert.ok(mount);
++  assert.deepEqual(changes, ["place-1:true"]);
++
++  // The overlay owns the marker even when its own visibility/zoom rules hide it.
++  mount.update({ document: documentWithBusiness(false), businesses: [business], assets: [] });
++  assert.deepEqual(changes, ["place-1:true"]);
++
++  // Host filter/area changes remove and then restore the canonical source row.
++  mount.updateBusinesses([]);
++  assert.deepEqual(changes, ["place-1:true", "place-1:false"]);
++  mount.updateBusinesses([business]);
++  assert.deepEqual(changes, ["place-1:true", "place-1:false", "place-1:true"]);
++
++  // A later published document update must release suppression when the
++  // reference itself disappears, rather than retaining the initial document.
++  mount.update({ document: { schemaVersion: 1, mapKey: "san-francisco-mission", theme: "original", layers: [] }, businesses: [business], assets: [] });
++  assert.deepEqual(changes, ["place-1:true", "place-1:false", "place-1:true", "place-1:false"]);
++  mount.dispose();
 +});
 +
-+test('pilot overlays require an exact guide route or explicit matching map key', () => {
-+  assert.equal(resolvePublicPilotMapKey({ city: 'san-francisco', pathname: '/blog/guides/san-francisco-mission/places/' }), 'san-francisco-mission');
-+  assert.equal(resolvePublicPilotMapKey({ city: 'boston', pathname: '/blog/guides/boston-back-bay/places/' }), 'boston-back-bay');
-+  assert.equal(resolvePublicPilotMapKey({ city: 'san-francisco', pathname: '/blog/neighborhood/cafes/san-francisco/' }), undefined);
-+  assert.equal(resolvePublicPilotMapKey({ city: 'san-francisco', pathname: '/blog/neighborhood/cafes/san-francisco/', explicitMapKey: 'san-francisco-mission' }), 'san-francisco-mission');
-+  assert.equal(resolvePublicPilotMapKey({ city: 'boston', pathname: '/blog/guides/san-francisco-mission/places/' }), undefined);
-+  assert.equal(resolvePublicPilotMapKey({ city: 'sanFrancisco', pathname: '/blog/guides/san-francisco-mission/places/' }), 'san-francisco-mission');
++await rm(directory, { recursive: true, force: true });
++
++test("disabled and stale hosts make no projection request", async () => {
++  let requests = 0;
++  const options = {
++    mapKey: "san-francisco-mission", enabled: false,
++    supabaseOrigin: "https://project.supabase.co", publicAnonKey: "anon-key",
++    L: {}, map: fakeMap(), businesses: [], setBusinessSuppressed() {}, selectBusiness() {},
++    fetcher: async () => { requests++; throw new Error("must not fetch"); },
++  };
++  assert.equal(await adapter.attachPublishedLayers(options), undefined);
++  assert.equal(await adapter.attachPublishedLayers({ ...options, enabled: true, isCurrent: () => false }), undefined);
++  assert.equal(requests, 0);
++});
++
++test("late projection after close, consent revoke, or map replacement cannot mount or suppress", async () => {
++  let current = true, complete;
++  const changes = [];
++  const pending = adapter.attachPublishedLayers({
++    mapKey: "san-francisco-mission", enabled: true,
++    supabaseOrigin: "https://project.supabase.co", publicAnonKey: "anon-key",
++    L: { marker() { throw new Error("stale marker mount"); } }, map: fakeMap(), businesses: [business],
++    isCurrent: () => current, setBusinessSuppressed: (...args) => changes.push(args), selectBusiness() {},
++    fetcher: () => new Promise(resolve => { complete = resolve; }),
++  });
++  current = false;
++  complete(new Response(JSON.stringify(manifest(documentWithBusiness(true))), { status: 200 }));
++  assert.equal(await pending, undefined);
++  assert.deepEqual(changes, []);
++});
++
++test("projection mounts only the current filter snapshot and routes business selection", async () => {
++  let complete, currentBusinesses = [business], selected;
++  const changes = [], handlers = new Map();
++  const L = { marker() { return { ...fakeLeaflet.marker(), on(name, handler) { handlers.set(name, handler); return this; } }; } };
++  const pending = adapter.attachPublishedLayers({
++    mapKey: "san-francisco-mission", enabled: true,
++    supabaseOrigin: "https://project.supabase.co", publicAnonKey: "anon-key",
++    L, map: fakeMap(), businesses: [business], getBusinesses: () => currentBusinesses,
++    setBusinessSuppressed: (...args) => changes.push(args), selectBusiness: id => { selected = id; },
++    fetcher: () => new Promise(resolve => { complete = resolve; }),
++  });
++  currentBusinesses = [];
++  complete(new Response(JSON.stringify(manifest(documentWithBusiness(true))), { status: 200 }));
++  const mount = await pending;
++  assert.ok(mount);
++  assert.deepEqual(changes, []);
++  assert.equal(handlers.size, 0);
++  mount.updateBusinesses([business]);
++  assert.deepEqual(changes, [["place-1", true]]);
++  handlers.get("click")();
++  assert.equal(selected, "place-1");
++  mount.dispose();
++  assert.deepEqual(changes, [["place-1", true], ["place-1", false]]);
++});
++
++test("projection failures and mismatched map keys preserve base markers", async () => {
++  for (const response of [new Response("failed", { status: 503 }), new Response("not json"), new Response(JSON.stringify(manifest({ ...documentWithBusiness(true), mapKey: "boston-back-bay" })))]) {
++    const changes = [];
++    assert.equal(await adapter.attachPublishedLayers({
++      mapKey: "san-francisco-mission", enabled: true,
++      supabaseOrigin: "https://project.supabase.co", publicAnonKey: "anon-key",
++      L: fakeLeaflet, map: fakeMap(), businesses: [business],
++      setBusinessSuppressed: (...args) => changes.push(args), selectBusiness() {}, fetcher: async () => response,
++    }), undefined);
++    assert.deepEqual(changes, []);
++  }
 +});
 diff --git a/packages/discovery-map/tests/studio-contracts.test.mjs b/packages/discovery-map/tests/studio-contracts.test.mjs
 new file mode 100644
-index 000000000..e7681dc08
+index 0000000000000000000000000000000000000000..e7681dc082c805ff0d6fe9a352dfa5ec901bff16
 --- /dev/null
 +++ b/packages/discovery-map/tests/studio-contracts.test.mjs
 @@ -0,0 +1,44 @@
@@ -687,11 +788,59 @@ index 000000000..e7681dc08
 +  assert.equal(removed.length, 1);
 +  mount.dispose(); mount.dispose(); assert.equal(removed.length, 1);
 +});
+diff --git a/packages/discovery-map/tests/studio-host.test.mjs b/packages/discovery-map/tests/studio-host.test.mjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..5e6b89101e96a8314758ae46917ab548ec9db2d7
+--- /dev/null
++++ b/packages/discovery-map/tests/studio-host.test.mjs
+@@ -0,0 +1,42 @@
++import assert from 'node:assert/strict';
++import test from 'node:test';
++import { build } from 'esbuild';
++import { readFile } from 'node:fs/promises';
++import { createRequire } from 'node:module';
++const require = createRequire(import.meta.url);
++const result = await build({ entryPoints: ['../../rental-vendors/lib/studio-layers.ts'], bundle: true, write: false, platform: 'node', format: 'cjs' });
++const module = { exports: {} };
++new Function('require', 'module', 'exports', result.outputFiles[0].text)(require, module, module.exports);
++const { mapStudioFeatureEnabled, mapStudioPublicConfig, canonicalBusinessesFromItems, loadPublicStudioLayers } = module.exports;
++
++test('host flags default off and opt in only the named pilot', () => {
++  assert.equal(mapStudioFeatureEnabled(undefined, 'san-francisco-mission'), false);
++  assert.equal(mapStudioFeatureEnabled({}, 'san-francisco-mission'), false);
++  const env = { PUBLIC_MAP_STUDIO_SAN_FRANCISCO_MISSION: 'true' };
++  assert.equal(mapStudioFeatureEnabled(env, 'san-francisco-mission'), true);
++  assert.equal(mapStudioFeatureEnabled(env, 'boston-back-bay'), false);
++  assert.deepEqual(mapStudioPublicConfig({ SUPABASE_SERVICE_ROLE_KEY: 'never-public' }), { supabaseOrigin: '', publicAnonKey: '' });
++});
++test('canonical adapter preserves source identity and never fabricates coordinates', () => {
++  assert.deepEqual(canonicalBusinessesFromItems([{ id: 'a', title: 'Source name' }]), [{ id: 'a', name: 'Source name' }]);
++  assert.deepEqual(canonicalBusinessesFromItems([{ id: 'a', title: 'Source name', location: { lat: 1, lng: 2 } }])[0].location, { lat: 1, lng: 2 });
++});
++test('disabled host never starts a request', async () => {
++  let calls = 0;
++  assert.equal(await loadPublicStudioLayers({ mapKey: 'san-francisco-mission', items: [], fetcher: () => { calls++; } }), undefined);
++  assert.equal(calls, 0);
++});
++test('optional loading does not await, replace, or gate street readiness', async () => {
++  const source = await readFile('../../rental-vendors/lib/discovery-map.ts', 'utf8');
++  assert.ok(source.includes('void loadPublicStudioLayers('));
++  assert.ok(!source.includes('await loadPublicStudioLayers('));
++  assert.ok(source.includes('const studioIsCurrent = () => isCurrent() && map === studioMap;'));
++  assert.ok(source.includes('await streets.whenReady();'));
++  assert.ok(source.includes('suppressedStudioBusinesses.clear();'));
++  assert.ok(source.includes('getItems: () => visible'));
++  // Existing selection/history/consent/provider operations remain the owners.
++  assert.ok(source.includes('selectItem(businessId, true)'));
++  assert.ok(source.includes('createLeafletMapAdapter)(map)'));
++  assert.ok(source.includes('cleanups.push(navigationOwner.subscribe(readURL))'));
++  assert.ok(source.includes('cleanups.push(consent.subscribe('));
++});
 diff --git a/rental-vendors/lib/discovery-map.ts b/rental-vendors/lib/discovery-map.ts
-index 7e6c3c055..1b589cf3a 100644
+index f31971d41e45c7a9d81f590d2525f576f9c5e643..273c05a0fc142f3f6cab030c1db3836eda9e63de 100644
 --- a/rental-vendors/lib/discovery-map.ts
 +++ b/rental-vendors/lib/discovery-map.ts
-@@ -5,6 +5,7 @@ import { enhanceVendorLogos } from './vendor-logo';
+@@ -6,6 +6,7 @@ import { enhanceVendorLogos } from './vendor-logo';
  import { createPublicMapConsent } from './public-map-consent';
  import { getDiscoveryNavigation,type DiscoveryNavigation } from '../../packages/discovery-map/history';
  import { createLeafletMapAdapter } from './leaflet-map-adapter';
@@ -699,7 +848,7 @@ index 7e6c3c055..1b589cf3a 100644
  import type { MapProviderAdapter, MapViewport, ResultSnapshot, DiscoveryDomain, LocationKind,MapConsentAdapter,MapRenderers } from '../../packages/discovery-map/contracts';
  export interface DiscoveryMapItem {
    id: string; title: string; element: HTMLElement; domain?:DiscoveryDomain;locationKind?:LocationKind;
-@@ -21,6 +22,8 @@ interface Options {
+@@ -23,6 +24,8 @@ interface Options {
    listOnlyResources?: {count:number;label?:string};
    renderItem?: (item:DiscoveryMapItem,expanded:boolean)=>HTMLElement;
    markerPresentation?: MarkerPresentation | ((item: DiscoveryMapItem) => MarkerPresentation | undefined);
@@ -708,7 +857,7 @@ index 7e6c3c055..1b589cf3a 100644
  }
  const assetLoads = new Map<string, Promise<void>>();
  function loadAsset(url: string, style = false): Promise<void> {
-@@ -85,6 +88,7 @@ export function mountDiscoveryMap(options: Options) {
+@@ -88,6 +91,7 @@ export function mountDiscoveryMap(options: Options) {
    rail.append(status,listOnly, reel, navigation); dialog.append(canvas, toolbar, searchChrome, mapControls, notice, rail, detail); document.body.append(dialog);
    const controlsHome = document.createComment('discovery controls');
    let map: any, leaflet: any, layer: any, runtimeLayer: any;
@@ -716,16 +865,16 @@ index 7e6c3c055..1b589cf3a 100644
    let streetErrorCleanup: (() => void) | undefined;
    let provider:MapProviderAdapter|undefined, camera:MapViewport|undefined, suspended=false,explicitLoad=false,printing=false;
    let detailRenderedId='', renderRevision=0;let snapshot:ResultSnapshot<DiscoveryMapItem>={queryKey:'',revision:'0',items:[],total:0,completeness:'complete',cursor:null}; const cardCache=new Map<string,HTMLElement>();
-@@ -94,7 +98,7 @@ export function mountDiscoveryMap(options: Options) {
+@@ -97,7 +101,7 @@ export function mountDiscoveryMap(options: Options) {
    let oldOverflow = '', opener: HTMLElement | null = null, refreshing = false;
    const mapCleanups: Array<() => void> = [];
    const preparedMarkerElements = new WeakSet<HTMLElement>();
 -  const markers = new Map<string, any>(); const cleanups: Array<() => void> = [];
 +  const markers = new Map<string, any>(); const suppressedStudioBusinesses = new Set<string>(); const cleanups: Array<() => void> = [];
    const listen = (el: EventTarget, event: string, handler: EventListener) => { el.addEventListener(event, handler); cleanups.push(() => el.removeEventListener(event, handler)); };
+   const neighborhoodShell = neighborhoodPresentation ? createNeighborhoodMapShell({dialog,canvas,toolbar,searchChrome,controls,categories:options.categoryNavigation,mapControls,notice,rail,detail,close,searchToggle,fit:fitButton,setDetail}) : undefined;
    function writeURL(replace = false, layerName?:string) {
-     if(printing)return;
-@@ -155,8 +159,9 @@ export function mountDiscoveryMap(options: Options) {
+@@ -161,8 +165,9 @@ export function mountDiscoveryMap(options: Options) {
        if(card!==nextNode)reel.insertBefore(card,nextNode);nextNode=card.nextElementSibling;
      }
      if(focusedBeforeOrder&&document.activeElement!==focusedBeforeOrder&&reel.contains(focusedBeforeOrder)&&!focusedBeforeOrder.closest('[hidden]'))focusedBeforeOrder.focus({preventScroll:true});
@@ -736,47 +885,48 @@ index 7e6c3c055..1b589cf3a 100644
        prepareMarkerElement(marker,byId.get(id)!.title);
        updateMarkerSelection(marker, id === selected);
      }
-@@ -297,6 +302,25 @@ export function mountDiscoveryMap(options: Options) {
-           notice.textContent = 'Some street details could not load. Results and source links remain available.';
-         };
-         streets.on('roadserror', onStreetError); streetErrorCleanup = () => streets.off('roadserror', onStreetError); streets.addTo(map);
-+        if (options.studio?.enabled && options.studio.mapKey) {
-+          // This request is intentionally downstream of map open and consent.
-+          const loadedStudioLayer = await loadPublicStudioLayers({
-+            mapKey: options.studio.mapKey, enabled: options.studio.enabled,
-+            supabaseOrigin: options.studio.supabaseOrigin, publicAnonKey: options.studio.publicAnonKey,
-+            map, L: leaflet, items,
-+            selectBusiness: businessId => selectItem(businessId, true),
-+            setBusinessSuppressed: (businessId, suppressed) => {
-+              if (suppressed) suppressedStudioBusinesses.add(businessId); else suppressedStudioBusinesses.delete(businessId);
-+              if (active && !refreshing) render();
-+            },
-+          });
-+          if (!isCurrent()) { loadedStudioLayer?.dispose(); return; }
-+          studioLayer = loadedStudioLayer;
-+          // The first fetch starts with canonical source rows; immediately
-+          // apply the current filter/area snapshot before any overlay marker
-+          // can appear outside the public result set.
-+          studioLayer?.updateBusinesses?.(canonicalBusinessesFromItems(visible));
-+        }
-         await streets.whenReady();
-       }
-       catch {
-@@ -314,7 +338,7 @@ export function mountDiscoveryMap(options: Options) {
+@@ -295,6 +300,26 @@ export function mountDiscoveryMap(options: Options) {
+       if(camera||bounds){restoreCamera();render();}else fit();
+       if (selected) selectItem(selected);
+       neighborhoodShell?.setExpanded(full, !!byId.get(selected));
++      if (options.studio?.enabled && options.studio.mapKey) {
++        // Optional published artwork never gates street readiness or changes the provider.
++        // Capture this map generation so a late response cannot touch a reopened map.
++        const studioMap = map;
++        const studioIsCurrent = () => isCurrent() && map === studioMap;
++        void loadPublicStudioLayers({
++          ...options.studio, map: studioMap, L: leaflet, items: visible,
++          isCurrent: studioIsCurrent, getItems: () => visible,
++          selectBusiness: businessId => { if (studioIsCurrent()) selectItem(businessId, true); },
++          setBusinessSuppressed: (businessId, suppressed) => {
++            if (!studioIsCurrent()) return;
++            if (suppressed) suppressedStudioBusinesses.add(businessId); else suppressedStudioBusinesses.delete(businessId);
++            if (active && !refreshing) render();
++          },
++        }).then(loaded => {
++          if (!studioIsCurrent()) { loaded?.dispose(); return; }
++          studioLayer = loaded;
++          studioLayer?.updateBusinesses(canonicalBusinessesFromItems(visible));
++        }).catch(() => { /* Existing cards and markers remain the fallback. */ });
++      }
+       // Street readiness is independent of the valid Leaflet map and mapped pins.
+       let streets:any;
+       try {
+@@ -326,7 +351,7 @@ export function mountDiscoveryMap(options: Options) {
    }
    function commitArea() { if (!pendingBounds) return; bounds = pendingBounds; pendingBounds = null; clearArea.hidden = false; areaButton.hidden = true;writeURL(false); render(); }
    function disposeStreetLayer() { const streets=runtimeLayer;runtimeLayer=undefined;streetErrorCleanup?.();streetErrorCleanup=undefined;streets?.remove();canvas.removeAttribute('data-street-ready'); }
 -  function disposeMap() { mapCleanups.splice(0).forEach(cleanup => cleanup()); disposeStreetLayer(); if(provider){provider.dispose();provider=undefined;map=undefined;}else if(map){map.remove();map=undefined;} layer=undefined;markers.clear();retry.hidden=true;delete canvas.dataset.streetStatus;delete canvas.dataset.streetErrorPhase;canvas.replaceChildren(); }
-+  function disposeMap() { mapCleanups.splice(0).forEach(cleanup => cleanup()); const publicLayer=studioLayer; studioLayer=undefined; publicLayer?.dispose(); disposeStreetLayer(); if(provider){provider.dispose();provider=undefined;map=undefined;}else if(map){map.remove();map=undefined;} layer=undefined;markers.clear();retry.hidden=true;delete canvas.dataset.streetStatus;delete canvas.dataset.streetErrorPhase;canvas.replaceChildren(); }
++  function disposeMap() { mapCleanups.splice(0).forEach(cleanup => cleanup()); const publicLayer=studioLayer; studioLayer=undefined; publicLayer?.dispose(); suppressedStudioBusinesses.clear(); disposeStreetLayer(); if(provider){provider.dispose();provider=undefined;map=undefined;}else if(map){map.remove();map=undefined;} layer=undefined;markers.clear();retry.hidden=true;delete canvas.dataset.streetStatus;delete canvas.dataset.streetErrorPhase;canvas.replaceChildren(); }
    function retryMap() {
      if (destroyed || !active || loading || suspended || !canUseMap(consent)) return;
      camera=provider?.getViewport()||camera;generation++;disposeMap();void loadMap();
 diff --git a/rental-vendors/lib/studio-layers.ts b/rental-vendors/lib/studio-layers.ts
 new file mode 100644
-index 000000000..4af3668b2
+index 0000000000000000000000000000000000000000..39174eb1f89780f4af669d0205f58ac510334bed
 --- /dev/null
 +++ b/rental-vendors/lib/studio-layers.ts
-@@ -0,0 +1,65 @@
+@@ -0,0 +1,69 @@
 +import { attachPublishedLayers, type PublishedLayerMount, type PublicLayerFetcher } from '../../packages/discovery-map/public-layers';
 +import type { CanonicalBusiness } from '../../packages/discovery-map/studio/contracts';
 +import type { DiscoveryMapItem } from './discovery-map';
@@ -788,6 +938,8 @@ index 000000000..4af3668b2
 +  selectBusiness?: (businessId: string) => void;
 +  onMove?: (layer: any, position: readonly [number, number]) => void;
 +  editable?: boolean; fetcher?: PublicLayerFetcher;
++  isCurrent?: () => boolean;
++  getItems?: () => readonly DiscoveryMapItem[];
 +  setBusinessSuppressed?: (businessId: string, suppressed: boolean) => void;
 +}
 +
@@ -833,6 +985,8 @@ index 000000000..4af3668b2
 +    map: options.map,
 +    businesses,
 +    fetcher: options.fetcher,
++    isCurrent: options.isCurrent,
++    getBusinesses: options.getItems ? () => canonicalBusinessesFromItems(options.getItems!()) : undefined,
 +    setBusinessSuppressed: options.setBusinessSuppressed || (() => undefined),
 +    selectBusiness: businessId => {
 +      if (options.selectBusiness) options.selectBusiness(businessId);
@@ -843,7 +997,7 @@ index 000000000..4af3668b2
 +
 +export { attachPublishedLayers } from '../../packages/discovery-map/public-layers';
 diff --git a/rental-vendors/styles/discovery-map.css b/rental-vendors/styles/discovery-map.css
-index da99e3321..7c8cef18f 100644
+index da99e33212a8cff410b54f3f076da003b73ee29b..7c8cef18f29f3c5c881597f89a498d8223976d78 100644
 --- a/rental-vendors/styles/discovery-map.css
 +++ b/rental-vendors/styles/discovery-map.css
 @@ -243,3 +243,13 @@

@@ -8,6 +8,8 @@ A standalone owner-only editor and API for illustrated neighborhood maps. Both r
 
 The initial projects are San Francisco Mission and Boston Back Bay, exported from reviewed SplitIn source revision `925d14c4831554a406dff6f26814177d1c0fa487`. Canonical business IDs, addresses and locations are read-only. This repository does not replace SplitIn public pages or change their URLs.
 
+For the complete local build, migration and private deployment sequence, follow [Local Daytona release handoff](docs/local-daytona-release.md). See [current engineering verification and limits](docs/daytona-readiness-verification.md).
+
 ## Local verification
 
 ```sh

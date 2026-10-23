@@ -20,7 +20,8 @@ export DAYTONA_MAP_STUDIO_SNAPSHOT=map-studio-release-20261020
 python scripts/daytona-provision.py
 ```
 
-The script will only call Daytona when `--apply` is supplied. Applying requires
+The script will only call Daytona when `--apply` is supplied. Applying requires exported secure environment values (the control-plane script
+does not load `.env` automatically), including
 `DAYTONA_API_KEY`, the snapshot name, and all server-only `MAP_STUDIO_*`
 application settings: `ORIGIN`, GitHub client ID/secret, session secret,
 Supabase URL, and Supabase service-role key. Only the explicit application
@@ -29,12 +30,14 @@ The control-plane key is never forwarded to the app.
 
 It reuses the one fixed sandbox name, verifies the existing snapshot, OAuth
 origin, and application port before reuse, starts only stopped/paused states,
-rejects terminal/error states, runs a local `/healthz` check on the configured
+rejects terminal/error states, waits for a local `/readyz` check on the configured
 port, and strips preview query tokens before returning the URL. A failed lookup
 is not silently treated as a create; only a Daytona not-found response permits
-creation. The runtime port is fixed at 3000. Startup is bounded to 60 seconds
-and idle auto-stop is 15 minutes.
-If an existing sandbox has the wrong snapshot or origin, stop/delete it from
+creation. The runtime port is fixed at 3000. SDK startup defaults to a 60-second timeout, followed by a separate readiness
+budget of up to 60 seconds. `--start-timeout` configures each budget. Idle auto-stop
+is 15 minutes. Readiness verifies local configuration and frontend presence, not
+remote credentials, migrations, buckets or OAuth behavior.
+If an existing sandbox has the wrong snapshot, origin or application environment, stop/delete it from
 the Daytona dashboard and recreate it with the desired release and fixed
 OAuth origin; the script does not mutate those identity settings in place.
 
@@ -84,6 +87,8 @@ MAP_STUDIO_SUPABASE_SERVICE_ROLE_KEY='…' \
 python scripts/daytona-provision.py --apply --public-transport
 ```
 
+Creation and readiness checks keep the transport private. Public transport is
+enabled only after readiness succeeds; a readiness failure leaves it private.
 The guard is deliberate: setting a Daytona `public` flag alone is never an
 authentication boundary. The public manifest path remains separate from the
 owner/editor application and the app never starts a sandbox for a public map
@@ -102,6 +107,10 @@ python scripts/create-snapshot.py \
   --name map-studio-release-20261020 \
   --image ghcr.io/splitintech/neighborhood-map-studio@sha256:<digest>
 ```
+
+Snapshot creation has a 600-second default timeout; use `--timeout` to set a
+positive timeout appropriate to image size. A timeout is not proof that no
+snapshot was created: inspect the named snapshot before retrying.
 
 Add `--apply` only from the isolated Daytona SDK environment with
 `DAYTONA_API_KEY` present. The image digest and snapshot name should be
