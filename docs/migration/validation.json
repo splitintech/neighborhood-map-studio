@@ -10,9 +10,12 @@
     "frontend_typecheck_build": "passed",
     "offline_preflight": "passed",
     "browser": "passed: fixture desktop, mobile 390px, tablet 900px editing/publication and unauthenticated login",
-    "local_container_database": "not run; standalone CI provides disposable PostgreSQL and Docker"
+    "local_container_database": "not run; standalone CI provides disposable PostgreSQL and Docker",
+    "python_and_database_tests": 138,
+    "database": "passed against disposable local PostgreSQL 17, UTF-8; server stopped",
+    "local_container": "not run; Docker checks are prepared in standalone CI"
   },
-  "ci": "Check Actions on the exact standalone commit; final successful runs are recorded in the hub migration ledger.",
+  "ci": "Not yet run: remote repository creation is awaiting visibility authorization.",
   "npm_published": false,
   "images_published": false,
   "live_services_deployed": false,
