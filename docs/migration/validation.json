@@ -15,9 +15,10 @@
     "database": "passed against disposable local PostgreSQL 17, UTF-8; server stopped",
     "local_container": "not run; Docker checks are prepared in standalone CI"
   },
-  "ci": "Not yet run: remote repository creation is awaiting visibility authorization.",
+  "ci": "Standalone GitHub checks run on the exact published commit. Final run URLs and conclusions are recorded in the Open Internal Tools migration ledger.",
   "npm_published": false,
   "images_published": false,
   "live_services_deployed": false,
-  "provider_calls_or_notifications": false
+  "provider_calls_or_notifications": false,
+  "public_repository_publication_authorized": "2026-10-29; includes newer Map Studio source from SplitIn"
 }
