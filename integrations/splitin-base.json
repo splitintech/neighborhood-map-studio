@@ -1,0 +1,23 @@
+{
+  "repository": "splitintech/splitin",
+  "baseCommit": "df1faf9fd77611de8565a26bff5b6011639050de",
+  "verifiedAt": "2026-10-23",
+  "files": {
+    "blog-astro/src/scripts/neighborhood-category-map.ts": {
+      "gitBlob": "c33ea4a601b263ed508cca7072fb3c08554ad9d9"
+    },
+    "blog-astro/src/scripts/place-explorer.ts": {
+      "gitBlob": "1ec2800411fbc7b2059d02209c181c39710d9fb2"
+    },
+    "packages/discovery-map/index.ts": {
+      "gitBlob": "d287d7cf537da2a99ecd5ffff263315953158b46"
+    },
+    "rental-vendors/lib/discovery-map.ts": {
+      "gitBlob": "f31971d41e45c7a9d81f590d2525f576f9c5e643"
+    },
+    "rental-vendors/styles/discovery-map.css": {
+      "gitBlob": "da99e33212a8cff410b54f3f076da003b73ee29b"
+    }
+  },
+  "patchSha256": "b261f69f061116f73bcadcbc3f65cd70ff20ebf86d7961ff55ac15708bb250ba"
+}

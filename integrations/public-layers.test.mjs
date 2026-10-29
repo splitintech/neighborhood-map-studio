@@ -91,3 +91,70 @@ test("business suppression follows published references through hidden, filtered
 });
 
 await rm(directory, { recursive: true, force: true });
+
+test("disabled and stale hosts make no projection request", async () => {
+  let requests = 0;
+  const options = {
+    mapKey: "san-francisco-mission", enabled: false,
+    supabaseOrigin: "https://project.supabase.co", publicAnonKey: "anon-key",
+    L: {}, map: fakeMap(), businesses: [], setBusinessSuppressed() {}, selectBusiness() {},
+    fetcher: async () => { requests++; throw new Error("must not fetch"); },
+  };
+  assert.equal(await adapter.attachPublishedLayers(options), undefined);
+  assert.equal(await adapter.attachPublishedLayers({ ...options, enabled: true, isCurrent: () => false }), undefined);
+  assert.equal(requests, 0);
+});
+
+test("late projection after close, consent revoke, or map replacement cannot mount or suppress", async () => {
+  let current = true, complete;
+  const changes = [];
+  const pending = adapter.attachPublishedLayers({
+    mapKey: "san-francisco-mission", enabled: true,
+    supabaseOrigin: "https://project.supabase.co", publicAnonKey: "anon-key",
+    L: { marker() { throw new Error("stale marker mount"); } }, map: fakeMap(), businesses: [business],
+    isCurrent: () => current, setBusinessSuppressed: (...args) => changes.push(args), selectBusiness() {},
+    fetcher: () => new Promise(resolve => { complete = resolve; }),
+  });
+  current = false;
+  complete(new Response(JSON.stringify(manifest(documentWithBusiness(true))), { status: 200 }));
+  assert.equal(await pending, undefined);
+  assert.deepEqual(changes, []);
+});
+
+test("projection mounts only the current filter snapshot and routes business selection", async () => {
+  let complete, currentBusinesses = [business], selected;
+  const changes = [], handlers = new Map();
+  const L = { marker() { return { ...fakeLeaflet.marker(), on(name, handler) { handlers.set(name, handler); return this; } }; } };
+  const pending = adapter.attachPublishedLayers({
+    mapKey: "san-francisco-mission", enabled: true,
+    supabaseOrigin: "https://project.supabase.co", publicAnonKey: "anon-key",
+    L, map: fakeMap(), businesses: [business], getBusinesses: () => currentBusinesses,
+    setBusinessSuppressed: (...args) => changes.push(args), selectBusiness: id => { selected = id; },
+    fetcher: () => new Promise(resolve => { complete = resolve; }),
+  });
+  currentBusinesses = [];
+  complete(new Response(JSON.stringify(manifest(documentWithBusiness(true))), { status: 200 }));
+  const mount = await pending;
+  assert.ok(mount);
+  assert.deepEqual(changes, []);
+  assert.equal(handlers.size, 0);
+  mount.updateBusinesses([business]);
+  assert.deepEqual(changes, [["place-1", true]]);
+  handlers.get("click")();
+  assert.equal(selected, "place-1");
+  mount.dispose();
+  assert.deepEqual(changes, [["place-1", true], ["place-1", false]]);
+});
+
+test("projection failures and mismatched map keys preserve base markers", async () => {
+  for (const response of [new Response("failed", { status: 503 }), new Response("not json"), new Response(JSON.stringify(manifest({ ...documentWithBusiness(true), mapKey: "boston-back-bay" })))]) {
+    const changes = [];
+    assert.equal(await adapter.attachPublishedLayers({
+      mapKey: "san-francisco-mission", enabled: true,
+      supabaseOrigin: "https://project.supabase.co", publicAnonKey: "anon-key",
+      L: fakeLeaflet, map: fakeMap(), businesses: [business],
+      setBusinessSuppressed: (...args) => changes.push(args), selectBusiness() {}, fetcher: async () => response,
+    }), undefined);
+    assert.deepEqual(changes, []);
+  }
+});

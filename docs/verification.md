@@ -1,5 +1,7 @@
 # Verification record — 2026-10-20
 
+Historical source-repository evidence, preserved unchanged below. It is not a claim that the relocated service or live deployment has passed these checks. See [SplitIn transfer verification](splitin-transfer.md).
+
 ## Source and repository baseline
 
 - Target: `splitintech/open-internal-tools`, verified remote main `3e34ca2cb722e5970b6659c1d48e00363c2ed315`; implementation isolated on `feat/neighborhood-map-studio`.
@@ -31,3 +33,4 @@ No live Daytona sandbox, production OAuth app, remote migration, bucket provisio
 A local Docker daemon/buildx is unavailable; CI contains a release-image build check but its result must be recorded separately. Production registry access, startup/sleep/recreation, stable authenticated gateway, backup restore and application rollback need account configuration and deployed evidence. Automatic waking requires infrastructure outside the sleeping sandbox.
 
 Public integration is supplied as an adapter, an off-by-default durable projection and a separately applicable SplitIn source patch. The patch has not been applied to the user's checkout or deployed. Mobile physical devices, screen readers, performance baselines, 10-editor/100-viewer load, actual spending alerts/limits, restore rehearsal and seven-day pilot are outstanding acceptance evidence. Local source/unit/browser-fixture checks do not establish these measurements.
+

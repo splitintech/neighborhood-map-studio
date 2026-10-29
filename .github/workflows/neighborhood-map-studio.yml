@@ -1,9 +1,9 @@
 name: Neighborhood Map Studio
 on:
   push:
-    paths: ["neighborhood-map-studio/**", ".github/workflows/neighborhood-map-studio.yml"]
+    paths: ["services/neighborhood-map-studio/**", ".github/workflows/neighborhood-map-studio.yml"]
   pull_request:
-    paths: ["neighborhood-map-studio/**", ".github/workflows/neighborhood-map-studio.yml"]
+    paths: ["services/neighborhood-map-studio/**", ".github/workflows/neighborhood-map-studio.yml"]
 permissions:
   contents: read
 jobs:
@@ -20,7 +20,7 @@ jobs:
           --health-cmd pg_isready --health-interval 5s --health-timeout 3s --health-retries 10
     defaults:
       run:
-        working-directory: neighborhood-map-studio
+        working-directory: services/neighborhood-map-studio
     env:
       MAP_STUDIO_TEST_DATABASE_URL: postgresql://postgres:studio-test-only@127.0.0.1:5432/studio_test
     steps:
@@ -29,7 +29,7 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: neighborhood-map-studio/frontend/package-lock.json
+          cache-dependency-path: services/neighborhood-map-studio/frontend/package-lock.json
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
@@ -37,11 +37,12 @@ jobs:
       - run: python -m pip install -r requirements-dev.txt
       - run: python -m pytest tests -q
       - run: npm ci --ignore-scripts && npm run typecheck && npm test && npm run build
-        working-directory: neighborhood-map-studio/frontend
+        working-directory: services/neighborhood-map-studio/frontend
+      - run: python scripts/preflight.py
       - run: node shared/tests/run-tests.mjs
       - run: node --test integrations/public-layers.test.mjs
       - run: npx playwright install --with-deps chromium
-        working-directory: neighborhood-map-studio/frontend
+        working-directory: services/neighborhood-map-studio/frontend
       - name: Browser editing journey with fixture API
         run: |
           python -m uvicorn server.map_studio.main:app --host 127.0.0.1 --port 3000 --no-access-log &
@@ -51,3 +52,33 @@ jobs:
           cd frontend
           npm run test:browser
       - run: docker build --tag neighborhood-map-studio:test .
+      - name: Offline release-container readiness and access boundary
+        run: |
+          set -eu
+          trap 'docker rm -f map-studio-smoke >/dev/null 2>&1 || true' EXIT
+          docker run -d --name map-studio-smoke --network none \
+            -e MAP_STUDIO_ORIGIN=https://studio.example \
+            -e MAP_STUDIO_GITHUB_CLIENT_ID=offline-fixture \
+            -e MAP_STUDIO_GITHUB_CLIENT_SECRET=offline-fixture-not-a-secret \
+            -e MAP_STUDIO_SESSION_SECRET=offline-fixture-signing-value-at-least-32-characters \
+            -e MAP_STUDIO_SUPABASE_URL=https://database.example \
+            -e MAP_STUDIO_SUPABASE_SERVICE_ROLE_KEY=offline-fixture-not-a-key \
+            -e MAP_STUDIO_PUBLIC_MANIFESTS_ENABLED=false \
+            neighborhood-map-studio:test
+          ready=false
+          for attempt in $(seq 1 30); do
+            if docker exec map-studio-smoke python -c "import json,urllib.request; assert json.load(urllib.request.urlopen('http://127.0.0.1:3000/readyz',timeout=2))['ready'] is True"; then ready=true; break; fi
+            sleep 1
+          done
+          test "$ready" = true
+          docker exec -i map-studio-smoke python - <<'PY'
+          import urllib.request, urllib.error
+          for path, expected in [('/api/bff/map-studio/projects', 401), ('/api/public/map-studio/san-francisco-mission', 404)]:
+              try:
+                  urllib.request.urlopen('http://127.0.0.1:3000' + path, timeout=2)
+              except urllib.error.HTTPError as error:
+                  assert error.code == expected
+              else:
+                  raise AssertionError('Private or disabled route unexpectedly accepted')
+          assert urllib.request.urlopen('http://127.0.0.1:3000/map-studio/', timeout=2).status == 200
+          PY

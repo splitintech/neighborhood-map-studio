@@ -1,0 +1,686 @@
+[
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": ".github/workflows/dependency-review.yml",
+    "target": ".github/workflows/dependency-review.yml",
+    "git_blob": "1f67191185d41bb39459ca588fb38879eed93a2b",
+    "mode": "100644",
+    "sha256": "621b12e1d3b8c833e6336c068d305c79d844e2f1ad9d9109491fc8974080c46f"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": ".github/workflows/neighborhood-map-studio-image.yml",
+    "target": ".github/workflows/neighborhood-map-studio-image.yml",
+    "git_blob": "9d399effdfb679ee4d0c9f3a8f35a100ae11f1da",
+    "mode": "100644",
+    "sha256": "ec3d24ee0d196de58d7c47355b86f6cf7d6cfcc3ca2894d15e0ccd5e66338200"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": ".github/workflows/neighborhood-map-studio.yml",
+    "target": ".github/workflows/neighborhood-map-studio.yml",
+    "git_blob": "ae1fadc1629df8e8a08126fe685b7e8b534084ba",
+    "mode": "100644",
+    "sha256": "24576244105df9cbce9efd84fec62b26b4c6f40873ea5b67df4c388b6603d750"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "LICENSE",
+    "target": "LICENSE",
+    "git_blob": "48558c9ed2413adf3ba96a877a8be732845bdbc1",
+    "mode": "100644",
+    "sha256": "8875234fb3a6c3a6c1526e29e84912dade9c68ac14fccad175e6d47b4674eb5a"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "docs/brand/splitin-logo.png",
+    "target": "docs/brand/splitin-logo.png",
+    "git_blob": "807558c4206517d878dfe932315bf738317141fe",
+    "mode": "100644",
+    "sha256": "9e0954d3aa5ccfd94a358e61f9d0f18b2b80928c162d6a3228d9389769496a72"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/.dockerignore",
+    "target": ".dockerignore",
+    "git_blob": "16fc046222fb5028c049454732811ccd4b7c279e",
+    "mode": "100644",
+    "sha256": "ce1dd1b5934ad21acaf4585a9e2ec81160992cb37abe73eadcdf28e2121aa9ce"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/.env.example",
+    "target": ".env.example",
+    "git_blob": "da30db3b9ea9375c71ea91f4751047c0ea2e6f3a",
+    "mode": "100644",
+    "sha256": "3adcae07c7644be466b7371d242d41bcd069160a7c2c316ce128b70c1110913f"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/.gitignore",
+    "target": ".gitignore",
+    "git_blob": "12b7a1431339998edd138d779db6d3fc589ff261",
+    "mode": "100644",
+    "sha256": "69927dea4e0c4d9cb98f0bd059534c9c87680e1aefa9d388802da0d114984cbf"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/Dockerfile",
+    "target": "Dockerfile",
+    "git_blob": "d5ae0815547678d068f7c08ccc25c8bd0fc692e5",
+    "mode": "100644",
+    "sha256": "05e7677bb29f73d5a3e94b7ec7c803108cb4e8ac34482acfb89444118b21a4bc"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/README.md",
+    "target": "README.md",
+    "git_blob": "f1df30c494233d3b0b793a14b60a2d9fd90a4919",
+    "mode": "100644",
+    "sha256": "2cc23a2db1a0356920131456a5a9c6748ec50e373c42374eb18276e37f560291"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/docs/daytona.md",
+    "target": "docs/daytona.md",
+    "git_blob": "fee0415f363df594cfca622f049f30c8985118c1",
+    "mode": "100644",
+    "sha256": "315908cdce37e72ace8c58529312491a7a8b061edfb6e9bb89fe24dbae5da0ec"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/docs/implementation-contract.md",
+    "target": "docs/implementation-contract.md",
+    "git_blob": "64c14d61d066af7d6d6faf40318b81a521adee3d",
+    "mode": "100644",
+    "sha256": "9e65d6989a0471db1781f9bdb111624bbdc3e38b1ae1db13582f98e5844088ad"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/docs/operations.md",
+    "target": "docs/operations.md",
+    "git_blob": "208e0a34b239435ee326dc4dcee9e913ff2a0c09",
+    "mode": "100644",
+    "sha256": "b56566c8283d880a9a2aa7f1acb06ef42b593ec713e07f96631795d382b26160"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/docs/verification.md",
+    "target": "docs/verification.md",
+    "git_blob": "daa8ca818e491917dbc50ef73ce4e17c7705861c",
+    "mode": "100644",
+    "sha256": "deefe869f10bb035dd499443253163aa78d7b94645b58f0ea4b29706f533c3c7"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/fixtures/artwork/catalog.json",
+    "target": "fixtures/artwork/catalog.json",
+    "git_blob": "9ad0e67fad356e008e54cb51597995006afa7390",
+    "mode": "100644",
+    "sha256": "e46e7d53b38d661499e4724064c930f1567bf1c37a7e7ed164422787517e0162"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/fixtures/artwork/corner-cafe.svg",
+    "target": "fixtures/artwork/corner-cafe.svg",
+    "git_blob": "7982c36890957e4d846f21d299ccdb2a20cbcdae",
+    "mode": "100644",
+    "sha256": "51904dd1de885ce8e5ee0163c0b48707f46cb093aa03b37490e227e8f7351f6b"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/fixtures/artwork/local-favorite.svg",
+    "target": "fixtures/artwork/local-favorite.svg",
+    "git_blob": "a19db0f6c2384a2e82fbed0d8fb2cf0991e080e5",
+    "mode": "100644",
+    "sha256": "ce8776028beb0eb133847501a42d2f1563dae638080c63e06dea718e04b66da1"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/fixtures/artwork/pocket-park.svg",
+    "target": "fixtures/artwork/pocket-park.svg",
+    "git_blob": "9826985cdad98caa6d6e9bdeefe6e0e3ff0d3249",
+    "mode": "100644",
+    "sha256": "3933cfb404c27cd1943838cf69c73f800727c0d1734490dceacd0b058addf353"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/fixtures/pilot.json",
+    "target": "fixtures/pilot.json",
+    "git_blob": "dd08ddb62471707e057a3007eb349bf69fd1bc1b",
+    "mode": "100644",
+    "sha256": "1d968c3a84741164353fc6fb82c75a60c79e9a46397f1c88452c04e799db7ad5"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/frontend/README.md",
+    "target": "frontend/README.md",
+    "git_blob": "773d8f1fcb7badf2c4aadea4002b791c569999a2",
+    "mode": "100644",
+    "sha256": "3eb7681e204d579864ff0e1ae55ee2002a095c2fdf60be115bd35466f2d1bda0"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/frontend/index.html",
+    "target": "frontend/index.html",
+    "git_blob": "cbfee6b0291a0688eb9032b56d63b7d5ec986651",
+    "mode": "100644",
+    "sha256": "5f7d06476865ff9bb5ed95c31020a4f0ece5ffb98f9b3c1e643ab714e3d47870"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/frontend/package-lock.json",
+    "target": "frontend/package-lock.json",
+    "git_blob": "de25f7f26ae8145e7c2af91075786b6a57d27a2f",
+    "mode": "100644",
+    "sha256": "31db14db934b84597f7c02c08102814cba513cb32ac66f0658dd97d03ca543bc"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/frontend/package.json",
+    "target": "frontend/package.json",
+    "git_blob": "f57b38e3a8af776f8e417d86e54c894e69507961",
+    "mode": "100644",
+    "sha256": "a38c143c202ac1eeb4a0c2cee4714bad62218c7406f2aa6de605d0db0862556b"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/frontend/src/RealMap.tsx",
+    "target": "frontend/src/RealMap.tsx",
+    "git_blob": "22214f3551b1abae54463c5e8625506b6c927fb4",
+    "mode": "100644",
+    "sha256": "3c62f38241c107dcf70b010be28f64560bef6d67a847fc1522920efab2954156"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/frontend/src/api.ts",
+    "target": "frontend/src/api.ts",
+    "git_blob": "10c56675180382e34f15353ad6b0ee2b21bdedc3",
+    "mode": "100644",
+    "sha256": "cb624903b5bae5e82c5dae272a2ac242fa0ed54e6670d78a356d64c01eba7814"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/frontend/src/main.tsx",
+    "target": "frontend/src/main.tsx",
+    "git_blob": "842fc6778267ea9a5b4758709d139c0c0eddc349",
+    "mode": "100644",
+    "sha256": "68c509d2870c1252e8eebeafb21ef57b5306943f775924bdce70051da116593e"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/frontend/src/state.ts",
+    "target": "frontend/src/state.ts",
+    "git_blob": "a21949dab9202e4b13595bc5db810db0bd04b9ce",
+    "mode": "100644",
+    "sha256": "3001a8be7f4fceb7f3bddd2f5de064a50d379e9844d5154ea37c9a3265f864c4"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/frontend/src/storage.ts",
+    "target": "frontend/src/storage.ts",
+    "git_blob": "706a6199d34d76ee66783b0ad59c12c13d1063fb",
+    "mode": "100644",
+    "sha256": "ff2acb10ed9578e1f8059e26bf17dd7bbbd1f82ca8fe7047545541fe47dd77f6"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/frontend/src/styles.css",
+    "target": "frontend/src/styles.css",
+    "git_blob": "279acaeb2a632aa4b7a8e8300563e4e63e0e7e18",
+    "mode": "100644",
+    "sha256": "5caacb47eddd4912cb73ba682ae92497a50a3cc087594382a14e5ca9063aaf24"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/frontend/src/types.ts",
+    "target": "frontend/src/types.ts",
+    "git_blob": "d5be41cd4408870100ca5303615412a0659b5944",
+    "mode": "100644",
+    "sha256": "1a615d3bfe914d21d3dfceb3fac4d2899e537831cf9419cff04cea385d2e540b"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/frontend/tests/browser-smoke.mjs",
+    "target": "frontend/tests/browser-smoke.mjs",
+    "git_blob": "b5278d3c85824760b303e89d0e25768740f13bc6",
+    "mode": "100644",
+    "sha256": "9d1b4b6653ab19f595d972548e93e1d56930081ef439d7414810db39feebd41b"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/frontend/tests/run-state-tests.mjs",
+    "target": "frontend/tests/run-state-tests.mjs",
+    "git_blob": "3e13b6dab1b1dfd2a12da2da5fb102d6194ac70b",
+    "mode": "100644",
+    "sha256": "0be1e33bc98448bd825c71fa01b0780eda7c33e3cb685c6b98601e8d50df7cf2"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/frontend/tests/state.test.ts",
+    "target": "frontend/tests/state.test.ts",
+    "git_blob": "6a994160840189cff57c5ca7982e47ee350ecec7",
+    "mode": "100644",
+    "sha256": "206d941d8dbc3719e30206f761d6d2e76a73b78ae4b8b9435f65d7a15dd0a6c0"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/frontend/tsconfig.json",
+    "target": "frontend/tsconfig.json",
+    "git_blob": "658aa45a7e3d099e70994fb77a48abccdb785415",
+    "mode": "100644",
+    "sha256": "7b2da60fb3eeb0ecea2ef68dea089a3f3f4fb6fddf4bbf66039e79f82e1d3135"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/frontend/vite.config.ts",
+    "target": "frontend/vite.config.ts",
+    "git_blob": "9ae0a53580f9caf469d2d467df1cde60d4ff164c",
+    "mode": "100644",
+    "sha256": "fe9b6abbb237d10e8e9780ca15eef6af61f7f82e24cfea02326ae80e749fc760"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/integrations/README.md",
+    "target": "integrations/README.md",
+    "git_blob": "f1c4a49165df6acb635cfa0c8686d1f935e42f15",
+    "mode": "100644",
+    "sha256": "828fc4d134a2910fdf2aae828c074bc945d02cb39cffd8b98be63fae94393380"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/integrations/public-layers.test.mjs",
+    "target": "integrations/public-layers.test.mjs",
+    "git_blob": "a75a27365b291718e1483d3e2ccb48192f6c4f92",
+    "mode": "100644",
+    "sha256": "ee602f7ff4bb831588418a48b30748086725bc8839610572b1168b99398a0161"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/integrations/public-layers.ts",
+    "target": "integrations/public-layers.ts",
+    "git_blob": "bcf7c872850b6b11750df5cd43db7133375afa4a",
+    "mode": "100644",
+    "sha256": "0329153fff698f2ede72096da3c76cfeda70cb2f1fee19027505c53b39c15e57"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/integrations/splitin.patch",
+    "target": "integrations/splitin.patch",
+    "git_blob": "a752ddbcbdef4f926980aef6d81e8415d5312842",
+    "mode": "100644",
+    "sha256": "3a5616b5ca35e8115e724217de8261117bc3bdac6fe2c8bc45dfe1d6087ff8d6"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/migrations/001_map_studio.sql",
+    "target": "migrations/001_map_studio.sql",
+    "git_blob": "7b3f0173bf7f5531ae5faa2479e32a11b227b89c",
+    "mode": "100644",
+    "sha256": "0e55951e446ee33043a40a922f1bf6231bccb11ef5dc3e1c5a195003a6380fce"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/migrations/002_owner_sessions.sql",
+    "target": "migrations/002_owner_sessions.sql",
+    "git_blob": "e96ccd89427c39e403d3b44c710db4a22f5448d0",
+    "mode": "100644",
+    "sha256": "0f3e15437f41aa92a53b351c7702c58077eca1dea01a8baf336a14151f4f9c4b"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/migrations/003_public_delivery.sql",
+    "target": "migrations/003_public_delivery.sql",
+    "git_blob": "68af35334c010befe3acf4ab83b28e22158e11d6",
+    "mode": "100644",
+    "sha256": "0e0c06bfe91e6aae1d0b022b4fd221b21ceaa62acf8200c1bf06d927f574677b"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/pytest.ini",
+    "target": "pytest.ini",
+    "git_blob": "1e8a5a946cfed40862e01b1e461ebde5898181cf",
+    "mode": "100644",
+    "sha256": "2ae6a792a8e6b4fed552a1bd08e2b21743ec1077d76485427c5d6c75d6364e01"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/requirements-daytona.txt",
+    "target": "requirements-daytona.txt",
+    "git_blob": "9056c8b0460a6686f14ef0301d24939cdae5368f",
+    "mode": "100644",
+    "sha256": "0bd9302726faa88ceda64f6c6f78624825533554ccc04b73fa05f55a2620ff50"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/requirements-dev.txt",
+    "target": "requirements-dev.txt",
+    "git_blob": "a9e58fd83bc2ca9645a38d8ec3acc01cd1245a5d",
+    "mode": "100644",
+    "sha256": "6cf59f4d0b7c70af8075c881e1f326b7de787e6f4db5db741882fc1695ff1ee2"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/requirements.txt",
+    "target": "requirements.txt",
+    "git_blob": "b715690d1f22cd0a4455a80f03ec4230716c1728",
+    "mode": "100644",
+    "sha256": "dadef7c9698ac299f47525663364ca64636799d40bd7cc2e0207c593dcee2835"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/scripts/create-snapshot.py",
+    "target": "scripts/create-snapshot.py",
+    "git_blob": "9a4c92abaca3882bc894b8b3b7afaa2e118940ed",
+    "mode": "100644",
+    "sha256": "60d40c516001657c611931611d2a52eb422c1eca281d929a420418822f68792f"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/scripts/daytona-provision.py",
+    "target": "scripts/daytona-provision.py",
+    "git_blob": "0b8e70ceda4996c8c509efb4170ff952bf408cfc",
+    "mode": "100644",
+    "sha256": "4bdfbc2a409ad542158688dd366392722d74682da3fddbb2c7c0c15a79480d4a"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/scripts/export-pilot.mjs",
+    "target": "scripts/export-pilot.mjs",
+    "git_blob": "93117f2c31f92df4225f54376d982f8d6ad6c05d",
+    "mode": "100644",
+    "sha256": "3b9a99b3e3bab12e939a16ee54c12e762c3b0077284542e02de0cb366969eaac"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/scripts/seed-artwork.py",
+    "target": "scripts/seed-artwork.py",
+    "git_blob": "86feae17646c51205ac02090227be2ea52a32377",
+    "mode": "100644",
+    "sha256": "af09fa41d58dfc3c47dbe0293e53c29fad10f852835f789ba6d7c8d7c81b3a14"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/scripts/seed-pilot.py",
+    "target": "scripts/seed-pilot.py",
+    "git_blob": "8b00ffda6b2e81b42e1ca3cd1b68772c6e696bfc",
+    "mode": "100644",
+    "sha256": "70ff37efcfa17b7654ab0d6fa0261ff420178cfae64ea9b64bd4d17b16b6388a"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/server/__init__.py",
+    "target": "server/__init__.py",
+    "git_blob": "5380b7e14b98599b00853450061aca16f60b0607",
+    "mode": "100644",
+    "sha256": "da37e376c9c003e885064f91628582bd5ea9a5b01669a37acb506367ff4812c5"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/server/map_studio/__init__.py",
+    "target": "server/map_studio/__init__.py",
+    "git_blob": "6f537ec10b6332e1fc2fa9f9c31fddde0644b046",
+    "mode": "100644",
+    "sha256": "e3a6074c0a0c6feb905c1679abeb8643621dc1ff4f66c301e19765fee9e4069d"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/server/map_studio/assets.py",
+    "target": "server/map_studio/assets.py",
+    "git_blob": "91370be43d4aece5701291f45150cf40713f4d59",
+    "mode": "100644",
+    "sha256": "7f516987c8e1f657694230ce4180c6f6b966ff2859f415eca59d775c81bfafbf"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/server/map_studio/auth.py",
+    "target": "server/map_studio/auth.py",
+    "git_blob": "6a7ec663a508904440de095f40683d6323e1fe05",
+    "mode": "100644",
+    "sha256": "fdfd391a65274808f81a659e08c15dc1a84d7276dc8db518c90396589bcaa0ba"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/server/map_studio/config.py",
+    "target": "server/map_studio/config.py",
+    "git_blob": "9a483271c715134df39ab02b798109e20c570c49",
+    "mode": "100644",
+    "sha256": "78019f7ef5f783acc68f76799a4446c2e4ab0312a24de2e7daa388593a9c8c3f"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/server/map_studio/image_worker.py",
+    "target": "server/map_studio/image_worker.py",
+    "git_blob": "e639d90c165fd8fe6b2bf02ff62bbc69f6ed4bbe",
+    "mode": "100644",
+    "sha256": "993b7aad1778889d16c7bc1edeeec121244ed50447e125c83df1f66c59238f21"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/server/map_studio/main.py",
+    "target": "server/map_studio/main.py",
+    "git_blob": "e1866c66e7e435cca7ad6fe4e4c4961e42781d74",
+    "mode": "100644",
+    "sha256": "f079c751704eeb232335251ed14053513d831c5373ff211c39398c1eb1b53c67"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/server/map_studio/models.py",
+    "target": "server/map_studio/models.py",
+    "git_blob": "7a797df648a50c09853796943941c74503f6db3e",
+    "mode": "100644",
+    "sha256": "5b4229b148baddc244739a4919ddf8cce6ffde4bd65c847dca0ac36f1fb6ba8b"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/server/map_studio/router.py",
+    "target": "server/map_studio/router.py",
+    "git_blob": "da3ab76e829a266f3fa66925bb72250d9a300e60",
+    "mode": "100644",
+    "sha256": "a85e7971952d067b2d428202f6f8ddc0b0d2252c90f6d41fcabb274777b471d5"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/server/map_studio/storage.py",
+    "target": "server/map_studio/storage.py",
+    "git_blob": "b0fb19ac0f49c5639cd9f194c894befede220f20",
+    "mode": "100644",
+    "sha256": "9c99737b0c13794348a41238dc4ff76297a301ec67132897556c7d5882975ae1"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/server/map_studio/store.py",
+    "target": "server/map_studio/store.py",
+    "git_blob": "8a27da5517d2a195bb32c56a98ab0eed61d44985",
+    "mode": "100644",
+    "sha256": "3600aab786a255e593528a645b71c97c9698acbe5cd3dfbba89374658c6624ee"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/shared/contracts.ts",
+    "target": "shared/contracts.ts",
+    "git_blob": "70a39d5e289369c5b8cc116badfb0057ba2d4a6e",
+    "mode": "100644",
+    "sha256": "55115be6a08e424942918a46097f31abe3ad6750875332144fd1a543227e88de"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/shared/index.ts",
+    "target": "shared/index.ts",
+    "git_blob": "979b32b2733c6b4973131527ae7b9b9294a5e3f7",
+    "mode": "100644",
+    "sha256": "2f0ac00259a2ebc8161187f5a60a3451c573f487fc806bc5672e19745fe7944c"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/shared/layers.css",
+    "target": "shared/layers.css",
+    "git_blob": "80dd674815b7a776aa2f35cbf2970df79bc49350",
+    "mode": "100644",
+    "sha256": "e8563a9380658367f64faaeb5ab230857686fec14b02b538af2be438790b7dfb"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/shared/leaflet.ts",
+    "target": "shared/leaflet.ts",
+    "git_blob": "65078a17c5af9db84bb11e6ab89398701d310639",
+    "mode": "100644",
+    "sha256": "7a727ffb5f79cc5be3a9dc6f0541130bd6b8493e2225745f879d8cb6bbfe679e"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/shared/tests/contracts.test.ts",
+    "target": "shared/tests/contracts.test.ts",
+    "git_blob": "65b13a4ef897603668515b592b90d883952e0b81",
+    "mode": "100644",
+    "sha256": "719464a6cd3c438f7592107ffbbdcc05ca59b53aff7aec012d42d559ef9c8640"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/shared/tests/leaflet.test.ts",
+    "target": "shared/tests/leaflet.test.ts",
+    "git_blob": "9832f5f6e9ebf86b4d49547ce85773750dd6e909",
+    "mode": "100644",
+    "sha256": "873d58f90bf20f35f14056238fd8590065c3118c027b3c7a5e12c9d4ec5117fd"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/shared/tests/run-tests.mjs",
+    "target": "shared/tests/run-tests.mjs",
+    "git_blob": "6847e0e5d3d58e19c819556b5f0ffaa680830563",
+    "mode": "100644",
+    "sha256": "88433cf1c8c14e0ac844449af4f305b6400b6ca5513ed117b757647032f0914e"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/start.sh",
+    "target": "start.sh",
+    "git_blob": "3cb0a61819f0c6cf85e1a31d5aa60d69fa4d531e",
+    "mode": "100644",
+    "sha256": "1579da54cd5733f37198bf14e593a8fb58304907196cb5082fb3b16655487fb2"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/tests/test_auth.py",
+    "target": "tests/test_auth.py",
+    "git_blob": "09c8c342c888bc81ae941756e5ca45ffdd5ba7bd",
+    "mode": "100644",
+    "sha256": "5fb1c28ee27c6839e355aa445547deef16552e9c18f18464ccc517073b8d9442"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/tests/test_core.py",
+    "target": "tests/test_core.py",
+    "git_blob": "319ceab736774ada1450dcadd93d1ef0a89e1d33",
+    "mode": "100644",
+    "sha256": "aa56f3ee96c46e94ffec1b928918a83013ac1361afa198f5f412cf6a4ff066fc"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/tests/test_database.py",
+    "target": "tests/test_database.py",
+    "git_blob": "54b77a27b5833643398b1916e50915744dc93911",
+    "mode": "100644",
+    "sha256": "d7700bf5bff43dbc16a758574e4fad5662ab989e4e98cddfc29c463acf64cced"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/tests/test_daytona_provision.py",
+    "target": "tests/test_daytona_provision.py",
+    "git_blob": "7f4304997391154c58adc6950052743defa28ea6",
+    "mode": "100644",
+    "sha256": "dd58094669db8c9dd4cbfdcc86bb212f80ce3fd5c6d9cfa5b3bb23aaa9a1c399"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/tests/test_http.py",
+    "target": "tests/test_http.py",
+    "git_blob": "e141fece206a2ccfc471660a8094ed5b0102ee21",
+    "mode": "100644",
+    "sha256": "b723ac6ba550f79591f920726be63f44733063492e08f5512c1de8e0edf5518b"
+  },
+  {
+    "source_repository": "https://github.com/splitintech/open-internal-tools",
+    "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+    "source": "neighborhood-map-studio/tests/test_images.py",
+    "target": "tests/test_images.py",
+    "git_blob": "06077e6cdbbc079a62a9d85e76ea95312568ecec",
+    "mode": "100644",
+    "sha256": "1897ec681910d326a082d77fba4d02a0e1a9ba153bea75cf01c2babb98ac0c9f"
+  }
+]

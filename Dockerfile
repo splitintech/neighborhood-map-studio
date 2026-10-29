@@ -27,5 +27,8 @@ RUN chmod 0555 ./start.sh
 RUN useradd --system --uid 10001 --home /opt/map-studio studio
 USER studio
 
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3000/readyz', timeout=3)"
+
 EXPOSE 3000
 ENTRYPOINT ["/opt/map-studio/start.sh"]

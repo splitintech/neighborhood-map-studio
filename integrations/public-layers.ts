@@ -37,8 +37,11 @@ export async function attachPublishedLayers(options: {
   setBusinessSuppressed: (businessId: string, suppressed: boolean) => void;
   selectBusiness: (businessId: string) => void;
   fetcher?: PublicLayerFetcher;
+  /** Host lifecycle guard, checked again after the asynchronous projection read. */
+  isCurrent?: () => boolean;
+  getBusinesses?: () => readonly CanonicalBusiness[];
 }): Promise<PublishedLayerMount | undefined> {
-  if (!options.enabled) return;
+  if (!options.enabled || options.isCurrent?.() === false) return;
   try {
     const origin = publicOrigin(options.supabaseOrigin);
     const anonKey = options.publicAnonKey.trim();
@@ -62,9 +65,10 @@ export async function attachPublishedLayers(options: {
         width: asset.width, height: asset.height, state: 'ready',
         url: new URL(`/storage/v1/object/public/map-studio-published/${asset.publicPath}`, origin).href });
     });
+    if (options.isCurrent?.() === false) return;
     let currentDocument = document;
     let currentAssets = [...assets];
-    let businesses = [...options.businesses];
+    let businesses = [...(options.getBusinesses?.() || options.businesses)];
     const mount = mountStudioLayers({ L: options.L, map: options.map, document: currentDocument, assets: currentAssets,
       businesses, onSelect: (layer) => {
         if (layer.kind === 'business') options.selectBusiness(layer.businessId);

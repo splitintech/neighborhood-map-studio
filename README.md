@@ -1,8 +1,14 @@
 # SplitIn Neighborhood Map Studio
 
+This source lives in `splitintech/splitin` at `services/neighborhood-map-studio/`. Run the commands below from that directory. It was transferred from [open-internal-tools PR20](https://github.com/splitintech/open-internal-tools/pull/20), commit `87b71450ce3422ec80112de4c680f77775de6937`; the original source remains unchanged. This source-only transfer does not deploy the service, apply migrations, configure credentials, seed projects, or enable public delivery.
+
+The three SQL files remain in this service’s `migrations/` folder, intentionally outside the repository-level `supabase/migrations/` rollout. Review and apply them separately only when authorized. See [transfer verification](docs/splitin-transfer.md).
+
 A standalone owner-only editor and API for illustrated neighborhood maps. Both run in one Daytona container; Supabase Postgres and object storage hold durable state. Only GitHub accounts with the **verified email `splitineu@gmail.com`** can sign in. GitHub access tokens never reach the browser or storage.
 
 The initial projects are San Francisco Mission and Boston Back Bay, exported from reviewed SplitIn source revision `925d14c4831554a406dff6f26814177d1c0fa487`. Canonical business IDs, addresses and locations are read-only. This repository does not replace SplitIn public pages or change their URLs.
+
+For the complete local build, migration and private deployment sequence, follow [Local Daytona release handoff](docs/local-daytona-release.md). See [current engineering verification and limits](docs/daytona-readiness-verification.md).
 
 ## Local verification
 
@@ -60,3 +66,4 @@ Public delivery is disabled initially. [`integrations/README.md`](integrations/R
 See [`docs/daytona.md`](docs/daytona.md) for the pinned image/snapshot, secrets, private/public preview distinction and restart procedure. Linking GitHub to Daytona provides account/repository access; it does not configure application OAuth, storage or a stable gateway.
 
 See [`docs/operations.md`](docs/operations.md) for backup/restore, rollback, monitoring, budget and pilot acceptance. See [`docs/verification.md`](docs/verification.md) for actual local evidence and remaining deployment checks. WebGPU, Three.js and 3D are deferred.
+

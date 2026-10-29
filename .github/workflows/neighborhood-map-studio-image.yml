@@ -18,8 +18,8 @@ jobs:
       - uses: docker/build-push-action@v6
         id: build
         with:
-          context: neighborhood-map-studio
-          file: neighborhood-map-studio/Dockerfile
+          context: services/neighborhood-map-studio
+          file: services/neighborhood-map-studio/Dockerfile
           push: true
           platforms: linux/amd64
           tags: ghcr.io/splitintech/neighborhood-map-studio:${{ github.sha }}
