@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-29",
+  "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+  "local": {
+    "python_tests": 128,
+    "local_database_tests_skipped": 10,
+    "frontend_state_tests": 6,
+    "shared_tests": 11,
+    "public_adapter_tests": 7,
+    "frontend_typecheck_build": "passed",
+    "offline_preflight": "passed",
+    "browser": "passed: fixture desktop, mobile 390px, tablet 900px editing/publication and unauthenticated login",
+    "local_container_database": "not run; standalone CI provides disposable PostgreSQL and Docker"
+  },
+  "ci": "Check Actions on the exact standalone commit; final successful runs are recorded in the hub migration ledger.",
+  "npm_published": false,
+  "images_published": false,
+  "live_services_deployed": false,
+  "provider_calls_or_notifications": false
+}

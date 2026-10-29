@@ -28,5 +28,14 @@
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "node tests/run-state-tests.mjs",
     "test:browser": "node tests/browser-smoke.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/splitintech/neighborhood-map-studio.git",
+    "directory": "frontend"
+  },
+  "homepage": "https://github.com/splitintech/neighborhood-map-studio/tree/main/frontend#readme",
+  "bugs": {
+    "url": "https://github.com/splitintech/neighborhood-map-studio/issues"
   }
 }

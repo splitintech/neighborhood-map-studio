@@ -1,0 +1,600 @@
+{
+  "source_commit": "87b71450ce3422ec80112de4c680f77775de6937",
+  "files": [
+    {
+      "path": ".github/workflows/dependency-review.yml",
+      "sha256": "621b12e1d3b8c833e6336c068d305c79d844e2f1ad9d9109491fc8974080c46f",
+      "source_sha256": "621b12e1d3b8c833e6336c068d305c79d844e2f1ad9d9109491fc8974080c46f",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": ".github/workflows/neighborhood-map-studio-image.yml",
+      "sha256": "c76b18bbfffb6d51d889fc637e31379b878b3f9f6e02abdd5d859aedd974eee9",
+      "source_sha256": "2ab7e4e551de4597ca4a0137553673bb29ae8660eb3040234219a2a201e1ba69",
+      "mode": "100644",
+      "change": "Standalone README, documentation, repository metadata, workflow paths or developer configuration."
+    },
+    {
+      "path": ".github/workflows/neighborhood-map-studio.yml",
+      "sha256": "9deaa85232fa04462b19d2b4c63c6767ca70d45d029b9b0f2152ee5478649ac4",
+      "source_sha256": "57cb82c32c10b81421c59a1f8248af75cddada17e25ceb2b4822ba304b52a62a",
+      "mode": "100644",
+      "change": "Standalone README, documentation, repository metadata, workflow paths or developer configuration."
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "8875234fb3a6c3a6c1526e29e84912dade9c68ac14fccad175e6d47b4674eb5a",
+      "source_sha256": "8875234fb3a6c3a6c1526e29e84912dade9c68ac14fccad175e6d47b4674eb5a",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "docs/brand/splitin-logo.png",
+      "sha256": "9e0954d3aa5ccfd94a358e61f9d0f18b2b80928c162d6a3228d9389769496a72",
+      "source_sha256": "9e0954d3aa5ccfd94a358e61f9d0f18b2b80928c162d6a3228d9389769496a72",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": ".dockerignore",
+      "sha256": "ce1dd1b5934ad21acaf4585a9e2ec81160992cb37abe73eadcdf28e2121aa9ce",
+      "source_sha256": "ce1dd1b5934ad21acaf4585a9e2ec81160992cb37abe73eadcdf28e2121aa9ce",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": ".env.example",
+      "sha256": "fdf1efa4f25088f296cd1b61012fae669cc38868f5d2fa7e8330a522cdb6ad39",
+      "source_sha256": "fdf1efa4f25088f296cd1b61012fae669cc38868f5d2fa7e8330a522cdb6ad39",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "37ae56c49740c171efb8139febb31089b619fc0665a1ebb5aa6ea251d48ee7d5",
+      "source_sha256": "69927dea4e0c4d9cb98f0bd059534c9c87680e1aefa9d388802da0d114984cbf",
+      "mode": "100644",
+      "change": "Standalone README, documentation, repository metadata, workflow paths or developer configuration."
+    },
+    {
+      "path": "Dockerfile",
+      "sha256": "40f48270bb8e5f4779bbdbe27acd229311e8b5601f5bae0aed050361ff802dbd",
+      "source_sha256": "40f48270bb8e5f4779bbdbe27acd229311e8b5601f5bae0aed050361ff802dbd",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "README.md",
+      "sha256": "0a892f960de89483fea9d7075cf420fb38627cad5987b90201e37ca06d79260e",
+      "source_sha256": "79b08342cbcd3269e19b5f8a8c598fcc1cf4f08d3d8bad85661bc5427baa3e4f",
+      "mode": "100644",
+      "change": "Standalone README, documentation, repository metadata, workflow paths or developer configuration."
+    },
+    {
+      "path": "docs/daytona.md",
+      "sha256": "fc7920562c7e00ac4d1a58ff2906503071fb396d1a0e340909c9281fabfdf7cc",
+      "source_sha256": "fc7920562c7e00ac4d1a58ff2906503071fb396d1a0e340909c9281fabfdf7cc",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "docs/implementation-contract.md",
+      "sha256": "9e65d6989a0471db1781f9bdb111624bbdc3e38b1ae1db13582f98e5844088ad",
+      "source_sha256": "9e65d6989a0471db1781f9bdb111624bbdc3e38b1ae1db13582f98e5844088ad",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "docs/operations.md",
+      "sha256": "b56566c8283d880a9a2aa7f1acb06ef42b593ec713e07f96631795d382b26160",
+      "source_sha256": "b56566c8283d880a9a2aa7f1acb06ef42b593ec713e07f96631795d382b26160",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "docs/verification.md",
+      "sha256": "81d398bbcaee9e9b84f172cd2919340f7152ffeaee65bab476a1a90347bbb452",
+      "source_sha256": "81d398bbcaee9e9b84f172cd2919340f7152ffeaee65bab476a1a90347bbb452",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "fixtures/artwork/catalog.json",
+      "sha256": "e46e7d53b38d661499e4724064c930f1567bf1c37a7e7ed164422787517e0162",
+      "source_sha256": "e46e7d53b38d661499e4724064c930f1567bf1c37a7e7ed164422787517e0162",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "fixtures/artwork/corner-cafe.svg",
+      "sha256": "51904dd1de885ce8e5ee0163c0b48707f46cb093aa03b37490e227e8f7351f6b",
+      "source_sha256": "51904dd1de885ce8e5ee0163c0b48707f46cb093aa03b37490e227e8f7351f6b",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "fixtures/artwork/local-favorite.svg",
+      "sha256": "ce8776028beb0eb133847501a42d2f1563dae638080c63e06dea718e04b66da1",
+      "source_sha256": "ce8776028beb0eb133847501a42d2f1563dae638080c63e06dea718e04b66da1",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "fixtures/artwork/pocket-park.svg",
+      "sha256": "3933cfb404c27cd1943838cf69c73f800727c0d1734490dceacd0b058addf353",
+      "source_sha256": "3933cfb404c27cd1943838cf69c73f800727c0d1734490dceacd0b058addf353",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "fixtures/pilot.json",
+      "sha256": "1d968c3a84741164353fc6fb82c75a60c79e9a46397f1c88452c04e799db7ad5",
+      "source_sha256": "1d968c3a84741164353fc6fb82c75a60c79e9a46397f1c88452c04e799db7ad5",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "frontend/README.md",
+      "sha256": "3eb7681e204d579864ff0e1ae55ee2002a095c2fdf60be115bd35466f2d1bda0",
+      "source_sha256": "3eb7681e204d579864ff0e1ae55ee2002a095c2fdf60be115bd35466f2d1bda0",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "frontend/index.html",
+      "sha256": "5f7d06476865ff9bb5ed95c31020a4f0ece5ffb98f9b3c1e643ab714e3d47870",
+      "source_sha256": "5f7d06476865ff9bb5ed95c31020a4f0ece5ffb98f9b3c1e643ab714e3d47870",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "frontend/package-lock.json",
+      "sha256": "31db14db934b84597f7c02c08102814cba513cb32ac66f0658dd97d03ca543bc",
+      "source_sha256": "31db14db934b84597f7c02c08102814cba513cb32ac66f0658dd97d03ca543bc",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "frontend/package.json",
+      "sha256": "ca777afe835f40de555cf80f1a9767530fac91ba52c76f0d90448c551205c68d",
+      "source_sha256": "a38c143c202ac1eeb4a0c2cee4714bad62218c7406f2aa6de605d0db0862556b",
+      "mode": "100644",
+      "change": "Standalone README, documentation, repository metadata, workflow paths or developer configuration."
+    },
+    {
+      "path": "frontend/src/RealMap.tsx",
+      "sha256": "3c62f38241c107dcf70b010be28f64560bef6d67a847fc1522920efab2954156",
+      "source_sha256": "3c62f38241c107dcf70b010be28f64560bef6d67a847fc1522920efab2954156",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "frontend/src/api.ts",
+      "sha256": "cb624903b5bae5e82c5dae272a2ac242fa0ed54e6670d78a356d64c01eba7814",
+      "source_sha256": "cb624903b5bae5e82c5dae272a2ac242fa0ed54e6670d78a356d64c01eba7814",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "frontend/src/main.tsx",
+      "sha256": "68c509d2870c1252e8eebeafb21ef57b5306943f775924bdce70051da116593e",
+      "source_sha256": "68c509d2870c1252e8eebeafb21ef57b5306943f775924bdce70051da116593e",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "frontend/src/state.ts",
+      "sha256": "3001a8be7f4fceb7f3bddd2f5de064a50d379e9844d5154ea37c9a3265f864c4",
+      "source_sha256": "3001a8be7f4fceb7f3bddd2f5de064a50d379e9844d5154ea37c9a3265f864c4",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "frontend/src/storage.ts",
+      "sha256": "ff2acb10ed9578e1f8059e26bf17dd7bbbd1f82ca8fe7047545541fe47dd77f6",
+      "source_sha256": "ff2acb10ed9578e1f8059e26bf17dd7bbbd1f82ca8fe7047545541fe47dd77f6",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "frontend/src/styles.css",
+      "sha256": "5caacb47eddd4912cb73ba682ae92497a50a3cc087594382a14e5ca9063aaf24",
+      "source_sha256": "5caacb47eddd4912cb73ba682ae92497a50a3cc087594382a14e5ca9063aaf24",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "frontend/src/types.ts",
+      "sha256": "1a615d3bfe914d21d3dfceb3fac4d2899e537831cf9419cff04cea385d2e540b",
+      "source_sha256": "1a615d3bfe914d21d3dfceb3fac4d2899e537831cf9419cff04cea385d2e540b",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "frontend/tests/browser-smoke.mjs",
+      "sha256": "9d1b4b6653ab19f595d972548e93e1d56930081ef439d7414810db39feebd41b",
+      "source_sha256": "9d1b4b6653ab19f595d972548e93e1d56930081ef439d7414810db39feebd41b",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "frontend/tests/run-state-tests.mjs",
+      "sha256": "0be1e33bc98448bd825c71fa01b0780eda7c33e3cb685c6b98601e8d50df7cf2",
+      "source_sha256": "0be1e33bc98448bd825c71fa01b0780eda7c33e3cb685c6b98601e8d50df7cf2",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "frontend/tests/state.test.ts",
+      "sha256": "206d941d8dbc3719e30206f761d6d2e76a73b78ae4b8b9435f65d7a15dd0a6c0",
+      "source_sha256": "206d941d8dbc3719e30206f761d6d2e76a73b78ae4b8b9435f65d7a15dd0a6c0",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "frontend/tsconfig.json",
+      "sha256": "7b2da60fb3eeb0ecea2ef68dea089a3f3f4fb6fddf4bbf66039e79f82e1d3135",
+      "source_sha256": "7b2da60fb3eeb0ecea2ef68dea089a3f3f4fb6fddf4bbf66039e79f82e1d3135",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "frontend/vite.config.ts",
+      "sha256": "fe9b6abbb237d10e8e9780ca15eef6af61f7f82e24cfea02326ae80e749fc760",
+      "source_sha256": "fe9b6abbb237d10e8e9780ca15eef6af61f7f82e24cfea02326ae80e749fc760",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "integrations/README.md",
+      "sha256": "81e1b47dc5aaa5b2544790d4c37b00c05267521b8fbf99e2a2638c50a6f61bc7",
+      "source_sha256": "81e1b47dc5aaa5b2544790d4c37b00c05267521b8fbf99e2a2638c50a6f61bc7",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "integrations/public-layers.test.mjs",
+      "sha256": "9d2f5c3c471ee1ac395d47bf4124deea0681f96f1cef2d763b2a66360c224148",
+      "source_sha256": "9d2f5c3c471ee1ac395d47bf4124deea0681f96f1cef2d763b2a66360c224148",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "integrations/public-layers.ts",
+      "sha256": "8b947a5882255f61c2e5e5b752aff53b32822f97ae9c04ba29b35f004662bc9e",
+      "source_sha256": "8b947a5882255f61c2e5e5b752aff53b32822f97ae9c04ba29b35f004662bc9e",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "integrations/splitin.patch",
+      "sha256": "b261f69f061116f73bcadcbc3f65cd70ff20ebf86d7961ff55ac15708bb250ba",
+      "source_sha256": "b261f69f061116f73bcadcbc3f65cd70ff20ebf86d7961ff55ac15708bb250ba",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "migrations/001_map_studio.sql",
+      "sha256": "0e55951e446ee33043a40a922f1bf6231bccb11ef5dc3e1c5a195003a6380fce",
+      "source_sha256": "0e55951e446ee33043a40a922f1bf6231bccb11ef5dc3e1c5a195003a6380fce",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "migrations/002_owner_sessions.sql",
+      "sha256": "0f3e15437f41aa92a53b351c7702c58077eca1dea01a8baf336a14151f4f9c4b",
+      "source_sha256": "0f3e15437f41aa92a53b351c7702c58077eca1dea01a8baf336a14151f4f9c4b",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "migrations/003_public_delivery.sql",
+      "sha256": "0e0c06bfe91e6aae1d0b022b4fd221b21ceaa62acf8200c1bf06d927f574677b",
+      "source_sha256": "0e0c06bfe91e6aae1d0b022b4fd221b21ceaa62acf8200c1bf06d927f574677b",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "pytest.ini",
+      "sha256": "2ae6a792a8e6b4fed552a1bd08e2b21743ec1077d76485427c5d6c75d6364e01",
+      "source_sha256": "2ae6a792a8e6b4fed552a1bd08e2b21743ec1077d76485427c5d6c75d6364e01",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "requirements-daytona.txt",
+      "sha256": "0bd9302726faa88ceda64f6c6f78624825533554ccc04b73fa05f55a2620ff50",
+      "source_sha256": "0bd9302726faa88ceda64f6c6f78624825533554ccc04b73fa05f55a2620ff50",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "requirements-dev.txt",
+      "sha256": "6cf59f4d0b7c70af8075c881e1f326b7de787e6f4db5db741882fc1695ff1ee2",
+      "source_sha256": "6cf59f4d0b7c70af8075c881e1f326b7de787e6f4db5db741882fc1695ff1ee2",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "dadef7c9698ac299f47525663364ca64636799d40bd7cc2e0207c593dcee2835",
+      "source_sha256": "dadef7c9698ac299f47525663364ca64636799d40bd7cc2e0207c593dcee2835",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "scripts/create-snapshot.py",
+      "sha256": "2546ff101386b29fc3d723c003436ff6b8bbd52421e34c1503360ce27c968912",
+      "source_sha256": "2546ff101386b29fc3d723c003436ff6b8bbd52421e34c1503360ce27c968912",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "scripts/daytona-provision.py",
+      "sha256": "bd33432b300bb58efbe0a0c39cd31dacc70cf2905858f8693708e472bab41466",
+      "source_sha256": "bd33432b300bb58efbe0a0c39cd31dacc70cf2905858f8693708e472bab41466",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "scripts/export-pilot.mjs",
+      "sha256": "3b9a99b3e3bab12e939a16ee54c12e762c3b0077284542e02de0cb366969eaac",
+      "source_sha256": "3b9a99b3e3bab12e939a16ee54c12e762c3b0077284542e02de0cb366969eaac",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "scripts/seed-artwork.py",
+      "sha256": "af09fa41d58dfc3c47dbe0293e53c29fad10f852835f789ba6d7c8d7c81b3a14",
+      "source_sha256": "af09fa41d58dfc3c47dbe0293e53c29fad10f852835f789ba6d7c8d7c81b3a14",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "scripts/seed-pilot.py",
+      "sha256": "70ff37efcfa17b7654ab0d6fa0261ff420178cfae64ea9b64bd4d17b16b6388a",
+      "source_sha256": "70ff37efcfa17b7654ab0d6fa0261ff420178cfae64ea9b64bd4d17b16b6388a",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "server/__init__.py",
+      "sha256": "da37e376c9c003e885064f91628582bd5ea9a5b01669a37acb506367ff4812c5",
+      "source_sha256": "da37e376c9c003e885064f91628582bd5ea9a5b01669a37acb506367ff4812c5",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "server/map_studio/__init__.py",
+      "sha256": "e3a6074c0a0c6feb905c1679abeb8643621dc1ff4f66c301e19765fee9e4069d",
+      "source_sha256": "e3a6074c0a0c6feb905c1679abeb8643621dc1ff4f66c301e19765fee9e4069d",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "server/map_studio/assets.py",
+      "sha256": "7f516987c8e1f657694230ce4180c6f6b966ff2859f415eca59d775c81bfafbf",
+      "source_sha256": "7f516987c8e1f657694230ce4180c6f6b966ff2859f415eca59d775c81bfafbf",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "server/map_studio/auth.py",
+      "sha256": "fdfd391a65274808f81a659e08c15dc1a84d7276dc8db518c90396589bcaa0ba",
+      "source_sha256": "fdfd391a65274808f81a659e08c15dc1a84d7276dc8db518c90396589bcaa0ba",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "server/map_studio/config.py",
+      "sha256": "f48ca085da3d8046b1ae2f9ac8296c88fd3a6b87a7b0146b7fb6ac323f1bc09f",
+      "source_sha256": "f48ca085da3d8046b1ae2f9ac8296c88fd3a6b87a7b0146b7fb6ac323f1bc09f",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "server/map_studio/image_worker.py",
+      "sha256": "993b7aad1778889d16c7bc1edeeec121244ed50447e125c83df1f66c59238f21",
+      "source_sha256": "993b7aad1778889d16c7bc1edeeec121244ed50447e125c83df1f66c59238f21",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "server/map_studio/main.py",
+      "sha256": "5d701a4e4dd4b48509ee0147093888bd2654a9e425eba52d2850287c323fa3a4",
+      "source_sha256": "5d701a4e4dd4b48509ee0147093888bd2654a9e425eba52d2850287c323fa3a4",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "server/map_studio/models.py",
+      "sha256": "5b4229b148baddc244739a4919ddf8cce6ffde4bd65c847dca0ac36f1fb6ba8b",
+      "source_sha256": "5b4229b148baddc244739a4919ddf8cce6ffde4bd65c847dca0ac36f1fb6ba8b",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "server/map_studio/router.py",
+      "sha256": "a85e7971952d067b2d428202f6f8ddc0b0d2252c90f6d41fcabb274777b471d5",
+      "source_sha256": "a85e7971952d067b2d428202f6f8ddc0b0d2252c90f6d41fcabb274777b471d5",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "server/map_studio/storage.py",
+      "sha256": "9c99737b0c13794348a41238dc4ff76297a301ec67132897556c7d5882975ae1",
+      "source_sha256": "9c99737b0c13794348a41238dc4ff76297a301ec67132897556c7d5882975ae1",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "server/map_studio/store.py",
+      "sha256": "3600aab786a255e593528a645b71c97c9698acbe5cd3dfbba89374658c6624ee",
+      "source_sha256": "3600aab786a255e593528a645b71c97c9698acbe5cd3dfbba89374658c6624ee",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "shared/contracts.ts",
+      "sha256": "55115be6a08e424942918a46097f31abe3ad6750875332144fd1a543227e88de",
+      "source_sha256": "55115be6a08e424942918a46097f31abe3ad6750875332144fd1a543227e88de",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "shared/index.ts",
+      "sha256": "2f0ac00259a2ebc8161187f5a60a3451c573f487fc806bc5672e19745fe7944c",
+      "source_sha256": "2f0ac00259a2ebc8161187f5a60a3451c573f487fc806bc5672e19745fe7944c",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "shared/layers.css",
+      "sha256": "e8563a9380658367f64faaeb5ab230857686fec14b02b538af2be438790b7dfb",
+      "source_sha256": "e8563a9380658367f64faaeb5ab230857686fec14b02b538af2be438790b7dfb",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "shared/leaflet.ts",
+      "sha256": "7a727ffb5f79cc5be3a9dc6f0541130bd6b8493e2225745f879d8cb6bbfe679e",
+      "source_sha256": "7a727ffb5f79cc5be3a9dc6f0541130bd6b8493e2225745f879d8cb6bbfe679e",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "shared/tests/contracts.test.ts",
+      "sha256": "719464a6cd3c438f7592107ffbbdcc05ca59b53aff7aec012d42d559ef9c8640",
+      "source_sha256": "719464a6cd3c438f7592107ffbbdcc05ca59b53aff7aec012d42d559ef9c8640",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "shared/tests/leaflet.test.ts",
+      "sha256": "873d58f90bf20f35f14056238fd8590065c3118c027b3c7a5e12c9d4ec5117fd",
+      "source_sha256": "873d58f90bf20f35f14056238fd8590065c3118c027b3c7a5e12c9d4ec5117fd",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "shared/tests/run-tests.mjs",
+      "sha256": "88433cf1c8c14e0ac844449af4f305b6400b6ca5513ed117b757647032f0914e",
+      "source_sha256": "88433cf1c8c14e0ac844449af4f305b6400b6ca5513ed117b757647032f0914e",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "start.sh",
+      "sha256": "1579da54cd5733f37198bf14e593a8fb58304907196cb5082fb3b16655487fb2",
+      "source_sha256": "1579da54cd5733f37198bf14e593a8fb58304907196cb5082fb3b16655487fb2",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "tests/test_auth.py",
+      "sha256": "5fb1c28ee27c6839e355aa445547deef16552e9c18f18464ccc517073b8d9442",
+      "source_sha256": "5fb1c28ee27c6839e355aa445547deef16552e9c18f18464ccc517073b8d9442",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "tests/test_core.py",
+      "sha256": "aa56f3ee96c46e94ffec1b928918a83013ac1361afa198f5f412cf6a4ff066fc",
+      "source_sha256": "aa56f3ee96c46e94ffec1b928918a83013ac1361afa198f5f412cf6a4ff066fc",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "tests/test_database.py",
+      "sha256": "d7700bf5bff43dbc16a758574e4fad5662ab989e4e98cddfc29c463acf64cced",
+      "source_sha256": "d7700bf5bff43dbc16a758574e4fad5662ab989e4e98cddfc29c463acf64cced",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "tests/test_daytona_provision.py",
+      "sha256": "689991b51e86576f0e7cac898f919a61f54d02193b393c0495bd28d8cdd4de9f",
+      "source_sha256": "689991b51e86576f0e7cac898f919a61f54d02193b393c0495bd28d8cdd4de9f",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "tests/test_http.py",
+      "sha256": "b723ac6ba550f79591f920726be63f44733063492e08f5512c1de8e0edf5518b",
+      "source_sha256": "b723ac6ba550f79591f920726be63f44733063492e08f5512c1de8e0edf5518b",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "tests/test_images.py",
+      "sha256": "1897ec681910d326a082d77fba4d02a0e1a9ba153bea75cf01c2babb98ac0c9f",
+      "source_sha256": "1897ec681910d326a082d77fba4d02a0e1a9ba153bea75cf01c2babb98ac0c9f",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "docs/daytona-readiness-verification.md",
+      "sha256": "656be11e2123d3d8e24eed9619bbaa24e5aad5b709aaf26db2cc8bc7cd0d977d",
+      "source_sha256": "656be11e2123d3d8e24eed9619bbaa24e5aad5b709aaf26db2cc8bc7cd0d977d",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "docs/local-daytona-release.md",
+      "sha256": "96701731bc3978b262266e4be06ebfd383ae3838aadb3e68b3b04db0fa9f2338",
+      "source_sha256": "1f5d624c207c2101d9cc4a50b9dd1f8f9b0e51bd822b5c08cf6bb75f2a7ee183",
+      "mode": "100644",
+      "change": "Standalone README, documentation, repository metadata, workflow paths or developer configuration."
+    },
+    {
+      "path": "docs/splitin-transfer.md",
+      "sha256": "c74e7be8335ed5318d06b131a24f54da378a0209911fec3a5ba1d5198577d9ee",
+      "source_sha256": "c74e7be8335ed5318d06b131a24f54da378a0209911fec3a5ba1d5198577d9ee",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "integrations/splitin-base.json",
+      "sha256": "769cf4d3e04e064305e37588efd4906bd5a62da18fa03014e862dba4d9f4856c",
+      "source_sha256": "769cf4d3e04e064305e37588efd4906bd5a62da18fa03014e862dba4d9f4856c",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "integrations/verify-splitin-patch.py",
+      "sha256": "37c967bd12aaad702ec7649f25fa3e17cce4748f0b1e2d67d33fefdeac8d6ee0",
+      "source_sha256": "37c967bd12aaad702ec7649f25fa3e17cce4748f0b1e2d67d33fefdeac8d6ee0",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "scripts/database-preflight.sql",
+      "sha256": "c968b6e370fb08713b52c14a5710d0d76d9d963926ede8e38a0edae8cfb79496",
+      "source_sha256": "c968b6e370fb08713b52c14a5710d0d76d9d963926ede8e38a0edae8cfb79496",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "scripts/preflight.py",
+      "sha256": "a5f1b9c739bc9229ec3b4d602eefc8994970f8f33029f4b65808d4cc5745771c",
+      "source_sha256": "a5f1b9c739bc9229ec3b4d602eefc8994970f8f33029f4b65808d4cc5745771c",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "tests/test_preflight.py",
+      "sha256": "3013e52ba649dedbe5e0fcf1c132d4e6450a3003b5322c813b35daad99258829",
+      "source_sha256": "3013e52ba649dedbe5e0fcf1c132d4e6450a3003b5322c813b35daad99258829",
+      "mode": "100644",
+      "change": null
+    },
+    {
+      "path": "tests/test_readiness.py",
+      "sha256": "5a14bd93d187fef648e1eb453d80da968266a7e2a78d363372a4b910573e12f7",
+      "source_sha256": "96403119eb0f1d678cb0f70380ad29825606628b2d858fb4246d69b093b379d0",
+      "mode": "100644",
+      "change": "Locate the preserved workflow in the standalone root instead of the former services parent hierarchy."
+    }
+  ]
+}

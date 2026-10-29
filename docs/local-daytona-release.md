@@ -1,6 +1,6 @@
 # Local build and Daytona handoff
 
-These are operator instructions, not an automatic deployment. Source publication does not run them. Keep public delivery disabled throughout private setup. Run commands from `services/neighborhood-map-studio/` unless stated otherwise.
+These are operator instructions, not an automatic deployment. Source publication does not run them. Keep public delivery disabled throughout private setup. Run commands from this repository root unless stated otherwise.
 
 ## 1. Build and verify locally
 
@@ -51,11 +51,10 @@ After reviewing the recorded pilot source revision, use `seed-pilot.py` and `see
 
 ## 4. Package and start Daytona
 
-From repository root, Docker context MUST be the service folder:
+From repository root, use this standalone application as the Docker context:
 
 ```sh
-docker build -f services/neighborhood-map-studio/Dockerfile \
-  -t neighborhood-map-studio:local services/neighborhood-map-studio
+docker build -t neighborhood-map-studio:local .
 ```
 
 The image runs non-root on port 3000. It contains frontend output and API code, not credentials, local test outputs or database state. The image health check probes local readiness.

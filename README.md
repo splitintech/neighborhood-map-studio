@@ -1,69 +1,180 @@
-# SplitIn Neighborhood Map Studio
+<p align="center"><img src="docs/brand/splitin-logo.png" alt="SplitIn" width="96" height="96"></p>
 
-This source lives in `splitintech/splitin` at `services/neighborhood-map-studio/`. Run the commands below from that directory. It was transferred from [open-internal-tools PR20](https://github.com/splitintech/open-internal-tools/pull/20), commit `87b71450ce3422ec80112de4c680f77775de6937`; the original source remains unchanged. This source-only transfer does not deploy the service, apply migrations, configure credentials, seed projects, or enable public delivery.
+# Neighborhood Map Studio
 
-The three SQL files remain in this service’s `migrations/` folder, intentionally outside the repository-level `supabase/migrations/` rollout. Review and apply them separately only when authorized. See [transfer verification](docs/splitin-transfer.md).
+An OpenStreetMap-based editor for illustrated neighborhood maps: place artwork and
+annotations, draw geometry, organize layers, preview changes and publish versioned overlays.
+The initial projects are San Francisco Mission and Boston Back Bay.
 
-A standalone owner-only editor and API for illustrated neighborhood maps. Both run in one Daytona container; Supabase Postgres and object storage hold durable state. Only GitHub accounts with the **verified email `splitineu@gmail.com`** can sign in. GitHub access tokens never reach the browser or storage.
+## What this repository contains
 
-The initial projects are San Francisco Mission and Boston Back Bay, exported from reviewed SplitIn source revision `925d14c4831554a406dff6f26814177d1c0fa487`. Canonical business IDs, addresses and locations are read-only. This repository does not replace SplitIn public pages or change their URLs.
+This is the canonical standalone application, consolidating the original Open Internal
+Tools implementation and subsequent committed SplitIn readiness fixes. It includes a
+React/Leaflet editor, Python/FastAPI API, shared TypeScript renderer/contracts, service-local
+SQL migrations, fixtures and Daytona/container tooling. Both source histories are retained.
 
-For the complete local build, migration and private deployment sequence, follow [Local Daytona release handoff](docs/local-daytona-release.md). See [current engineering verification and limits](docs/daytona-readiness-verification.md).
+**Distribution:** the full application runs as a service/container. The frontend remains
+private and there is no newly published Map Studio npm package. The shared renderer and
+contracts are potential library boundaries; extracting them into supported npm packages
+is separate work. This migration does not change existing public SplitIn pages.
 
-## Local verification
+## Features and current boundaries
+
+- Leaflet navigation over OSM raster tiles, loaded after user consent.
+- Terra Draw points, lines and polygons; artwork and annotation controls.
+- Layers, themes, undo/redo, preview and revision-checked saves.
+- Per-tab edit leases, recovery in user/map-scoped IndexedDB and version rollback.
+- Processed artwork derivatives and atomic publication-pointer updates.
+- Public overlays designed to load from durable storage without waking the editor.
+
+Canonical business IDs, addresses and locations remain read-only. The current login is
+GitHub OAuth restricted to the configured owner identity in `server/map_studio/auth.py`;
+it is not a general multi-user SplitIn-account integration. Public delivery starts disabled.
+Live OAuth, storage, Daytona deployment and pilot acceptance require separate qualification.
+WebGPU, Three.js and 3D are deferred.
+
+## Architecture
+
+```text
+Browser editor (React + Leaflet + Terra Draw)
+    -> FastAPI session/auth, editing and publication API
+    -> Supabase Postgres + private originals/public processed artwork
+
+Public map adapter -> published manifests/storage
+                      (independent of the sleeping editor container)
+```
+
+The editor uses OpenStreetMap raster tiles. The existing-page adapter retains those
+pages' OpenFreeMap Canvas basemap. Application annotations belong to the overlay data;
+they do not edit the OpenStreetMap database.
+
+## Prerequisites and local build
+
+Use Python 3.11, Node.js 22 or later, npm, and Cairo for SVG processing
+(`libcairo2` on Linux). Use an isolated Python environment.
 
 ```sh
+git clone https://github.com/splitintech/neighborhood-map-studio.git
+cd neighborhood-map-studio
 python3.11 -m venv .venv
-.venv/bin/python -m pip install -r requirements-dev.txt
-# Linux SVG runtime dependency: apt-get install libcairo2
+. .venv/bin/activate
+python -m pip install -r requirements-dev.txt
 cd frontend
-npm ci
+npm ci --ignore-scripts
 npm run typecheck
 npm test
 npm run build
 cd ..
-.venv/bin/python -m pytest tests -q
+env -u MAP_STUDIO_TEST_DATABASE_URL python -m pytest tests -q
 node shared/tests/run-tests.mjs
 node --test integrations/public-layers.test.mjs
+python scripts/preflight.py
 ```
 
-Database tests require `MAP_STUDIO_TEST_DATABASE_URL` pointing to a **disposable local Postgres database**. Browser tests use mocked authenticated API fixtures and run with `cd frontend && npm run test:browser`; they do not establish production OAuth or database readiness.
+Without `MAP_STUDIO_TEST_DATABASE_URL`, database tests skip. For full database checks,
+point it only at a disposable local PostgreSQL database: the tests apply migrations.
+CI supplies its own disposable database, runs the fixture browser journey and builds
+and probes the container without provider network access.
 
-Copy `.env.example` to `.env`, configure the secure environment values, apply migrations in numeric order using a database administrator, then run:
+## Configuration and local server
+
+Copy `.env.example` to `.env` and configure server values:
+
+| Variable | Purpose |
+| --- | --- |
+| `MAP_STUDIO_ENVIRONMENT` | Production by default; explicit development permits localhost HTTP |
+| `MAP_STUDIO_ORIGIN` | Stable application origin and OAuth redirect base |
+| `MAP_STUDIO_GITHUB_CLIENT_ID`, `MAP_STUDIO_GITHUB_CLIENT_SECRET` | GitHub OAuth application credentials |
+| `MAP_STUDIO_SESSION_SECRET` | At least 32 nonblank characters for sessions |
+| `MAP_STUDIO_SUPABASE_URL`, `MAP_STUDIO_SUPABASE_SERVICE_ROLE_KEY` | Server-side durable storage access |
+| `MAP_STUDIO_PUBLIC_MANIFESTS_ENABLED` | Optional public API; keep false during private setup |
+
+For local HTTP, set `MAP_STUDIO_ENVIRONMENT=development` and
+`MAP_STUDIO_ORIGIN=http://127.0.0.1:3000`. Register the OAuth callback at
+`<origin>/api/auth/callback`. Keep server secrets out of browser/Vite configuration.
 
 ```sh
-.venv/bin/python scripts/seed-pilot.py          # dry run
-.venv/bin/python scripts/seed-pilot.py --apply  # explicit owner/project assignment
-.venv/bin/python scripts/seed-artwork.py --apply # three original guide stickers per map
-.venv/bin/python -m uvicorn server.map_studio.main:app --host 127.0.0.1 --port 3000
+python scripts/preflight.py --require-config
+python -m uvicorn server.map_studio.main:app --host 127.0.0.1 --port 3000
 ```
 
-Open `/map-studio/`. Register a GitHub OAuth app with callback `<MAP_STUDIO_ORIGIN>/api/auth/callback`. The origin must remain stable across sandbox recreation. Store the OAuth client secret, session signing secret and Supabase service-role key only in server environment settings. Never put them in `VITE_*` values, Git, screenshots or logs.
+Open `http://127.0.0.1:3000/map-studio/` when using the local origin.
+`/healthz` proves process liveness. `/readyz` additionally checks local configuration
+and frontend build presence; neither proves remote OAuth, database or storage readiness.
 
-## Storage setup
+## Database, artwork and seeding
 
-Apply `migrations/001_map_studio.sql`, `002_owner_sessions.sql`, then `003_public_delivery.sql` to the existing Supabase project after reviewing names/conflicts and taking a backup. The changes are confined to `map_studio_*` records and functions. Browser clients cannot access their tables directly. Privileged RPC calls receive an actor ID only from the server-validated session and explicitly check map membership.
+Review and apply the following service-local SQL files in order under your database
+administration process. They are not automatically applied when this repository is cloned
+or the container starts:
 
-Create these buckets using the Supabase dashboard or administrative API:
+1. `migrations/001_map_studio.sql`
+2. `migrations/002_owner_sessions.sql`
+3. `migrations/003_public_delivery.sql`
 
-| Bucket | Visibility | Content |
-| --- | --- | --- |
-| `map-studio-private` | Private | Original uploads and optimized draft artwork |
-| `map-studio-published` | Public | Content-hashed raster derivatives used in publications |
+Use [database preflight](scripts/database-preflight.sql) and the
+[operator handoff](docs/local-daytona-release.md) to review existing state, grants and backups.
+Create `map-studio-private` as a private bucket and `map-studio-published` as public for
+processed content-hashed derivatives only. Do not expose original uploads.
 
-Do not add anonymous write policies or expose originals. Accept PNG, JPEG, WebP and SVG up to 5 MiB. SVG support is a deliberately restricted vector subset; scripts, linked resources, active content and unsupported tags are rejected. A credential-free child process has a 12-second deadline and Linux CPU/address-space/file limits. Raster derivatives preserve aspect ratio, strip original metadata and fit 2048px.
+Uploads support PNG, JPEG, WebP and a restricted SVG subset up to 5 MiB. Processing strips
+metadata, bounds dimensions and isolates SVG decoding. Draft recovery in the browser
+is not a durable backup.
 
-## Editing and publication
+`python scripts/seed-pilot.py` and `python scripts/seed-artwork.py` default to dry-run.
+Their `--apply` forms write data. Review fixture provenance and owner assignments first.
 
-The editor includes real Leaflet navigation, tile consent, Terra Draw geometry, artwork and annotation properties, layers, undo/redo, preview, revision-checked saving, two-minute edit leases, version history and rollback. Numeric controls accompany movement gestures. Recovery lives in user/map-scoped IndexedDB and is cleared on explicit logout. It is not a server backup.
+## Container and Daytona deployment
 
-A lease is tied to a browser tab, not simply an account, so opening a second tab cannot silently overwrite the first. The backend checks lease and revision again at publication. Asset derivatives are hash-verified before the database atomically advances its publication pointer; a failed upload cannot replace the current version.
+Build from this repository root:
 
-Public delivery is disabled initially. [`integrations/README.md`](integrations/README.md) documents the existing-page adapter. Published manifests can be read directly from Supabase through a narrow opt-in function, so public rendering does not wake or depend on Daytona. Existing source business cards and maps remain the fallback. The editor currently uses OSM raster tiles; the adapter retains the public pages' existing OpenFreeMap Canvas basemap.
+```sh
+docker build -t neighborhood-map-studio:local .
+```
 
-## Deployment and operations
+The image runs as a non-root user on port 3000. It contains the built frontend and API;
+credentials and durable database/artwork state stay outside the image. Image publication
+is manual and disabled until `IMAGE_PUBLISHING_ENABLED` is configured.
 
-See [`docs/daytona.md`](docs/daytona.md) for the pinned image/snapshot, secrets, private/public preview distinction and restart procedure. Linking GitHub to Daytona provides account/repository access; it does not configure application OAuth, storage or a stable gateway.
+Use [Daytona setup](docs/daytona.md) and [local release handoff](docs/local-daytona-release.md)
+for immutable image digests, snapshots, environment configuration, private transport,
+restart and acceptance. The control-plane scripts default to dry-run. A sleeping editor
+requires an external wake mechanism; public map reads must not depend on it.
 
-See [`docs/operations.md`](docs/operations.md) for backup/restore, rollback, monitoring, budget and pilot acceptance. See [`docs/verification.md`](docs/verification.md) for actual local evidence and remaining deployment checks. WebGPU, Three.js and 3D are deferred.
+## Public integration and rollback
 
+[integrations/README.md](integrations/README.md) documents the existing-page adapter and
+pinned SplitIn patch baseline. Reconcile that patch with the consumer application before
+applying it. Per-map public flags, the database public-delivery switch and the optional
+Studio API manifest flag are distinct controls and remain off by default.
+
+Keep existing source maps/cards as fallback. Content rollback selects a previous published
+version; runtime rollback selects a previous image while retaining durable data. See
+[operations](docs/operations.md) for backup/restore and pilot checks.
+
+## Repository guide
+
+| Path | Responsibility |
+| --- | --- |
+| `frontend` | Private React editor, build and fixture browser tests |
+| `server/map_studio` | Authentication, API, validation and publication |
+| `shared` | TypeScript contracts, Leaflet renderer and styles |
+| `migrations` | Service-local schema and access controls |
+| `integrations` | Public-page adapter, patch and verification |
+| `scripts` | Preflight, export, seeding and Daytona operations |
+| `tests` | Python unit, database and readiness checks |
+| `docs` | Operations, historical verification and migration records |
+
+Historical verification documents describe their original snapshots. Use the new migration
+validation record for checks run against this standalone repository.
+
+## Contributing and provenance
+
+See [CONTRIBUTING.md](CONTRIBUTING.md), [migration provenance](docs/migration.md),
+[validation record](docs/migration/validation.json), and [release setup](docs/repository-release.md).
+Relevant Git history, source inventories, original licenses and artwork are retained.
+The migration does not publish packages, configure credentials or deploy infrastructure.
+
+## License
+
+MIT. See [LICENSE](LICENSE).

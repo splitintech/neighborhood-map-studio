@@ -73,7 +73,7 @@ def test_configuration_validation_errors_redact_supplied_values(kwargs):
 
 
 def test_container_smoke_workflow_is_network_isolated_and_has_no_provider_secrets():
-    workflow = Path(__file__).resolve().parents[3] / '.github/workflows/neighborhood-map-studio.yml'
+    workflow = Path(__file__).resolve().parents[1] / '.github/workflows/neighborhood-map-studio.yml'
     text = workflow.read_text()
     smoke = text.split('      - name: Offline release-container readiness and access boundary', 1)[1]
     assert '--network none' in smoke

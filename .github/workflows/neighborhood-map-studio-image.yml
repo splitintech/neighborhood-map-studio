@@ -6,6 +6,7 @@ permissions:
   packages: write
 jobs:
   image:
+    if: vars.IMAGE_PUBLISHING_ENABLED == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,8 +19,8 @@ jobs:
       - uses: docker/build-push-action@v6
         id: build
         with:
-          context: services/neighborhood-map-studio
-          file: services/neighborhood-map-studio/Dockerfile
+          context: .
+          file: Dockerfile
           push: true
           platforms: linux/amd64
           tags: ghcr.io/splitintech/neighborhood-map-studio:${{ github.sha }}
