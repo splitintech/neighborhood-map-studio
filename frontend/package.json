@@ -16,7 +16,7 @@
     "@types/node": "^22.10.2",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
-    "@vitejs/plugin-react-swc": "^3.7.2",
+    "@vitejs/plugin-react-swc": "^4.3.3",
     "esbuild": "^0.24.0",
     "playwright": "^1.45.3",
     "typescript": "^5.7.2",
